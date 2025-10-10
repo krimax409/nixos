@@ -7,6 +7,7 @@
       experimental-features = [
         "nix-command"
         "flakes"
+        "pipe-operators"
       ];
       substituters = [
         "https://nix-community.cachix.org"
@@ -29,6 +30,7 @@
   environment.systemPackages = with pkgs; [
     wget
     git
+    vscode
   ];
 
   time.timeZone = "Europe/Paris";

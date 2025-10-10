@@ -1,8 +1,12 @@
 { pkgs, ... }:
 {
+  environment.systemPackages = with pkgs; [
+    mangohud
+    protonup
+  ];
   programs = {
     steam = {
-      enable = false;
+      enable = true;
 
       remotePlay.openFirewall = true;
       dedicatedServer.openFirewall = false;
@@ -11,7 +15,7 @@
 
       extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
-
+    gamemode.enable = true;
     gamescope = {
       enable = true;
       capSysNice = true;

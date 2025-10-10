@@ -29,8 +29,8 @@ in
       ];
 
       input = {
-        kb_layout = "us,fr";
-        kb_options = "grp:alt_caps_toggle";
+        kb_layout = "us,ru";
+        kb_options = "grp:alt_shift_toggle";
         numlock_by_default = true;
         repeat_delay = 300;
         follow_mouse = 0;
@@ -40,6 +40,9 @@ in
         touchpad = {
           natural_scroll = true;
         };
+      };
+      cursor = {
+        no_hardware_cursors = true;          # принудительно софт-курсор
       };
 
       general = {
@@ -383,7 +386,9 @@ in
     };
 
     extraConfig = "
-      monitor=,preferred,auto,auto
+      monitor=HDMI-A-1,1920x1080@60,0x360,1
+
+      monitor=DP-2,2560x1440@155,1920x0,1
 
       xwayland {
         force_zero_scaling = true

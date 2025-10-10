@@ -25,7 +25,7 @@ in
 
       ## Color scheme
       jdinhlife.gruvbox
-      jonathanharty.gruvbox-material-icon-theme
+      #jonathanharty.gruvbox-material-icon-theme
     ];
   };
 }
