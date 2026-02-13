@@ -39,6 +39,11 @@
       # python
       piv = "python -m venv .venv";
       psv = "source .venv/bin/activate";
+
+      # Desktop Environment Switcher
+      kde = "switch-to-kde";
+      hypr = "switch-to-hyprland";
+      de-status = "switch-de-status";
     };
   };
 }

@@ -13,7 +13,8 @@
   ];
 
   services = {
-    power-profiles-daemon.enable = true;
+    # Disabled: conflicts with TLP (can't use both simultaneously)
+    # power-profiles-daemon.enable = true;
 
     upower = {
       enable = true;
@@ -52,12 +53,9 @@
 
   boot = {
     kernelModules = [ "acpi_call" ];
-    extraModulePackages =
-      with config.boot.kernelPackages;
-      [
-        acpi_call
-        cpupower
-      ]
-      ++ [ pkgs.cpupower-gui ];
+    extraModulePackages = with config.boot.kernelPackages; [
+      acpi_call
+      cpupower
+    ];
   };
 }

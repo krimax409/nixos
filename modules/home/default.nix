@@ -19,6 +19,7 @@
     ./hyprland                        # window manager
     ./kitty.nix                       # terminal
     ./lazygit.nix
+    ./plasma.nix                      # KDE Plasma configuration
     ./micro.nix                       # nano replacement
     ./nemo.nix                        # file manager
     ./nix-search/nix-search.nix       # TUI to search nixpkgs
@@ -35,11 +36,11 @@
     ./swayosd.nix                     # brightness / volume wiget
     ./swaync/swaync.nix               # notification deamon
     # ./viewnior.nix                    # image viewer
-    ./vscodium                        # vscode fork
     ./waybar                          # status bar
     ./waypaper.nix                    # GUI wallpaper picker
     ./xdg-mimes.nix                   # xdg config
     ./zsh                             # shell
-    ./claude.nix
+    ./claude.nix                      # claude with proxy
+    ./spotify.nix                     # spotify with proxy
   ];
 }

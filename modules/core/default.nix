@@ -11,6 +11,7 @@
     ./security.nix
     ./services.nix
     ./steam.nix
+    ./sudo.nix
     ./system.nix
     ./flatpak.nix
     ./user.nix

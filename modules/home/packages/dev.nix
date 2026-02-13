@@ -21,5 +21,6 @@
     ## Python
     python3
     python312Packages.ipython
+    uv # Python package installer and resolver
   ];
 }

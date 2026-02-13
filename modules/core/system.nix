@@ -21,7 +21,15 @@
         "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
         "ghostty.cachix.org-1:QB389yTa6gTyneehvqG58y0WnHjQOqgnA+wBnpWWxns="
       ];
+      # Разрешаем доступ к localhost в песочнице для прокси
+      sandbox = "relaxed";
     };
+  };
+
+  # Прокси для Nix daemon (для загрузки пакетов типа WebStorm)
+  systemd.services.nix-daemon.environment = {
+    https_proxy = "http://127.0.0.1:1081";
+    http_proxy = "http://127.0.0.1:1081";
   };
   nixpkgs = {
     overlays = [ inputs.nur.overlays.default ];

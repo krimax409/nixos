@@ -42,7 +42,7 @@ in
         };
       };
       cursor = {
-        no_hardware_cursors = true;          # принудительно софт-курсор
+        no_hardware_cursors = true; # принудительно софт-курсор
       };
 
       general = {

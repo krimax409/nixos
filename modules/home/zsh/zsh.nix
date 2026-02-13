@@ -159,6 +159,7 @@
         zle -N zle-line-init
         zle -N zle-line-finish
       fi
+
     '';
   };
 

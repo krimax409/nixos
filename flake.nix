@@ -9,6 +9,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    plasma-manager = {
+      url = "github:nix-community/plasma-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     hyprland.url = "github:hyprwm/Hyprland";
 
     hypr-contrib = {
@@ -40,6 +46,8 @@
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
     ghostty.url = "github:ghostty-org/ghostty";
+
+    claude-code-nix.url = "github:sadjow/claude-code-nix";
   };
 
   outputs =

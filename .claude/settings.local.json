@@ -1,7 +1,18 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(nix search:*)",
+      "Bash(treefmt:*)",
+      "Read(//home/k/**)",
+      "Bash(sudo -n nixos-rebuild:*)",
+      "Bash(sudo -n systemctl:*)",
+      "Bash(sudo:*)",
+      "Bash(systemctl:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(nix-collect-garbage:*)",
+      "WebSearch"
     ],
     "deny": []
   }
