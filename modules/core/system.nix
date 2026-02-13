@@ -27,13 +27,13 @@
   };
 
   # Прокси для Nix daemon (для загрузки пакетов типа WebStorm)
-  systemd.services.nix-daemon.environment = {
-    https_proxy = "http://127.0.0.1:1081";
-    http_proxy = "http://127.0.0.1:1081";
-  };
-  nixpkgs = {
-    overlays = [ inputs.nur.overlays.default ];
-  };
+  # systemd.services.nix-daemon.environment = {
+  #   https_proxy = "http://127.0.0.1:1081";
+  #   http_proxy = "http://127.0.0.1:1081";
+  # };
+  # nixpkgs = {
+  #   overlays = [ inputs.nur.overlays.default ];
+  # };
 
   environment.systemPackages = with pkgs; [
     wget
