@@ -1,10 +1,10 @@
-{ username, ... }:
+{ ... }:
 {
   services = {
     xserver = {
       enable = true;
       xkb.layout = "us,ru";
-      xkb.options = "grp:alt_shift_toggle";
+      xkb.options = "grp:alt_space_toggle";
     };
 
     libinput = {
@@ -12,5 +12,7 @@
     };
   };
   # To prevent getting stuck at shutdown
-  systemd.extraConfig = "DefaultTimeoutStopSec=10s";
+  systemd.settings.Manager = {
+    DefaultTimeoutStopSec = "10s";
+  };
 }

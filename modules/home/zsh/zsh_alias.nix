@@ -8,8 +8,9 @@
       tt = "gtrash put";
       cat = "bat";
       nano = "micro";
-      code = "codium";
+      claude = "proxychains4 -q claude";
       diff = "delta --diff-so-fancy --side-by-side";
+      pipes = "pipes.sh";
       less = "bat";
       f = "superfile";
       py = "python";
@@ -40,10 +41,6 @@
       piv = "python -m venv .venv";
       psv = "source .venv/bin/activate";
 
-      # Desktop Environment Switcher
-      kde = "switch-to-kde";
-      hypr = "switch-to-hyprland";
-      de-status = "switch-de-status";
     };
   };
 }

@@ -63,7 +63,7 @@ Each host imports `hardware-configuration.nix` and core modules, then applies ho
 - **Theme**: Gruvbox Dark Hard
 - **Audio**: PipeWire
 - **Package Management**: Nix Flakes + Home Manager + selective Flatpak use
-- **Proxy Apps**: Spotify and Claude Code configured with HTTP proxy (127.0.0.1:1081)
+- **Proxy Apps**: Spotify and Claude Code configured with HTTP proxy (127.0.0.1:2080)
 
 ### Import Hierarchy
 1. `flake.nix` defines outputs for three host configurations

@@ -1,6 +1,6 @@
 { pkgs, ... }:
 {
-  home.packages = with pkgs; [ rofi-wayland ];
+  home.packages = with pkgs; [ rofi ];  # rofi-wayland объединен в rofi
 
   xdg.configFile."rofi/theme.rasi".text = ''
     * {
@@ -23,18 +23,20 @@
       cycle: false;
       font: "Maple Mono Bold 16";
       show-icons: true;
-      icon-theme: "Papirus-dark";
-      terminal: "ghostty";
+      icon-theme: "Adwaita";
+      terminal: "kitty";
       drun-display-format: "{icon} {name}";
       location: 0;
-      disable-history: true;
+      disable-history: false;
       hide-scrollbar: true;
       display-drun: " Apps ";
       display-run: " Run ";
       display-window: " Window ";
       /* display-Network: " Network"; */
       sidebar-mode: true;
-      sorting-method: "fzf";
+      sorting-method: "normal";
+      sort: true;
+      matching: "fuzzy";
     }
 
     @theme "theme"

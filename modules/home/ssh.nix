@@ -2,14 +2,16 @@
 {
   programs.ssh = {
     enable = true;
-
-    addKeysToAgent = "1h";
-
-    controlMaster = "auto";
-    controlPath = "~/.ssh/control-%r@%h:%p";
-    controlPersist = "10m";
+    enableDefaultConfig = false; # Отключаем дефолтные настройки как рекомендовано
 
     matchBlocks = {
+      "*" = {
+        # Перенесены настройки с верхнего уровня
+        addKeysToAgent = "1h";
+        controlMaster = "auto";
+        controlPath = "~/.ssh/control-%r@%h:%p";
+        controlPersist = "10m";
+      };
       github = {
         host = "github.com";
         hostname = "ssh.github.com";

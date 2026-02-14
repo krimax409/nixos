@@ -1,9 +1,10 @@
 { pkgs, lib, ... }:
 with lib;
 let
+  fetchWithProxy = import ../../lib/fetch-with-proxy.nix { inherit pkgs; };
 
   extra-path = with pkgs; [
-    dotnetCorePackages.sdk_7_0
+    dotnetCorePackages.sdk_8_0
     dotnetPackages.Nuget
     mono
     msbuild
@@ -20,6 +21,7 @@ let
   ];
 
   _rider = pkgs.jetbrains.rider.overrideAttrs (attrs: {
+    src = fetchWithProxy attrs.src;
     postInstall =
       ''
         # Wrap rider with extra tools and libraries
@@ -43,7 +45,7 @@ in
 {
   home.packages = with pkgs; [
     _rider
-    dotnet-sdk_7
+    dotnet-sdk_8
   ];
 
   # Unity Rider plugin looks here for a .desktop file,

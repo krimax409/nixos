@@ -1,14 +1,10 @@
 {
-  inputs,
   pkgs,
   host,
   ...
 }:
-let
-  ghostty = inputs.ghostty.packages.${pkgs.system}.default;
-in
 {
-  home.packages = [ ghostty ];
+  home.packages = with pkgs; [ ghostty ];
 
   xdg.configFile."ghostty/config".text = ''
     # Font

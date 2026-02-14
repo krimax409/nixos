@@ -3,10 +3,12 @@
   programs.git = {
     enable = true;
 
-    userName = "Krimax0";
-    userEmail = "krimax298@gmail.com";
-
-    extraConfig = {
+    # Используем новый формат settings вместо deprecated опций
+    settings = {
+      user = {
+        name = "Krimax0";
+        email = "krimax298@gmail.com";
+      };
       init.defaultBranch = "main";
       merge.conflictstyle = "diff3";
       diff.colorMoved = "default";
@@ -21,15 +23,17 @@
       };
       core.excludesFile = "/home/${username}/.config/git/.gitignore";
     };
+  };
 
-    delta = {
-      enable = true;
-      options = {
-        line-numbers = true;
-        side-by-side = false;
-        diff-so-fancy = true;
-        navigate = true;
-      };
+  # delta перенесен в отдельную программу
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true; # Явно включаем интеграцию как рекомендовано
+    options = {
+      line-numbers = true;
+      side-by-side = false;
+      diff-so-fancy = true;
+      navigate = true;
     };
   };
 

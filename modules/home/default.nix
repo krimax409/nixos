@@ -1,46 +1,68 @@
 { ... }:
 {
   imports = [
-    ./aseprite/aseprite.nix           # pixel art editor
-    ./audacious.nix                   # music player
-    ./bat.nix                         # better cat command
-    ./browser.nix                     # firefox based browser
-    ./btop.nix                        # resouces monitor 
-    ./cava.nix                        # audio visualizer
-    ./discord.nix                     # discord
-    ./fastfetch.nix                   # fetch tool
-    ./flow.nix                        # terminal text editor
-    ./fzf.nix                         # fuzzy finder
-    ./gaming.nix                      # packages related to gaming
-    ./ghostty.nix                     # terminal
-    ./git.nix                         # version control
-    ./gnome.nix                       # gnome apps
-    ./gtk.nix                         # gtk theme
-    ./hyprland                        # window manager
-    ./kitty.nix                       # terminal
+    # Базовые утилиты
+    ./bat.nix
+    ./git.nix
+    ./kitty.nix
+    ./micro.nix
+    ./zsh
+    ./ssh.nix
+
+    # Инструменты и мониторинг
+    ./btop.nix
+    ./fastfetch.nix
+    ./fzf.nix
+    ./gtk.nix
     ./lazygit.nix
-    ./plasma.nix                      # KDE Plasma configuration
-    ./micro.nix                       # nano replacement
-    ./nemo.nix                        # file manager
-    ./nix-search/nix-search.nix       # TUI to search nixpkgs
-    ./nvim.nix                        # neovim editor
+    ./nvim.nix
+    ./xdg-mimes.nix
+
+    # Пакеты
+    ./packages/cli.nix
+    ./packages/dev.nix
+    ./packages/gui.nix
+    # ./packages/custom.nix
+
+    # Приложения
+    # ./aseprite/aseprite.nix
+    ./audacious.nix
+    ./browser.nix
+    ./cava.nix
+    ./flow.nix
+    ./gnome.nix
+    ./nemo.nix
+    ./nix-search/nix-search.nix
     ./obsidian.nix
     ./p10k/p10k.nix
-    ./packages                        # other packages
-    ./retroarch.nix  
-    ./rofi.nix                        # launcher
-    ./scripts/scripts.nix             # personal scripts
-    ./ssh.nix                         # ssh config
-    ./superfile/superfile.nix         # terminal file manager
-    ./swaylock.nix                    # lock screen
-    ./swayosd.nix                     # brightness / volume wiget
-    ./swaync/swaync.nix               # notification deamon
-    # ./viewnior.nix                    # image viewer
-    ./waybar                          # status bar
-    ./waypaper.nix                    # GUI wallpaper picker
-    ./xdg-mimes.nix                   # xdg config
-    ./zsh                             # shell
-    ./claude.nix                      # claude with proxy
-    ./spotify.nix                     # spotify with proxy
+    ./scripts/scripts.nix
+    ./superfile/superfile.nix
+
+    # Игры
+    ./gaming.nix
+    # ./retroarch.nix
+
+    # Терминалы
+    ./ghostty.nix
+
+    # Коммуникации и медиа
+    ./discord.nix
+    ./spotify.nix
+    ./rider.nix
+
+    # IDE
+    ./webstorm.nix
+
+    # Claude Code
+    ./claude.nix
+
+    # Hyprland
+    ./hyprland-minimal.nix
+    ./rofi.nix
+    ./swaylock.nix
+    ./swayosd.nix
+    ./swaync/swaync.nix
+    ./waybar
+    ./waypaper.nix
   ];
 }

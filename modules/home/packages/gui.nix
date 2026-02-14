@@ -10,9 +10,15 @@
     video-trimmer
     vlc
 
+    ## Communication
+    telegram-desktop
+
     ## Office
     libreoffice
     gnome-calculator
+
+    ## Password manager
+    bitwarden-desktop
 
     ## Utility
     dconf-editor

@@ -1,63 +1,33 @@
-{
-  inputs,
-  pkgs,
-  lib,
-  ...
-}:
+{ pkgs, ... }:
 {
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
-  programs.dconf.enable = true;
   security.polkit.enable = true;
 
-  programs.hyprland = {
+  programs.hyprland.enable = true;
+
+  services.greetd = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system}.default;
-    portalPackage =
-      inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland;
-  };
-
-  services.desktopManager.plasma6.enable = true;
-
-  services.displayManager = {
-    sddm = {
-      enable = true;
-      wayland.enable = true;
+    settings.default_session = {
+      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+      user = "greeter";
     };
-
-    # Автологин без пароля
-    autoLogin = {
-      enable = true;
+    settings.initial_session = {
+      command = "Hyprland";
       user = "k";
     };
-
-    # Читаем сессию из переменной окружения, по умолчанию Hyprland
-    defaultSession =
-      let
-        envSession = builtins.getEnv "NIXOS_DEFAULT_SESSION";
-      in
-      if envSession != "" then envSession else "hyprland";
   };
+
   xdg.portal = {
     enable = true;
     xdgOpenUsePortal = true;
-
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.kdePackages.xdg-desktop-portal-kde
-    ];
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
     config = {
       common.default = [ "gtk" ];
       hyprland.default = [
         "hyprland"
         "gtk"
       ];
-      kde.default = [
-        "kde"
-        "gtk"
-      ];
     };
   };
-
-  environment.systemPackages = with pkgs; [ kdePackages.kde-gtk-config ];
 }

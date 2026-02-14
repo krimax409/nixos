@@ -7,7 +7,8 @@
     nerd-fonts.caskaydia-cove
     nerd-fonts.symbols-only
     twemoji-color-font
-    noto-fonts-emoji
+    noto-fonts-color-emoji
+    noto-fonts
     fantasque-sans-mono
     maple-mono.truetype-autohint
   ];
@@ -15,8 +16,8 @@
   gtk = {
     enable = true;
     font = {
-      name = "Maple Mono";
-      size = 12;
+      name = "Noto Sans";
+      size = 11;
     };
     theme = {
       name = "Colloid-Green-Dark-Gruvbox";
@@ -31,19 +32,21 @@
       };
     };
     iconTheme = {
-      name = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme.override { color = "black"; };
+      # Временно используем Adwaita вместо Papirus - слишком долго собирается
+      name = "Adwaita";
+      package = pkgs.adwaita-icon-theme;
+      # name = "Papirus-Dark";
+      # package = pkgs.papirus-icon-theme.override { color = "black"; };
     };
     cursorTheme = {
-      name = "Bibata-Modern-Ice";
-      package = pkgs.bibata-cursors;
+      name = "Posy_Cursor";
+      package = pkgs.posy-cursors;
       size = 24;
     };
   };
-
   home.pointerCursor = {
-    name = "Bibata-Modern-Ice";
-    package = pkgs.bibata-cursors;
+    name = "Posy_Cursor";
+    package = pkgs.posy-cursors;
     size = 24;
   };
 }
