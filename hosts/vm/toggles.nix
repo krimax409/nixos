@@ -7,7 +7,7 @@
   home-manager.users.k = {
     kdk.homeProfiles = {
       base.enable = true;
-      hyprland-desktop.enable = true;
+      kde-desktop.enable = true;
     };
 
     kdk.home = {

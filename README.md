@@ -1,21 +1,20 @@
 # KDK NixOS Config
 
-Модульная конфигурация NixOS на базе Nix Flakes с Hyprland и Gruvbox Dark Hard темой. Форк [Frost-Phoenix/nixos-config](https://github.com/Frost-Phoenix/nixos-config), переработанный для максимальной модульности — каждый модуль включается/отключается одной строкой, зависимости разрешаются автоматически.
+Модульная конфигурация NixOS на базе Nix Flakes с KDE Plasma 6 и Gruvbox Dark Hard темой. Форк [Frost-Phoenix/nixos-config](https://github.com/Frost-Phoenix/nixos-config), переработанный для максимальной модульности — каждый модуль включается/отключается одной строкой, зависимости разрешаются автоматически. Декларативная настройка KDE через [plasma-manager](https://github.com/nix-community/plasma-manager).
 
 ## Стек
 
 | Компонент | Технология |
 |-----------|-----------|
-| Window Manager | Hyprland (Wayland) |
-| Bar | Waybar |
+| Desktop | KDE Plasma 6 (Wayland) |
+| Display Manager | SDDM |
 | Terminal | Ghostty / Kitty |
 | Shell | Zsh + Powerlevel10k |
 | Editor | Neovim / VSCode |
-| Launcher | Rofi |
-| Theme | Gruvbox Dark Hard |
+| Theme | Breeze Dark + Gruvbox GTK |
 | Audio | PipeWire |
 | Fonts | Maple Mono + Nerd Fonts |
-| Lock Screen | Hyprlock / Swaylock |
+| KDE Config | plasma-manager (declarative) |
 
 ## Структура
 
@@ -43,16 +42,16 @@
 │   │   │   ├── base.nix          # 13 базовых модулей
 │   │   │   └── gaming.nix        # Steam + NVIDIA
 │   │   ├── bootloader.nix, hardware.nix, network.nix, ...
-│   │   └── steam.nix, nvidia.nix, wayland.nix, ...
+│   │   └── steam.nix, nvidia.nix, plasma.nix, ...
 │   └── home/                     # Home Manager модули (46 шт.)
 │       ├── default.nix           # Авто-импорт через importDir
 │       ├── meta.nix              # HM-level метаданные
 │       ├── profiles/
 │       │   ├── base.nix          # Shell, editors, CLI
 │       │   ├── development.nix   # IDEs, git, dev tools
-│       │   └── hyprland-desktop.nix  # Hyprland + waybar + rofi + ...
+│       │   └── kde-desktop.nix   # KDE Plasma + GNOME apps
+│       ├── plasma.nix            # KDE Plasma config via plasma-manager
 │       ├── discord.nix, browser.nix, spotify.nix, ...
-│       ├── waybar/               # Multi-file: default + settings + style
 │       ├── zsh/                  # Multi-file: default + aliases + keybinds
 │       └── packages/             # CLI, GUI, dev, custom пакеты
 ├── pkgs/                         # Кастомные пакеты (сборка из исходников)
@@ -133,7 +132,7 @@ import ../../../lib/mkProfile.nix {
   home-manager.users.k = {
     kdk.homeProfiles = {
       base.enable = true;
-      hyprland-desktop.enable = true;
+      kde-desktop.enable = true;
       development.enable = true;
     };
     kdk.home = {
@@ -206,7 +205,7 @@ nix eval .#nixosConfigurations.desktop.config.kdk.meta --json
 |-----------|----------|
 | `system` | Загрузчик, настройки Nix, сеть, sudo, сервисы |
 | `hardware` | GPU драйверы, аудио, прошивки |
-| `desktop` | Hyprland, Waybar, Rofi, GTK темы |
+| `desktop` | KDE Plasma, GTK темы, курсоры |
 | `terminal` | Терминалы, shell, CLI утилиты |
 | `development` | Git, IDE, редакторы |
 | `communication` | Discord, мессенджеры |

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is FrostPhoenix's modular NixOS configuration repository using Nix Flakes, designed around a Hyprland-based desktop environment with Gruvbox theming. The configuration supports multiple host types (desktop, laptop, vm) with shared core modules and host-specific optimizations.
+This is a modular NixOS configuration repository using Nix Flakes, built around KDE Plasma 6 with plasma-manager for declarative desktop configuration. Originally forked from Frost-Phoenix/nixos-config. The configuration supports multiple host types (desktop, laptop, vm) with shared core modules and host-specific optimizations.
 
 ## Common Commands
 
@@ -56,7 +56,7 @@ modules/
 Each host imports `hardware-configuration.nix` and core modules, then applies host-specific settings.
 
 ### Key Technologies Stack
-- **Window Manager**: Hyprland (Wayland compositor) + KDE Plasma 6
+- **Desktop Environment**: KDE Plasma 6 (Wayland) with SDDM, configured via plasma-manager
 - **Terminal**: Kitty (primary) + Ghostty (alternative)
 - **Shell**: Zsh with Powerlevel10k
 - **Editor**: VSCode + Neovim
@@ -97,9 +97,11 @@ Each host imports `hardware-configuration.nix` and core modules, then applies ho
 
 ### Special Features
 - **KDE Plasma Manager**: Declarative KDE configuration in `modules/home/plasma.nix`
-  - Dark theme by default
-  - Bottom panel with auto-hide on mouse hover
-  - Configured using plasma-manager Home Manager module
+  - Breeze Dark theme, Posy_Cursor, Noto Sans + Maple Mono fonts
+  - Bottom floating panel with kickoff, icon tasks, system tray, clock
+  - Keyboard shortcuts: Meta+Return (terminal), Meta+B (browser), Meta+E (file manager)
+  - KWin effects: blur, slide, magic lamp
+  - Configured using plasma-manager Home Manager module (flake input)
 - **Proxy Configuration**: Applications requiring proxy are wrapped with environment variables
   - Pattern: `writeShellApplication` wrapper with HTTPS_PROXY/HTTP_PROXY exports
   - Examples: `modules/home/spotify.nix`, `modules/home/claude.nix`

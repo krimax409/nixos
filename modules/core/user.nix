@@ -20,7 +20,10 @@
         ;
     };
     users.${username} = {
-      imports = [ ./../home ];
+      imports = [
+        ./../home
+        inputs.plasma-manager.homeManagerModules.plasma-manager
+      ];
       home.username = "${username}";
       home.homeDirectory = "/home/${username}";
       home.stateVersion = "24.05";

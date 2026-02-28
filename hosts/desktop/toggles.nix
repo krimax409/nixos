@@ -14,7 +14,7 @@
     kdk.homeProfiles = {
       base.enable = true;
       development.enable = true;
-      hyprland-desktop.enable = true;
+      kde-desktop.enable = true;
     };
 
     kdk.home = {
@@ -26,7 +26,6 @@
       flow.enable = true;
       gaming.enable = true;
       ghostty.enable = true;
-      gnome.enable = true;
       nemo.enable = true;
       nix-search.enable = true;
       obsidian.enable = true;

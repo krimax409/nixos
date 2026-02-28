@@ -15,7 +15,7 @@ import ../../../lib/mkProfile.nix {
     "services"
     "sudo"
     "system"
-    "wayland"
+    "plasma"
     "zapret"
   ];
 }
