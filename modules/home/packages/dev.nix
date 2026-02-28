@@ -1,26 +1,32 @@
-{ pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    ## Lsp
-    nixd # nix
+import ../../../lib/mkModule.nix {
+  namespace = "kdk.home";
+  name = "packages-dev";
+  description = "Dev tools: GCC, Python, LSPs";
+  category = "packages";
 
-    ## formating
-    shfmt
-    treefmt
-    nixfmt
+  cfg = _cfg: { pkgs, ... }: {
+    home.packages = with pkgs; [
+      ## Lsp
+      nixd # nix
 
-    ## C / C++
-    gcc
-    gdb
-    gef
-    cmake
-    gnumake
-    valgrind
-    llvmPackages_20.clang-tools
+      ## formating
+      shfmt
+      treefmt
+      nixfmt
 
-    ## Python
-    python3
-    python312Packages.ipython
-    uv # Python package installer and resolver
-  ];
+      ## C / C++
+      gcc
+      gdb
+      gef
+      cmake
+      gnumake
+      valgrind
+      llvmPackages_20.clang-tools
+
+      ## Python
+      python3
+      python312Packages.ipython
+      uv # Python package installer and resolver
+    ];
+  };
 }

@@ -1,5 +1,5 @@
-{ ... }:
-{
+{ config, lib, ... }:
+lib.mkIf config.kdk.home.zsh.enable {
   programs.zsh = {
     initContent = ''
       # Use emacs key bindings

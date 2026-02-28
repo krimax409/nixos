@@ -15,9 +15,9 @@ LAST=$(echo "$WORKSPACES" | jq '.[-1]')
 
 # Don't wrap: stop at edges
 if [ "$DIR" = "+1" ] && [ "$WS_ID" = "$LAST" ]; then
-  exit 0
+    exit 0
 elif [ "$DIR" = "-1" ] && [ "$WS_ID" = "$FIRST" ]; then
-  exit 0
+    exit 0
 fi
 
 hyprctl dispatch workspace m${DIR}

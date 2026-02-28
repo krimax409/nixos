@@ -1,27 +1,36 @@
-{ ... }:
-{
-  programs.ssh = {
-    enable = true;
-    enableDefaultConfig = false; # Отключаем дефолтные настройки как рекомендовано
+import ../../lib/mkModule.nix {
+  namespace = "kdk.home";
+  name = "ssh";
+  description = "SSH client with agent";
+  category = "system";
 
-    matchBlocks = {
-      "*" = {
-        # Перенесены настройки с верхнего уровня
-        addKeysToAgent = "1h";
-        controlMaster = "auto";
-        controlPath = "~/.ssh/control-%r@%h:%p";
-        controlPersist = "10m";
+  cfg =
+    _cfg:
+    { ... }:
+    {
+      programs.ssh = {
+        enable = true;
+        enableDefaultConfig = false; # Отключаем дефолтные настройки как рекомендовано
+
+        matchBlocks = {
+          "*" = {
+            # Перенесены настройки с верхнего уровня
+            addKeysToAgent = "1h";
+            controlMaster = "auto";
+            controlPath = "~/.ssh/control-%r@%h:%p";
+            controlPersist = "10m";
+          };
+          github = {
+            host = "github.com";
+            hostname = "ssh.github.com";
+            user = "git";
+            port = 443;
+            identityFile = "~/.ssh/id_github";
+            identitiesOnly = true;
+          };
+        };
       };
-      github = {
-        host = "github.com";
-        hostname = "ssh.github.com";
-        user = "git";
-        port = 443;
-        identityFile = "~/.ssh/id_github";
-        identitiesOnly = true;
-      };
+
+      services.ssh-agent.enable = true;
     };
-  };
-
-  services.ssh-agent.enable = true;
 }

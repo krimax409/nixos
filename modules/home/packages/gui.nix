@@ -1,33 +1,39 @@
-{ pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    ## Multimedia
-    audacity
-    gimp
-    obs-studio
-    pavucontrol
-    soundwireserver
-    video-trimmer
-    vlc
+import ../../../lib/mkModule.nix {
+  namespace = "kdk.home";
+  name = "packages-gui";
+  description = "GUI apps: GIMP, OBS, VLC, etc.";
+  category = "packages";
 
-    ## Communication
-    telegram-desktop
+  cfg = _cfg: { pkgs, ... }: {
+    home.packages = with pkgs; [
+      ## Multimedia
+      audacity
+      gimp
+      obs-studio
+      pavucontrol
+      soundwireserver
+      video-trimmer
+      vlc
 
-    ## Office
-    libreoffice
-    gnome-calculator
+      ## Communication
+      telegram-desktop
 
-    ## Password manager
-    bitwarden-desktop
+      ## Office
+      libreoffice
+      gnome-calculator
 
-    ## Utility
-    dconf-editor
-    gnome-disk-utility
-    mission-center # GUI resources monitor
-    zenity
+      ## Password manager
+      bitwarden-desktop
 
-    ## Level editor
-    ldtk
-    tiled
-  ];
+      ## Utility
+      dconf-editor
+      gnome-disk-utility
+      mission-center # GUI resources monitor
+      zenity
+
+      ## Level editor
+      ldtk
+      tiled
+    ];
+  };
 }

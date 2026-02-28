@@ -1,132 +1,142 @@
-{ pkgs, ... }:
-{
-  home.packages = with pkgs; [ rofi ];  # rofi-wayland объединен в rofi
+import ../../lib/mkModule.nix {
+  namespace = "kdk.home";
+  name = "rofi";
+  description = "Application launcher (Gruvbox)";
+  category = "desktop";
+  deps = [ "hyprland" ];
 
-  xdg.configFile."rofi/theme.rasi".text = ''
-    * {
-      bg-col: #1D2021;
-      bg-col-light: #282828;
-      border-col: #A89984;
-      selected-col: #3C3836;
-      green: #98971A;
-      fg-col: #FBF1C7;
-      fg-col2: #EBDBB2;
-      grey: #BDAE93;
-      highlight: @green;
-    }
-  '';
+  cfg =
+    _cfg:
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [ rofi ]; # rofi-wayland объединен в rofi
 
-  xdg.configFile."rofi/config.rasi".text = ''
-    configuration{
-      modi: "run,drun,window";
-      lines: 5;
-      cycle: false;
-      font: "Maple Mono Bold 16";
-      show-icons: true;
-      icon-theme: "Adwaita";
-      terminal: "kitty";
-      drun-display-format: "{icon} {name}";
-      location: 0;
-      disable-history: false;
-      hide-scrollbar: true;
-      display-drun: " Apps ";
-      display-run: " Run ";
-      display-window: " Window ";
-      /* display-Network: " Network"; */
-      sidebar-mode: true;
-      sorting-method: "normal";
-      sort: true;
-      matching: "fuzzy";
-    }
+      xdg.configFile."rofi/theme.rasi".text = ''
+        * {
+          bg-col: #1D2021;
+          bg-col-light: #282828;
+          border-col: #A89984;
+          selected-col: #3C3836;
+          green: #98971A;
+          fg-col: #FBF1C7;
+          fg-col2: #EBDBB2;
+          grey: #BDAE93;
+          highlight: @green;
+        }
+      '';
 
-    @theme "theme"
+      xdg.configFile."rofi/config.rasi".text = ''
+        configuration{
+          modi: "run,drun,window";
+          lines: 5;
+          cycle: false;
+          font: "Maple Mono Bold 16";
+          show-icons: true;
+          icon-theme: "Adwaita";
+          terminal: "kitty";
+          drun-display-format: "{icon} {name}";
+          location: 0;
+          disable-history: false;
+          hide-scrollbar: true;
+          display-drun: " Apps ";
+          display-run: " Run ";
+          display-window: " Window ";
+          /* display-Network: " Network"; */
+          sidebar-mode: true;
+          sorting-method: "normal";
+          sort: true;
+          matching: "fuzzy";
+        }
 
-    element-text, element-icon , mode-switcher {
-      background-color: inherit;
-      text-color:       inherit;
-    }
+        @theme "theme"
 
-    window {
-      height: 530px;
-      width: 400px;
-      border: 2px;
-      border-color: @border-col;
-      background-color: @bg-col;
-    }
+        element-text, element-icon , mode-switcher {
+          background-color: inherit;
+          text-color:       inherit;
+        }
 
-    mainbox {
-      background-color: @bg-col;
-    }
+        window {
+          height: 530px;
+          width: 400px;
+          border: 2px;
+          border-color: @border-col;
+          background-color: @bg-col;
+        }
 
-    inputbar {
-      children: [prompt,entry];
-      background-color: @bg-col-light;
-      border-radius: 5px;
-      padding: 0px;
-    }
+        mainbox {
+          background-color: @bg-col;
+        }
 
-    prompt {
-      background-color: @green;
-      padding: 4px;
-      text-color: @bg-col-light;
-      border-radius: 3px;
-      margin: 10px 0px 10px 10px;
-    }
+        inputbar {
+          children: [prompt,entry];
+          background-color: @bg-col-light;
+          border-radius: 5px;
+          padding: 0px;
+        }
 
-    textbox-prompt-colon {
-      expand: false;
-      str: ":";
-    }
+        prompt {
+          background-color: @green;
+          padding: 4px;
+          text-color: @bg-col-light;
+          border-radius: 3px;
+          margin: 10px 0px 10px 10px;
+        }
 
-    entry {
-      padding: 6px;
-      margin: 10px 10px 10px 5px;
-      text-color: @fg-col;
-      background-color: @bg-col;
-      border-radius: 3px;
-    }
+        textbox-prompt-colon {
+          expand: false;
+          str: ":";
+        }
 
-    listview {
-      border: 0px 0px 0px;
-      padding: 6px 0px 0px;
-      margin: 10px 0px 0px 6px;
-      columns: 1;
-      background-color: @bg-col;
-      cycle: true;
-    }
+        entry {
+          padding: 6px;
+          margin: 10px 10px 10px 5px;
+          text-color: @fg-col;
+          background-color: @bg-col;
+          border-radius: 3px;
+        }
 
-    element {
-      padding: 8px;
-      margin: 0px 10px 4px 4px;
-      background-color: @bg-col;
-      text-color: @fg-col;
-    }
+        listview {
+          border: 0px 0px 0px;
+          padding: 6px 0px 0px;
+          margin: 10px 0px 0px 6px;
+          columns: 1;
+          background-color: @bg-col;
+          cycle: true;
+        }
 
-    element-icon {
-      size: 28px;
-    }
+        element {
+          padding: 8px;
+          margin: 0px 10px 4px 4px;
+          background-color: @bg-col;
+          text-color: @fg-col;
+        }
 
-    element selected {
-      background-color:  @selected-col ;
-      text-color: @fg-col2  ;
-      border-radius: 3px;
-    }
+        element-icon {
+          size: 28px;
+        }
 
-    mode-switcher {
-      spacing: 0;
-    }
+        element selected {
+          background-color:  @selected-col ;
+          text-color: @fg-col2  ;
+          border-radius: 3px;
+        }
 
-    button {
-      padding: 10px;
-      background-color: @bg-col-light;
-      text-color: @grey;
-      vertical-align: 0.5;
-      horizontal-align: 0.5;
-    }
+        mode-switcher {
+          spacing: 0;
+        }
 
-    button selected {
-      background-color: @bg-col;
-      text-color: @green;
-    }
-  '';
+        button {
+          padding: 10px;
+          background-color: @bg-col-light;
+          text-color: @grey;
+          vertical-align: 0.5;
+          horizontal-align: 0.5;
+        }
+
+        button selected {
+          background-color: @bg-col;
+          text-color: @green;
+        }
+      '';
+    };
 }

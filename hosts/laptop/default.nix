@@ -3,6 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ./../../modules/core
+    ./toggles.nix
   ];
 
   environment.systemPackages = with pkgs; [
@@ -13,9 +14,6 @@
   ];
 
   services = {
-    # Disabled: conflicts with TLP (can't use both simultaneously)
-    # power-profiles-daemon.enable = true;
-
     upower = {
       enable = true;
       percentageLow = 20;
@@ -39,13 +37,6 @@
 
       INTEL_GPU_MIN_FREQ_ON_AC = 500;
       INTEL_GPU_MIN_FREQ_ON_BAT = 500;
-      # INTEL_GPU_MAX_FREQ_ON_AC=0;
-      # INTEL_GPU_MAX_FREQ_ON_BAT=0;
-      # INTEL_GPU_BOOST_FREQ_ON_AC=0;
-      # INTEL_GPU_BOOST_FREQ_ON_BAT=0;
-
-      # PCIE_ASPM_ON_AC = "default";
-      # PCIE_ASPM_ON_BAT = "powersupersave";
     };
   };
 

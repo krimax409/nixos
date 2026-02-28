@@ -1,33 +1,46 @@
-{ pkgs, ... }:
-{
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
-  security.polkit.enable = true;
+import ../../lib/mkModule.nix {
+  namespace = "kdk.modules";
+  name = "wayland";
+  description = "Hyprland compositor and greetd login";
+  category = "desktop";
+  deps = [
+    "hardware"
+    "xserver"
+  ];
 
-  programs.hyprland.enable = true;
+  cfg =
+    _cfg:
+    { pkgs, ... }:
+    {
+      hardware.graphics.enable = true;
+      hardware.graphics.enable32Bit = true;
+      security.polkit.enable = true;
 
-  services.greetd = {
-    enable = true;
-    settings.default_session = {
-      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
-      user = "greeter";
-    };
-    settings.initial_session = {
-      command = "Hyprland";
-      user = "k";
-    };
-  };
+      programs.hyprland.enable = true;
 
-  xdg.portal = {
-    enable = true;
-    xdgOpenUsePortal = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
-    config = {
-      common.default = [ "gtk" ];
-      hyprland.default = [
-        "hyprland"
-        "gtk"
-      ];
+      services.greetd = {
+        enable = true;
+        settings.default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+          user = "greeter";
+        };
+        settings.initial_session = {
+          command = "Hyprland";
+          user = "k";
+        };
+      };
+
+      xdg.portal = {
+        enable = true;
+        xdgOpenUsePortal = true;
+        extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+        config = {
+          common.default = [ "gtk" ];
+          hyprland.default = [
+            "hyprland"
+            "gtk"
+          ];
+        };
+      };
     };
-  };
 }

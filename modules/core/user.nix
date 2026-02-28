@@ -11,7 +11,14 @@
     backupFileExtension = "backup";
     useUserPackages = true;
     useGlobalPkgs = true;
-    extraSpecialArgs = { inherit inputs username host; };
+    extraSpecialArgs = {
+      inherit
+        inputs
+        username
+        host
+        pkgs
+        ;
+    };
     users.${username} = {
       imports = [ ./../home ];
       home.username = "${username}";

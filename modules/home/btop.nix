@@ -1,15 +1,24 @@
-{ pkgs, ... }:
-{
-  programs.btop = {
-    enable = true;
+import ../../lib/mkModule.nix {
+  namespace = "kdk.home";
+  name = "btop";
+  description = "System resource monitor";
+  category = "terminal";
 
-    settings = {
-      color_theme = "TTY";
-      theme_background = false;
-      update_ms = 500;
-      rounded_corners = false;
+  cfg =
+    _cfg:
+    { pkgs, ... }:
+    {
+      programs.btop = {
+        enable = true;
+
+        settings = {
+          color_theme = "TTY";
+          theme_background = false;
+          update_ms = 500;
+          rounded_corners = false;
+        };
+      };
+
+      home.packages = with pkgs; [ nvtopPackages.nvidia ];
     };
-  };
-
-  home.packages = with pkgs; [ nvtopPackages.nvidia ];
 }

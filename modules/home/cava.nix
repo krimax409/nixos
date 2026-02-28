@@ -1,27 +1,36 @@
-{ ... }:
-{
-  programs.cava = {
-    enable = true;
+import ../../lib/mkModule.nix {
+  namespace = "kdk.home";
+  name = "cava";
+  description = "Terminal audio visualizer";
+  category = "media";
 
-    settings = {
-      general = {
-        autosens = 1;
-        overshoot = 0;
-      };
+  cfg =
+    _cfg:
+    { ... }:
+    {
+      programs.cava = {
+        enable = true;
 
-      color = {
-        gradient = 1;
-        gradient_count = 8;
+        settings = {
+          general = {
+            autosens = 1;
+            overshoot = 0;
+          };
 
-        gradient_color_1 = "'#99991a'";
-        gradient_color_2 = "'#a28e00'";
-        gradient_color_3 = "'#ab8200'";
-        gradient_color_4 = "'#b37400'";
-        gradient_color_5 = "'#bb6600'";
-        gradient_color_6 = "'#c25400'";
-        gradient_color_7 = "'#c8400d'";
-        gradient_color_8 = "'#cd231d'";
+          color = {
+            gradient = 1;
+            gradient_count = 8;
+
+            gradient_color_1 = "'#99991a'";
+            gradient_color_2 = "'#a28e00'";
+            gradient_color_3 = "'#ab8200'";
+            gradient_color_4 = "'#b37400'";
+            gradient_color_5 = "'#bb6600'";
+            gradient_color_6 = "'#c25400'";
+            gradient_color_7 = "'#c8400d'";
+            gradient_color_8 = "'#cd231d'";
+          };
+        };
       };
     };
-  };
 }

@@ -1,74 +1,80 @@
-{ pkgs, ... }:
-{
-  home.packages = with pkgs; [
-    ## Better core utils
-    duf                               # disk information
-    eza                               # ls replacement
-    fd                                # find replacement
-    gping                             # ping with a graph
-    gtrash                            # rm replacement, put deleted files in system trash
-    hexyl                             # hex viewer
-    man-pages                         # extra man pages
-    ncdu                              # disk space
-    ripgrep                           # grep replacement
+import ../../../lib/mkModule.nix {
+  namespace = "kdk.home";
+  name = "packages-cli";
+  description = "CLI tools: eza, fd, ripgrep, etc.";
+  category = "packages";
 
-    ## Tools / useful cli
-    asciinema
-    asciinema-agg
-    binsider
-    bitwise                           # cli tool for bit / hex manipulation
-    broot                             # tree files view
-    caligula                          # User-friendly, lightweight TUI for disk imaging
-    hyperfine                         # benchmarking tool
-    pastel                            # cli to manipulate colors
-    swappy                            # snapshot editing tool
-    tdf                               # cli pdf viewer
-    tokei                             # project line counter
-    woomer                            # screen zoom for wayland (SUPER + =)
-    yt-dlp-light
+  cfg = _cfg: { pkgs, ... }: {
+    home.packages = with pkgs; [
+      ## Better core utils
+      duf                               # disk information
+      eza                               # ls replacement
+      fd                                # find replacement
+      gping                             # ping with a graph
+      gtrash                            # rm replacement, put deleted files in system trash
+      hexyl                             # hex viewer
+      man-pages                         # extra man pages
+      ncdu                              # disk space
+      ripgrep                           # grep replacement
 
-    ## TUI
-    toipe                             # typing test in the terminal
-    tomato-c                          # TUI pomodoro timer
-    ttyper                            # cli typing test
+      ## Tools / useful cli
+      asciinema
+      asciinema-agg
+      binsider
+      bitwise                           # cli tool for bit / hex manipulation
+      broot                             # tree files view
+      caligula                          # User-friendly, lightweight TUI for disk imaging
+      hyperfine                         # benchmarking tool
+      pastel                            # cli to manipulate colors
+      swappy                            # snapshot editing tool
+      tdf                               # cli pdf viewer
+      tokei                             # project line counter
+      woomer                            # screen zoom for wayland (SUPER + =)
+      yt-dlp-light
 
-    ## Monitoring / fetch
-    htop
-    nitch                             # system fetch util
-    onefetch                          # fetch utility for git repo
-    wavemon                           # monitoring for wireless network devices
+      ## TUI
+      toipe                             # typing test in the terminal
+      tomato-c                          # TUI pomodoro timer
+      ttyper                            # cli typing test
 
-    ## Fun / screensaver
-    asciiquarium-transparent
-    cmatrix
-    countryfetch
-    lavat
-    pipes                             # command: pipes.sh
-    sl
-    tty-clock
+      ## Monitoring / fetch
+      htop
+      nitch                             # system fetch util
+      onefetch                          # fetch utility for git repo
+      wavemon                           # monitoring for wireless network devices
 
-    ## Multimedia
-    ani-cli
-    imv
-    lowfi
-    mpv
+      ## Fun / screensaver
+      asciiquarium-transparent
+      cmatrix
+      countryfetch
+      lavat
+      pipes                             # command: pipes.sh
+      sl
+      tty-clock
 
-    ## Utilities
-    entr                              # perform action when file change
-    ffmpeg
-    file                              # Show file information
-    jq                                # JSON processor
-    killall
-    libnotify
-    mimeo
-    openssl
-    pamixer                           # pulseaudio command line mixer
-    playerctl                         # controller for media players
-    unzip
-    wl-clipboard                      # clipboard utils for wayland (wl-copy, wl-paste)
-    xdg-utils
+      ## Multimedia
+      ani-cli
+      imv
+      lowfi
+      mpv
 
-    winetricks
-    wineWow64Packages.waylandFull
-  ];
+      ## Utilities
+      entr                              # perform action when file change
+      ffmpeg
+      file                              # Show file information
+      jq                                # JSON processor
+      killall
+      libnotify
+      mimeo
+      openssl
+      pamixer                           # pulseaudio command line mixer
+      playerctl                         # controller for media players
+      unzip
+      wl-clipboard                      # clipboard utils for wayland (wl-copy, wl-paste)
+      xdg-utils
+
+      winetricks
+      wineWow64Packages.waylandFull
+    ];
+  };
 }
