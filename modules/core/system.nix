@@ -5,7 +5,7 @@ import ../../lib/mkModule.nix {
   category = "system";
   cfg =
     _cfg:
-    { pkgs, ... }:
+    { inputs, pkgs, ... }:
     {
       nix = {
         settings = {
@@ -29,6 +29,7 @@ import ../../lib/mkModule.nix {
         wget
         git
         vscode
+        inputs.codex-nixpkgs.legacyPackages.${pkgs.system}.codex
       ];
 
       fonts.fontconfig.defaultFonts = {

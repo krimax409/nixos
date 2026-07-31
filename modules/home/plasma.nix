@@ -54,8 +54,9 @@ import ../../lib/mkModule.nix {
         panels = [
           {
             location = "bottom";
-            height = 44;
+            height = 36;
             floating = true;
+            hiding = "autohide";
             widgets = [
               {
                 kickoff = {
@@ -143,6 +144,11 @@ import ../../lib/mkModule.nix {
             key = "Meta+E";
             command = "dolphin";
           };
+        };
+
+        configFile = {
+          "plasmashellrc"."PlasmaViews/Panel 2/Defaults"."thickness" = 0;
+          "kdeglobals"."KDE"."AnimationDurationFactor" = 0.25;
         };
 
         input.keyboard = {
