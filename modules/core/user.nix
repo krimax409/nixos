@@ -16,13 +16,12 @@
         inputs
         username
         host
-        pkgs
         ;
     };
     users.${username} = {
       imports = [
         ./../home
-        inputs.plasma-manager.homeManagerModules.plasma-manager
+        inputs.plasma-manager.homeModules.plasma-manager
       ];
       home.username = "${username}";
       home.homeDirectory = "/home/${username}";

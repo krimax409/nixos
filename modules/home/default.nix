@@ -1,9 +1,37 @@
-{ lib, ... }:
-let
-  importDir = import ../../lib/importDir.nix { inherit lib; };
-in
 {
-  imports =
-    (importDir ./.)
-    ++ (importDir ./profiles);
+  imports = [
+    ./audacious.nix
+    ./bat.nix
+    ./browser.nix
+    ./btop.nix
+    ./cava.nix
+    ./claude.nix
+    ./discord.nix
+    ./fastfetch.nix
+    ./flow.nix
+    ./fzf.nix
+    ./gaming.nix
+    ./ghostty.nix
+    ./git.nix
+    ./gnome.nix
+    ./gtk.nix
+    ./kitty.nix
+    ./lazygit.nix
+    ./micro.nix
+    ./nemo.nix
+    ./nix-search
+    ./nvim.nix
+    ./obsidian.nix
+    ./p10k
+    ./packages
+    ./plasma.nix
+    ./scripts
+    ./spotify.nix
+    ./ssh.nix
+    ./superfile
+    ./unity.nix
+    ./viewnior.nix
+    ./xdg-mimes.nix
+    ./zsh
+  ];
 }

@@ -1,7 +1,7 @@
-{ lib, ... }:
-let
-  importDir = import ../../../lib/importDir.nix { inherit lib; };
-in
 {
-  imports = importDir ./.;
+  imports = [
+    ./cli.nix
+    ./dev.nix
+    ./gui.nix
+  ];
 }

@@ -1,20 +1,9 @@
-import ../../lib/mkModule.nix {
-  namespace = "kdk.home";
-  name = "lazygit";
-  description = "Terminal UI for Git";
-  category = "development";
-  deps = [ "git" ];
+{
+  programs.lazygit = {
+    enable = true;
 
-  cfg =
-    _cfg:
-    { ... }:
-    {
-      programs.lazygit = {
-        enable = true;
-
-        settings = {
-          gui.border = "single";
-        };
-      };
+    settings = {
+      gui.border = "single";
     };
+  };
 }

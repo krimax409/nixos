@@ -3,7 +3,6 @@
   imports = [
     ./hardware-configuration.nix
     ./../../modules/core
-    ./toggles.nix
   ];
 
   environment.systemPackages = with pkgs; [

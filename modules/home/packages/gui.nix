@@ -1,39 +1,33 @@
-import ../../../lib/mkModule.nix {
-  namespace = "kdk.home";
-  name = "packages-gui";
-  description = "GUI apps: GIMP, OBS, VLC, etc.";
-  category = "packages";
+{ pkgs, ... }:
+{
+  home.packages = with pkgs; [
+    ## Multimedia
+    audacity
+    gimp
+    obs-studio
+    pavucontrol
+    soundwireserver
+    video-trimmer
+    vlc
 
-  cfg = _cfg: { pkgs, ... }: {
-    home.packages = with pkgs; [
-      ## Multimedia
-      audacity
-      gimp
-      obs-studio
-      pavucontrol
-      soundwireserver
-      video-trimmer
-      vlc
+    ## Communication
+    telegram-desktop
 
-      ## Communication
-      telegram-desktop
+    ## Office
+    libreoffice
+    gnome-calculator
 
-      ## Office
-      libreoffice
-      gnome-calculator
+    ## Password manager
+    bitwarden-desktop
 
-      ## Password manager
-      bitwarden-desktop
+    ## Utility
+    dconf-editor
+    gnome-disk-utility
+    mission-center # GUI resources monitor
+    zenity
 
-      ## Utility
-      dconf-editor
-      gnome-disk-utility
-      mission-center # GUI resources monitor
-      zenity
-
-      ## Level editor
-      ldtk
-      tiled
-    ];
-  };
+    ## Level editor
+    ldtk
+    tiled
+  ];
 }

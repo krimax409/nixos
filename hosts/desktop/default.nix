@@ -3,7 +3,7 @@
   imports = [
     ./hardware-configuration.nix
     ./../../modules/core
-    ./toggles.nix
+    ./../../modules/core/virtualization.nix
   ];
 
   powerManagement.cpuFreqGovernor = "performance";

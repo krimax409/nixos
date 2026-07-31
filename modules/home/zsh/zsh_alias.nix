@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-lib.mkIf config.kdk.home.zsh.enable {
+{
   programs.zsh = {
     shellAliases = {
       # Utils
@@ -27,7 +26,7 @@ lib.mkIf config.kdk.home.zsh.enable {
       tree = "eza --icons --tree --group-directories-first";
 
       # Nixos
-      cdnix = "cd ~/nixos-config && codium ~/nixos-config";
+      cdnix = "cd /etc/nixos/nixos-config && zeditor /etc/nixos/nixos-config";
       ns = "nom-shell --run zsh";
       nd = "nom develop --command zsh";
       nb = "nom build";

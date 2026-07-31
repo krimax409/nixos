@@ -1,10 +1,5 @@
+{ pkgs, ... }:
 {
-  config,
-  lib,
-  pkgs,
-  ...
-}:
-lib.mkIf config.kdk.home.zsh.enable {
   programs.zsh = {
     enable = true;
     # enableCompletion = true;

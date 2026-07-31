@@ -1,7 +1,21 @@
-{ lib, ... }:
-let
-  importDir = import ../../lib/importDir.nix { inherit lib; };
-in
 {
-  imports = (importDir ./.) ++ (importDir ./profiles);
+  imports = [
+    ./bootloader.nix
+    ./flatpak.nix
+    ./hardware.nix
+    ./network.nix
+    ./nh.nix
+    ./nvidia.nix
+    ./pipewire.nix
+    ./plasma.nix
+    ./program.nix
+    ./security.nix
+    ./services.nix
+    ./steam.nix
+    ./sudo.nix
+    ./system.nix
+    ./user.nix
+    ./xserver.nix
+    ./zapret.nix
+  ];
 }
