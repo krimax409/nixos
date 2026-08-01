@@ -13,7 +13,8 @@ Nix Flakes, Home Manager, Niri и Noctalia.
 ├── flake.nix                 # Входная точка и два хоста
 ├── configs/
 │   ├── niri/                 # Общая и host-specific конфигурация Niri
-│   └── noctalia/             # База Noctalia и GUI overrides хостов
+│   ├── noctalia/             # База Noctalia и GUI overrides хостов
+│   └── proxy/                # Общий PAC для Chromium-браузеров
 ├── hosts/
 │   ├── desktop/              # Desktop hardware и настройки
 │   └── laptop/               # Laptop hardware и энергосбережение
@@ -87,6 +88,15 @@ git diff -- configs/niri configs/noctalia
 
 `state.toml`, история уведомлений, кэши, плагины и локальные секреты Noctalia
 остаются в пользовательских XDG-каталогах и не версионируются.
+
+## Прокси браузеров
+
+Chrome и Brave имеют три launcher-профиля: обычный использует общий
+`configs/proxy/throne.pac` с автоматическим fallback на прямое соединение.
+Локальный user-сервис отдаёт PAC браузерам по `http://127.0.0.1:18765/throne.pac`,
+`Proxy Only` всегда подключается через `127.0.0.1:2080`, а `Direct` полностью
+обходит прокси. TUN-режим Throne отключён; правила внешних маршрутов задаются
+в самом Throne. Локальные адреса PAC всегда направляет напрямую.
 
 ## Особенности
 

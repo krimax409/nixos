@@ -1,4 +1,12 @@
-{ host, ... }:
+{
+  host,
+  inputs,
+  pkgs,
+  ...
+}:
+let
+  throne = pkgs.callPackage "${inputs.throne-nixpkgs}/pkgs/by-name/th/throne/package.nix" { };
+in
 {
   networking = {
     hostName = "${host}";
@@ -14,7 +22,6 @@
         22
         80
         443
-        2080
         59010
         59011
       ];
@@ -27,6 +34,7 @@
 
   programs.throne = {
     enable = true;
-    tunMode.enable = true;
+    package = throne;
+    tunMode.enable = false;
   };
 }

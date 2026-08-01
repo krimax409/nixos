@@ -11,11 +11,15 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
-
     noctalia = {
       url = "github:noctalia-dev/noctalia/v5.0.0-beta.7";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Remove this source input once Throne 1.2.2 reaches nixos-unstable.
+    throne-nixpkgs = {
+      url = "github:TomaSajt/nixpkgs/0cbdc25b4df6051689052125cb550485f09dfb59";
+      flake = false;
     };
   };
 

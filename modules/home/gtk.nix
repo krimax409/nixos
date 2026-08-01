@@ -51,6 +51,16 @@ in
       size = 24;
     };
   };
+
+  # Keep Qt applications dark without pulling in Plasma/KDE integration.
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk3";
+    style.name = "adwaita-dark";
+  };
+
+  dconf.settings."org/gnome/desktop/interface"."color-scheme" = "prefer-dark";
+
   home.pointerCursor = {
     enable = true;
     name = "Posy_Cursor";
