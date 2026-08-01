@@ -10,7 +10,6 @@
     spice-protocol
     virtio-win
     win-spice
-    adwaita-icon-theme
   ];
 
   virtualisation = {

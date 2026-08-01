@@ -11,7 +11,6 @@
     ./flow.nix
     ./fzf.nix
     ./gaming.nix
-    ./ghostty.nix
     ./git.nix
     ./gnome.nix
     ./gtk.nix
@@ -20,17 +19,16 @@
     ./micro.nix
     ./nemo.nix
     ./nix-search
+    ./niri.nix
     ./nvim.nix
     ./obsidian.nix
     ./p10k
     ./packages
-    ./plasma.nix
     ./scripts
     ./spotify.nix
     ./ssh.nix
     ./superfile
     ./unity.nix
-    ./viewnior.nix
     ./xdg-mimes.nix
     ./zsh
   ];

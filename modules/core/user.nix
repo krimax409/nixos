@@ -3,6 +3,7 @@
   inputs,
   username,
   host,
+  configRoot,
   ...
 }:
 {
@@ -13,6 +14,7 @@
     useGlobalPkgs = true;
     extraSpecialArgs = {
       inherit
+        configRoot
         inputs
         username
         host
@@ -21,7 +23,7 @@
     users.${username} = {
       imports = [
         ./../home
-        inputs.plasma-manager.homeModules.plasma-manager
+        inputs.noctalia.homeModules.default
       ];
       home.username = "${username}";
       home.homeDirectory = "/home/${username}";

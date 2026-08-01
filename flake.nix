@@ -13,16 +13,16 @@
 
     zen-browser.url = "github:0xc000022070/zen-browser-flake";
 
-    plasma-manager = {
-      url = "github:nix-community/plasma-manager";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia/v5.0.0-beta.7";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.home-manager.follows = "home-manager";
     };
   };
 
   outputs =
     { nixpkgs, ... }@inputs:
     let
+      configRoot = "/etc/nixos/nixos-config";
       username = "k";
       system = "x86_64-linux";
       mkHost =
@@ -32,9 +32,10 @@
           modules = [ (./hosts + "/${host}") ];
           specialArgs = {
             inherit
-            host
-            inputs
-            username
+              configRoot
+              host
+              inputs
+              username
               ;
           };
         };

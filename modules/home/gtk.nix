@@ -1,4 +1,11 @@
-{ pkgs, ... }:
+{
+  inputs,
+  pkgs,
+  ...
+}:
+let
+  codexPkgs = inputs.codex-nixpkgs.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+in
 {
   fonts.fontconfig.enable = true;
   home.packages = with pkgs; [
@@ -21,7 +28,7 @@
     };
     theme = {
       name = "Colloid-Green-Dark-Gruvbox";
-      package = pkgs.colloid-gtk-theme.override {
+      package = codexPkgs.colloid-gtk-theme.override {
         colorVariants = [ "dark" ];
         themeVariants = [ "green" ];
         tweaks = [
@@ -45,6 +52,7 @@
     };
   };
   home.pointerCursor = {
+    enable = true;
     name = "Posy_Cursor";
     package = pkgs.posy-cursors;
     size = 24;

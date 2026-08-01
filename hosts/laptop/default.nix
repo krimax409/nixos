@@ -5,6 +5,14 @@
     ./../../modules/core
   ];
 
+  boot.loader.grub = {
+    enable = true;
+    device = "nodev";
+    efiSupport = true;
+    useOSProber = true;
+    configurationLimit = 10;
+  };
+
   environment.systemPackages = with pkgs; [
     acpi
     brightnessctl

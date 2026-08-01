@@ -1,0 +1,36 @@
+[shell]
+lang = "ru"
+telemetry_enabled = false
+polkit_agent = true
+show_location = false
+
+[wallpaper]
+enabled = true
+fill_color = "#1d2021"
+
+[wallpaper.default]
+path = "color:#1d2021"
+
+[theme]
+mode = "dark"
+source = "builtin"
+builtin = "Gruvbox"
+
+[lockscreen]
+enabled = true
+
+[weather]
+enabled = false
+
+[location]
+auto_locate = false
+
+[bar.main]
+position = "top"
+background_opacity = 0.93
+
+[dock]
+enabled = true
+position = "bottom"
+auto_hide = true
+reserve_space = false

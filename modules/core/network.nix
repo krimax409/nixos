@@ -1,4 +1,4 @@
-{ pkgs, host, ... }:
+{ host, ... }:
 {
   networking = {
     hostName = "${host}";
@@ -29,6 +29,4 @@
     enable = true;
     tunMode.enable = true;
   };
-
-  environment.systemPackages = with pkgs; [ networkmanagerapplet ];
 }

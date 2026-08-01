@@ -3,15 +3,14 @@ with lib;
 let
   defaultApps = {
     browser = [ "zen-beta.desktop" ];
-    text = [ "org.gnome.TextEditor.desktop" ];
+    text = [ "code.desktop" ];
     image = [ "imv-dir.desktop" ];
     audio = [ "mpv.desktop" ];
     video = [ "mpv.desktop" ];
     directory = [ "nemo.desktop" ];
     office = [ "libreoffice.desktop" ];
     pdf = [ "org.gnome.Evince.desktop" ];
-    terminal = [ "ghostty.desktop" ];
-    archive = [ "org.gnome.FileRoller.desktop" ];
+    terminal = [ "kitty.desktop" ];
     discord = [ "webcord.desktop" ];
   };
 
@@ -69,12 +68,6 @@ let
     ];
     pdf = [ "application/pdf" ];
     terminal = [ "terminal" ];
-    archive = [
-      "application/zip"
-      "application/rar"
-      "application/7z"
-      "application/*tar"
-    ];
     discord = [ "x-scheme-handler/discord" ];
   };
 

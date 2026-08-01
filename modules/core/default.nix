@@ -5,9 +5,9 @@
     ./hardware.nix
     ./network.nix
     ./nh.nix
+    ./niri.nix
     ./nvidia.nix
     ./pipewire.nix
-    ./plasma.nix
     ./program.nix
     ./security.nix
     ./services.nix
@@ -15,7 +15,6 @@
     ./sudo.nix
     ./system.nix
     ./user.nix
-    ./xserver.nix
     ./zapret.nix
   ];
 }
