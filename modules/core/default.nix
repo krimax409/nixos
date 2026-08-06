@@ -14,7 +14,7 @@
     ./steam.nix
     ./sudo.nix
     ./system.nix
+    ./tailscale.nix
     ./user.nix
-    ./zapret.nix
   ];
 }

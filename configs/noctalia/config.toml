@@ -3,18 +3,35 @@ lang = "ru"
 telemetry_enabled = false
 polkit_agent = true
 show_location = false
+app_icon_colorize = false
+button_borders = false
+card_borders = false
+corner_radius_scale = 0.75
+font_family = "Noto Sans"
+input_borders = true
+panel_anchor_bar = "main"
+popup_borders = true
+popup_shadows = true
+
+[shell.panel]
+transparency_mode = "solid"
+borders = true
+shadow = true
 
 [wallpaper]
 enabled = true
-fill_color = "#1d2021"
+fill_color = "#202020"
 
 [wallpaper.default]
-path = "color:#1d2021"
+path = "color:#202020"
 
 [theme]
 mode = "dark"
-source = "builtin"
-builtin = "Gruvbox"
+source = "custom"
+custom_palette = "windows-dark"
+
+[theme.templates]
+builtin_ids = [ "niri" ]
 
 [lockscreen]
 enabled = true
@@ -26,11 +43,51 @@ enabled = false
 auto_locate = false
 
 [bar.main]
-position = "top"
-background_opacity = 0.93
+position = "bottom"
+thickness = 34
+scale = 1.0
+auto_hide = true
+smart_auto_hide = false
+layer = "overlay"
+background_opacity = 0.96
+margin_ends = 0
+margin_edge = 0
+radius = 0
+padding = 10
+widget_spacing = 8
+reserve_space = false
+shadow = false
+start = [ "workspaces" ]
+center = [ "launcher", "taskbar" ]
+end = [ "tray", "network", "volume", "notifications", "clock", "control-center" ]
 
 [dock]
-enabled = true
-position = "bottom"
-auto_hide = true
-reserve_space = false
+enabled = false
+
+[widget.launcher]
+type = "launcher"
+glyph = "brand-windows-filled"
+
+[widget.workspaces]
+type = "workspaces"
+capsule = false
+display = "id"
+style = "minimal"
+
+[widget.taskbar]
+type = "taskbar"
+pinned = []
+show_active_indicator = true
+show_window_title = false
+
+[widget.network]
+type = "network"
+show_label = false
+
+[widget.volume]
+type = "volume"
+show_label = false
+
+[widget.clock]
+type = "clock"
+format = "{:%H:%M}"

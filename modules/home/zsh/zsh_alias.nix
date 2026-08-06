@@ -7,7 +7,8 @@
       tt = "gtrash put";
       cat = "bat";
       nano = "micro";
-      claude = "proxychains4 -q claude";
+      claude = "NO_PROXY=localhost,127.0.0.1,::1 HTTPS_PROXY=http://127.0.0.1:2080 HTTP_PROXY=http://127.0.0.1:2080 ALL_PROXY=http://127.0.0.1:2080 command claude";
+      codex = "NO_PROXY=localhost,127.0.0.1,::1 HTTPS_PROXY=http://127.0.0.1:2080 HTTP_PROXY=http://127.0.0.1:2080 ALL_PROXY=http://127.0.0.1:2080 command codex";
       diff = "delta --diff-so-fancy --side-by-side";
       pipes = "pipes.sh";
       less = "bat";

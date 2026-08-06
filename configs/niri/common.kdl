@@ -21,8 +21,13 @@ input {
 }
 
 layout {
-    gaps 20
+    gaps 8
     center-focused-column "never"
+
+    struts {
+        top -7
+        bottom -7
+    }
 
     preset-column-widths {
         proportion 0.33333
@@ -33,10 +38,7 @@ layout {
     default-column-width { proportion 0.75; }
 
     focus-ring {
-        width 4
-        active-color "#b8bb26"
-        inactive-color "#505050"
-        urgent-color "#fb4934"
+        width 1
     }
 
     border {
@@ -44,7 +46,7 @@ layout {
     }
 }
 
-spawn-at-startup "noctalia" "--daemon"
+spawn-at-startup "env" "http_proxy=http://127.0.0.1:2080" "https_proxy=http://127.0.0.1:2080" "no_proxy=localhost,127.0.0.1,::1" "noctalia" "--daemon"
 
 environment {
     XCURSOR_THEME "Posy_Cursor"
@@ -59,7 +61,7 @@ prefer-no-csd
 screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
 
 window-rule {
-    geometry-corner-radius 12
+    geometry-corner-radius 2
     clip-to-geometry true
 }
 
@@ -76,12 +78,13 @@ binds {
     Mod+Space repeat=false { toggle-overview; }
     Mod+D repeat=false { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
     Mod+S repeat=false { spawn "noctalia" "msg" "settings-toggle"; }
+    Mod+V repeat=false { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
     Ctrl+Alt+Delete repeat=false { spawn "noctalia" "msg" "panel-toggle" "session"; }
     Mod+Escape allow-when-locked=true repeat=false { spawn "noctalia" "msg" "session" "lock"; }
 
-    Mod+F { maximize-column; }
+    Mod+F { maximize-window-to-edges; }
     Mod+G { fullscreen-window; }
-    Mod+V { toggle-window-floating; }
+    Mod+Shift+F { toggle-window-floating; }
     Mod+Shift+V { switch-focus-between-floating-and-tiling; }
     Mod+C { center-column; }
 
@@ -141,6 +144,7 @@ binds {
     Mod+Ctrl+WheelScrollUp cooldown-ms=150 { focus-workspace-up; }
 
     Print { screenshot; }
+    Mod+Shift+S { screenshot; }
     Ctrl+Print { screenshot-screen; }
     Alt+Print { screenshot-window; }
 

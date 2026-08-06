@@ -1,1 +1,4 @@
-# Host-specific Noctalia overrides for laptop are intentionally empty.
+# Host-specific hardware indicators for the laptop bar.
+
+[bar.main]
+end = [ "tray", "network", "volume", "brightness", "battery", "notifications", "clock", "control-center" ]

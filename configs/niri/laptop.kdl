@@ -1,1 +1,3 @@
 include "common.kdl"
+
+include optional=true "/home/k/.config/niri/noctalia.kdl"

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   home.packages = with pkgs; [
     ## Better core utils
@@ -20,6 +20,7 @@
     broot # tree files view
     caligula # User-friendly, lightweight TUI for disk imaging
     hyperfine # benchmarking tool
+    inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
     pastel # cli to manipulate colors
     swappy # snapshot editing tool
     tdf # cli pdf viewer

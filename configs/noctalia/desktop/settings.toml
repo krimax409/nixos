@@ -59,3 +59,6 @@ widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-login-box@DP-1" ]
         show_session_buttons = true
         show_unlock_hint = true
         show_weather = true
+
+[plugins]
+enabled = [ "noctalia/bitwarden" ]

@@ -13,7 +13,7 @@ Nix Flakes, Home Manager, Niri и Noctalia.
 ├── flake.nix                 # Входная точка и два хоста
 ├── configs/
 │   ├── niri/                 # Общая и host-specific конфигурация Niri
-│   ├── noctalia/             # База Noctalia и GUI overrides хостов
+│   ├── noctalia/             # База, палитры и GUI overrides Noctalia
 │   └── proxy/                # Общий PAC для Chromium-браузеров
 ├── hosts/
 │   ├── desktop/              # Desktop hardware и настройки
@@ -77,10 +77,14 @@ treefmt
 - `configs/niri/common.kdl` содержит общие binds, layout и window rules.
 - `configs/niri/desktop.kdl` и `configs/niri/laptop.kdl` — точки входа хостов.
 - `configs/noctalia/config.toml` содержит общую базу Noctalia.
+- `configs/noctalia/palettes/` содержит общие пользовательские палитры.
 - `configs/noctalia/<host>/settings.toml` содержит изменения из GUI для хоста.
 
 Noctalia записывает изменения GUI через симлинк прямо в соответствующий
-`settings.toml`. После изменения настроек проверьте только версионируемые файлы:
+`settings.toml`. Общая тема и раскладка панели задаются в `config.toml`, а в
+host overrides следует оставлять только различия оборудования и пользовательские
+настройки конкретной машины. После изменения настроек в GUI обязательно проверьте
+версионируемые файлы:
 
 ```bash
 git diff -- configs/niri configs/noctalia

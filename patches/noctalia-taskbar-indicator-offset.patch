@@ -1,0 +1,23 @@
+diff --git a/src/shell/bar/widgets/taskbar_widget.cpp b/src/shell/bar/widgets/taskbar_widget.cpp
+index f7a7c4d..b4dbf52 100644
+--- a/src/shell/bar/widgets/taskbar_widget.cpp
++++ b/src/shell/bar/widgets/taskbar_widget.cpp
+@@ -902,9 +902,6 @@ void TaskbarWidget::buildTaskButtons(Renderer& renderer) {
+ 
+     if (task.active && m_showActiveIndicator) {
+       const float d = std::max(4.0f, std::round(Style::baseGlyphSize * 0.32f * m_contentScale));
+-      const float groupedCapsuleInset =
+-          (m_groupByWorkspace && m_workspaceGroupCapsule ? Style::borderWidth : 0.0f) * m_contentScale;
+-      const float bottomInset = 0.25f * m_contentScale + groupedCapsuleInset;
+       if (showWindowTitle) {
+         const float lineThickness = d * 0.5f;
+         auto indicator = ui::box({
+@@ -922,7 +919,7 @@ void TaskbarWidget::buildTaskButtons(Renderer& renderer) {
+             .width = d,
+             .height = d,
+         });
+-        indicator->setPosition(std::round((tileSize - d) * 0.5f), std::round(tileSize - d - bottomInset));
++        indicator->setPosition(std::round((tileSize - d) * 0.5f), std::round(tileSize));
+         area->addChild(std::move(indicator));
+       }
+     }

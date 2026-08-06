@@ -1,0 +1,28 @@
+{ host, lib, ... }:
+{
+  services = {
+    tailscale = {
+      enable = true;
+      openFirewall = true;
+    };
+
+    openssh = {
+      enable = true;
+      openFirewall = false;
+
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
+  };
+
+  # SSH is restricted to trusted interfaces only; port 22 is not open globally.
+  # Desktop also exposes port 22 on enp8s0 as a LAN break-glass path.
+  networking.firewall.interfaces = {
+    tailscale0.allowedTCPPorts = [ 22 ];
+  } // lib.optionalAttrs (host == "desktop") {
+    enp8s0.allowedTCPPorts = [ 22 ];
+  };
+}

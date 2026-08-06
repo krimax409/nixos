@@ -50,6 +50,7 @@
       "wheel"
     ];
     shell = pkgs.zsh;
+    openssh.authorizedKeys.keyFiles = [ ./../../keys/k.pub ];
   };
   nix.settings.allowed-users = [ "${username}" ];
 }

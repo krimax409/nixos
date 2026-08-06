@@ -2,13 +2,20 @@
   config,
   configRoot,
   host,
+  inputs,
+  pkgs,
   ...
 }:
 let
   outOfStore = config.lib.file.mkOutOfStoreSymlink;
 in
 {
-  programs.noctalia.enable = true;
+  programs.noctalia = {
+    enable = true;
+    package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ [ ../../patches/noctalia-taskbar-indicator-offset.patch ];
+    });
+  };
 
   xdg.configFile = {
     "niri/config.kdl" = {
@@ -21,6 +28,10 @@ in
     };
     "noctalia/config.toml" = {
       source = outOfStore "${configRoot}/configs/noctalia/config.toml";
+      force = true;
+    };
+    "noctalia/palettes/windows-dark.json" = {
+      source = outOfStore "${configRoot}/configs/noctalia/palettes/windows-dark.json";
       force = true;
     };
   };
