@@ -6,6 +6,7 @@
     ./btop.nix
     ./cava.nix
     ./claude.nix
+    ./direnv.nix
     ./discord.nix
     ./fastfetch.nix
     ./flow.nix

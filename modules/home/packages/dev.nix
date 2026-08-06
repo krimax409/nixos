@@ -21,6 +21,26 @@
     valgrind
     llvmPackages_20.clang-tools
 
+    ## Go
+    go
+    gopls
+    delve
+    golangci-lint
+    gofumpt
+
+    ## Rust
+    rustc
+    cargo
+    rust-analyzer
+    clippy
+    rustfmt
+    cargo-watch
+    cargo-nextest
+
+    ## Native deps (used by Rust/Go CGO)
+    pkg-config
+    openssl
+
     ## Python
     python3
     python312Packages.ipython
