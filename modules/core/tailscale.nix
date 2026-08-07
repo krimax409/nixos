@@ -22,7 +22,8 @@
   # Desktop also exposes port 22 on enp8s0 as a LAN break-glass path.
   networking.firewall.interfaces = {
     tailscale0.allowedTCPPorts = [ 22 ];
-  } // lib.optionalAttrs (host == "desktop") {
+  }
+  // lib.optionalAttrs (host == "desktop") {
     enp8s0.allowedTCPPorts = [ 22 ];
   };
 }
