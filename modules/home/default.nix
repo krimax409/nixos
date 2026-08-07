@@ -15,6 +15,7 @@
     ./git.nix
     ./gnome.nix
     ./gtk.nix
+    ./hermes-support.nix
     ./kitty.nix
     ./lazygit.nix
     ./micro.nix
