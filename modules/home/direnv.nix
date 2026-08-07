@@ -1,4 +1,3 @@
-{ pkgs, ... }:
 {
   programs.direnv = {
     enable = true;
@@ -9,8 +8,6 @@
     };
   };
 
-  # Silence direnv output by default
-  programs.zsh.initExtra = ''
-    export DIRENV_LOG_FORMAT=""
-  '';
+  # Silence direnv's per-directory export chatter.
+  home.sessionVariables.DIRENV_LOG_FORMAT = "";
 }

@@ -95,6 +95,27 @@
         "type": "github"
       }
     },
+    "nub": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1785946716,
+        "narHash": "sha256-5Smub4KusGDoKTQqgEYo6LDVM8HtrIx65YUXlAyFRSA=",
+        "owner": "nubjs",
+        "repo": "nub",
+        "rev": "ad7ff6eb3e6200027ad510b5cfc6178a511a230f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nubjs",
+        "ref": "v0.7.1",
+        "repo": "nub",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "codex-nixpkgs": "codex-nixpkgs",
@@ -102,6 +123,7 @@
         "home-manager": "home-manager",
         "nixpkgs": "nixpkgs",
         "noctalia": "noctalia",
+        "nub": "nub",
         "throne-nixpkgs": "throne-nixpkgs"
       }
     },

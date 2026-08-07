@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nub = {
+      url = "github:nubjs/nub/v0.7.1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # Remove this source input once Throne 1.2.2 reaches nixos-unstable.
     throne-nixpkgs = {
       url = "github:TomaSajt/nixpkgs/0cbdc25b4df6051689052125cb550485f09dfb59";

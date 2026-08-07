@@ -1,5 +1,5 @@
 {
-  description = "Go development environment";
+  description = "Node.js development environment";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -26,20 +26,29 @@
         {
           default = pkgs.mkShell {
             buildInputs = with pkgs; [
-              go
-              gopls
-              delve
-              golangci-lint
-              gofumpt
+              # Pin the major version per project; nodejs_22 is the previous LTS.
+              nodejs
+              pnpm
 
-              # CGO dependencies
+              typescript
+              typescript-language-server
+              vscode-langservers-extracted
+              biome
+
+              # node-gyp needs a C toolchain and python for native modules
+              node-gyp
+              python3
               gcc
               pkg-config
             ];
 
             shellHook = ''
-              echo "Go $(go version | awk '{print $3}')"
-              echo "Run 'go mod init <module>' to start"
+              echo "node $(node --version)"
+              echo "pnpm $(pnpm --version)"
+
+              # Keep globally installed npm binaries inside the project
+              export NPM_CONFIG_PREFIX="$PWD/.npm-global"
+              export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
             '';
           };
         }
