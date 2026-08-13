@@ -1,6 +1,5 @@
 {
   imports = [
-    ./bootloader.nix
     ./envfs.nix
     ./flatpak.nix
     ./hardware.nix
@@ -8,7 +7,6 @@
     ./network.nix
     ./nh.nix
     ./niri.nix
-    ./nvidia.nix
     ./pipewire.nix
     ./program.nix
     ./security.nix

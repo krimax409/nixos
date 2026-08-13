@@ -37,20 +37,34 @@
     { nixpkgs, ... }@inputs:
     let
       configRoot = "/etc/nixos/nixos-config";
-      username = "k";
       system = "x86_64-linux";
+      hostSettings = {
+        desktop = {
+          hostname = "desktop";
+          username = "k";
+          systemStateVersion = "24.05";
+          homeStateVersion = "24.05";
+          sshLanInterface = "enp8s0";
+        };
+        laptop = {
+          hostname = "nixos";
+          username = "krim";
+          systemStateVersion = "25.11";
+          homeStateVersion = "25.11";
+          sshLanInterface = "wlp3s0";
+        };
+      };
       mkHost =
         host:
+        let
+          settings = hostSettings.${host};
+        in
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [ (./hosts + "/${host}") ];
           specialArgs = {
-            inherit
-              configRoot
-              host
-              inputs
-              username
-              ;
+            inherit configRoot host inputs;
+            inherit (settings) hostname username systemStateVersion homeStateVersion sshLanInterface;
           };
         };
     in

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, username, ... }:
 {
   home.packages = with pkgs; [ audacious ];
 
@@ -9,7 +9,7 @@
     soft_clipping=TRUE
 
     [audgui]
-    filesel_path=/home/k/Music
+    filesel_path=/home/${username}/Music
 
     [audqt]
     icon_theme=audacious-flat-dark

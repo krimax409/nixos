@@ -4,6 +4,7 @@
   username,
   host,
   configRoot,
+  homeStateVersion ? "24.05",
   ...
 }:
 {
@@ -27,7 +28,7 @@
       ];
       home.username = "${username}";
       home.homeDirectory = "/home/${username}";
-      home.stateVersion = "24.05";
+      home.stateVersion = homeStateVersion;
       programs.home-manager.enable = true;
 
       # Автоматическая очистка старых backup файлов перед активацией
@@ -50,7 +51,11 @@
       "wheel"
     ];
     shell = pkgs.zsh;
-    openssh.authorizedKeys.keyFiles = [ ./../../keys/k.pub ];
+    openssh.authorizedKeys.keyFiles =
+      if host == "desktop" then
+        [ ./../../keys/k.pub ]
+      else
+        [ ./../../keys/desktop.pub ];
   };
   nix.settings.allowed-users = [ "${username}" ];
 }

@@ -2,6 +2,7 @@
   lib,
   osConfig,
   pkgs,
+  username,
   ...
 }:
 let
@@ -60,7 +61,7 @@ let
     providers.a6api = {
       baseUrl = "https://api-direct.a6api.com/v1";
       api = "openai-completions";
-      apiKey = "!cat /home/k/.config/prime-agent-secrets/a6api-review.key";
+      apiKey = "!cat /home/${username}/.config/prime-agent-secrets/a6api-review.key";
       authHeader = true;
       compat = {
         supportsDeveloperRole = false;
@@ -99,7 +100,7 @@ let
   };
 in
 {
-  config = lib.mkIf (osConfig.networking.hostName == "desktop") {
+  config = lib.mkIf (builtins.elem osConfig.networking.hostName [ "desktop" "nixos" ]) {
     home.packages = [ primeAgent ];
     home.file.".prime/agent/models.json".text = builtins.toJSON models;
   };

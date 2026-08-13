@@ -1,6 +1,4 @@
-{
-  ...
-}:
+{ host, ... }:
 let
   # Прокси Throne для CLI-агентов. В обход, помимо loopback, идёт
   # 100.64.0.0/10 — CGNAT-диапазон Tailscale: peers тайлнета доступны только
@@ -50,8 +48,8 @@ in
       # nh wraps internal sudo calls in `env`, incompatible with NOPASSWD allowlist.
       # nixos-rebuild is in the allowlist → passwordless.
       # nfu uses nh intentionally: flake update is infrequent, tty password is fine.
-      nft = "sudo nixos-rebuild test --flake /etc/nixos/nixos-config";
-      nfs = "sudo nixos-rebuild switch --flake /etc/nixos/nixos-config";
+      nft = "sudo nixos-rebuild test --flake /etc/nixos/nixos-config#${host}";
+      nfs = "sudo nixos-rebuild switch --flake /etc/nixos/nixos-config#${host}";
       nfu = "nh os switch --update";
       # nix-search = "nh search";
 

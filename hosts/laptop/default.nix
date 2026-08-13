@@ -2,16 +2,17 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./wwan.nix
     ./../../modules/core
+    ./../../modules/core/bootloader.nix
+    ./../../modules/core/virtualization.nix
   ];
 
-  boot.loader.grub = {
+  boot.loader.systemd-boot = {
     enable = true;
-    device = "nodev";
-    efiSupport = true;
-    useOSProber = true;
-    configurationLimit = 10;
+    configurationLimit = 20;
   };
+  boot.loader.timeout = 5;
 
   environment.systemPackages = with pkgs; [
     acpi
@@ -20,7 +21,17 @@
     powertop
   ];
 
+  networking.networkmanager.dns = "systemd-resolved";
+  services.resolved.enable = true;
+  services.tailscale.useRoutingFeatures = "client";
+
+  users.users.krim.extraGroups = [
+    "input"
+    "gamemode"
+  ];
+
   services = {
+    printing.enable = true;
     upower = {
       enable = true;
       percentageLow = 20;
@@ -29,21 +40,21 @@
       criticalPowerAction = "PowerOff";
     };
 
-    tlp.settings = {
-      CPU_ENERGY_PERF_POLICY_ON_AC = "power";
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
+    tlp = {
+      enable = true;
+      settings = {
+        CPU_ENERGY_PERF_POLICY_ON_AC = "power";
+        CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
-      CPU_BOOST_ON_AC = 1;
-      CPU_BOOST_ON_BAT = 1;
+        CPU_BOOST_ON_AC = 1;
+        CPU_BOOST_ON_BAT = 1;
 
-      CPU_HWP_DYN_BOOST_ON_AC = 1;
-      CPU_HWP_DYN_BOOST_ON_BAT = 1;
+        CPU_HWP_DYN_BOOST_ON_AC = 1;
+        CPU_HWP_DYN_BOOST_ON_BAT = 1;
 
-      PLATFORM_PROFILE_ON_AC = "performance";
-      PLATFORM_PROFILE_ON_BAT = "performance";
-
-      INTEL_GPU_MIN_FREQ_ON_AC = 500;
-      INTEL_GPU_MIN_FREQ_ON_BAT = 500;
+        PLATFORM_PROFILE_ON_AC = "performance";
+        PLATFORM_PROFILE_ON_BAT = "performance";
+      };
     };
   };
 

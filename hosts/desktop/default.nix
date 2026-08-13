@@ -3,6 +3,8 @@
   imports = [
     ./hardware-configuration.nix
     ./../../modules/core
+    ./../../modules/core/bootloader.nix
+    ./../../modules/core/nvidia.nix
     ./../../modules/core/virtualization.nix
   ];
 

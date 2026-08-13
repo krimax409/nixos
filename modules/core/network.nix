@@ -1,5 +1,6 @@
 {
   host,
+  hostname,
   inputs,
   pkgs,
   ...
@@ -9,7 +10,7 @@ let
 in
 {
   networking = {
-    hostName = "${host}";
+    hostName = hostname;
     networkmanager.enable = true;
     nameservers = [
       "8.8.8.8"

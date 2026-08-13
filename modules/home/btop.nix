@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ host, pkgs, ... }:
 {
   programs.btop = {
     enable = true;
@@ -11,5 +11,7 @@
     };
   };
 
-  home.packages = with pkgs; [ nvtopPackages.nvidia ];
+  home.packages = with pkgs; [
+    (if host == "desktop" then nvtopPackages.nvidia else nvtopPackages.amd)
+  ];
 }
