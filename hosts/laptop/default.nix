@@ -2,7 +2,6 @@
 {
   imports = [
     ./hardware-configuration.nix
-    ./migration-rollback.nix
     ./wwan.nix
     ./../../modules/core
     ./../../modules/core/bootloader.nix
