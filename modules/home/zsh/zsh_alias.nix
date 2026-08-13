@@ -1,4 +1,17 @@
 {
+  ...
+}:
+let
+  # Прокси Throne для CLI-агентов. В обход, помимо loopback, идёт
+  # 100.64.0.0/10 — CGNAT-диапазон Tailscale: peers тайлнета доступны только
+  # напрямую через tailscale0, а прокси на них отвечает 502. Без этого
+  # запущенный из терминала `hermes desktop` не получал WebSocket-тикет
+  # у gateway на hermes-vm и висел на экране загрузки.
+  noProxy = "localhost,127.0.0.1,::1,100.64.0.0/10,.ts.net";
+  proxyUrl = "http://127.0.0.1:2080";
+  proxyEnv = "NO_PROXY=${noProxy} no_proxy=${noProxy} HTTPS_PROXY=${proxyUrl} HTTP_PROXY=${proxyUrl} ALL_PROXY=${proxyUrl}";
+in
+{
   programs.zsh = {
     shellAliases = {
       # Utils
@@ -7,8 +20,10 @@
       tt = "gtrash put";
       cat = "bat";
       nano = "micro";
-      claude = "NO_PROXY=localhost,127.0.0.1,::1 HTTPS_PROXY=http://127.0.0.1:2080 HTTP_PROXY=http://127.0.0.1:2080 ALL_PROXY=http://127.0.0.1:2080 command claude";
-      codex = "NO_PROXY=localhost,127.0.0.1,::1 HTTPS_PROXY=http://127.0.0.1:2080 HTTP_PROXY=http://127.0.0.1:2080 ALL_PROXY=http://127.0.0.1:2080 command codex";
+      claude = "${proxyEnv} command claude";
+      codex = "${proxyEnv} command codex";
+      grok = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" ${proxyEnv} command grok";
+      grok-stable = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" ${proxyEnv} command grok-stable";
       diff = "delta --diff-so-fancy --side-by-side";
       pipes = "pipes.sh";
       less = "bat";

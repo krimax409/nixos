@@ -1,6 +1,9 @@
 { pkgs, username, ... }:
 {
-  users.users.${username}.extraGroups = [ "libvirtd" ];
+  users.users.${username}.extraGroups = [
+    "docker"
+    "libvirtd"
+  ];
 
   environment.systemPackages = with pkgs; [
     virt-manager
@@ -13,6 +16,11 @@
   ];
 
   virtualisation = {
+    docker = {
+      enable = true;
+      enableOnBoot = true;
+    };
+
     libvirtd = {
       enable = true;
       qemu = {

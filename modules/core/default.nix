@@ -1,8 +1,10 @@
 {
   imports = [
     ./bootloader.nix
+    ./envfs.nix
     ./flatpak.nix
     ./hardware.nix
+    ./memory.nix
     ./network.nix
     ./nh.nix
     ./niri.nix

@@ -8,8 +8,10 @@
     ./claude.nix
     ./direnv.nix
     ./discord.nix
+    ./electron-limits.nix
     ./fastfetch.nix
     ./flow.nix
+    ./fractal.nix
     ./fzf.nix
     ./gaming.nix
     ./git.nix
@@ -26,6 +28,7 @@
     ./obsidian.nix
     ./p10k
     ./packages
+    ./prime-agent.nix
     ./scripts
     ./spotify.nix
     ./ssh.nix

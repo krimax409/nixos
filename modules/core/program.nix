@@ -19,9 +19,20 @@
       libXfixes
       libXrandr
       libxcb
+      libXi
+      libXcursor
+      libXrender
+      libXtst
       libxkbcommon
       libdrm
       libgbm
+      # Графика: без libEGL/libGL Electron падает на инициализации GPU
+      libglvnd
+      mesa
+      vulkan-loader
+      # Wayland-бэкенд
+      wayland
+      libsecret
       alsa-lib
       at-spi2-atk
       cups

@@ -62,3 +62,11 @@ widget_order = [ "lockscreen-login-box@HDMI-A-1", "lockscreen-login-box@DP-1" ]
 
 [plugins]
 enabled = [ "noctalia/bitwarden" ]
+
+[theme]
+builtin = "Noctalia"
+community_palette = "Oxocarbon"
+custom_palette = "windows-dark"
+mode = "dark"
+source = "custom"
+wallpaper_scheme = "m3-content"
