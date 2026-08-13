@@ -148,9 +148,11 @@ Chrome и Brave имеют три launcher-профиля: обычный исп
 
 Порт 22 **не открыт глобально.** `services.openssh.openFirewall = false`, а
 доступ выдаётся через `networking.firewall.interfaces`: `tailscale0` на обеих
-машинах и дополнительно `enp8s0` на desktop как LAN break-glass. Это важно,
-потому что sshd слушает `0.0.0.0:22` и `[::]:22`, а у машины есть публичные
-IPv6-адреса — глобальное правило открыло бы SSH в IPv6-интернет.
+машинах и host-specific LAN-интерфейс (`enp8s0` на desktop, `wlp3s0` на
+laptop) как аварийный путь. Laptop дополнительно слушает порт 2222 только на
+`tailscale0`, чтобы обычный OpenSSH оставался доступен независимо от Tailscale
+SSH на порту 22. Это важно, потому что глобальное правило открыло бы SSH и на
+публичных IPv6-адресах.
 
 Публичные ключи лежат в `keys/` и подключаются через
 `users.users.<user>.openssh.authorizedKeys.keyFiles`. OpenSSH читает и
@@ -161,8 +163,8 @@ IPv6-адреса — глобальное правило открыло бы SS
 
 - Niri и Noctalia работают нативно на Wayland; XWayland обеспечивает
   `xwayland-satellite`.
-- NVIDIA, Steam, Gamescope и GameMode включены на обеих машинах.
-- QEMU/KVM и virt-manager включены только на desktop.
+- NVIDIA включена только на desktop; laptop использует AMDGPU/Mesa.
+- Steam, Gamescope, GameMode, QEMU/KVM и virt-manager включены на обеих машинах.
 - Codex CLI берётся из отдельного закреплённого input `codex-nixpkgs`.
 - Zed, VS Code, Unity, Neovim и инструменты разработки установлены декларативно.
 - JetBrains Mono Nerd Font устанавливается из nixpkgs.

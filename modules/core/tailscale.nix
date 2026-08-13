@@ -19,8 +19,8 @@
     };
   };
 
-  # SSH is restricted to trusted interfaces only; port 22 is not open globally.
-  # Desktop also exposes port 22 on enp8s0 as a LAN break-glass path.
+  # SSH is restricted to Tailscale and each host's trusted LAN interface.
+  # Laptop also listens on 2222 over tailscale0 as a migration fallback.
   networking.firewall.interfaces = {
     tailscale0.allowedTCPPorts = [ 22 ] ++ lib.optional (host == "laptop") 2222;
   }
