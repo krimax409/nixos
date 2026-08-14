@@ -57,5 +57,10 @@
       else
         [ ./../../keys/desktop.pub ];
   };
+  systemd.services."home-manager-${username}" = {
+    requires = [ "user@1000.service" ];
+    after = [ "user@1000.service" ];
+  };
+
   nix.settings.allowed-users = [ "${username}" ];
 }
