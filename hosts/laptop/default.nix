@@ -12,7 +12,7 @@
     enable = true;
     configurationLimit = 20;
   };
-  boot.loader.timeout = 5;
+  boot.loader.timeout = 0;
 
   environment.systemPackages = with pkgs; [
     acpi
