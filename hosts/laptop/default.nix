@@ -11,12 +11,8 @@
   boot.loader.systemd-boot = {
     enable = true;
     configurationLimit = 20;
-    extraInstallCommands = ''
-      # EFI menu settings override loader.conf; keep the configured timeout authoritative.
-      ${config.systemd.package}/bin/bootctl set-timeout ""
-    '';
   };
-  boot.loader.timeout = 0;
+  boot.loader.timeout = 5;
 
   environment.systemPackages = with pkgs; [
     acpi
