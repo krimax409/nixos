@@ -25,7 +25,10 @@
     };
   };
 
-  environment.systemPackages = [ pkgs.sbctl ];
+  environment.systemPackages = with pkgs; [
+    sbctl
+    stress-ng
+  ];
 
   powerManagement.cpuFreqGovernor = "performance";
 }

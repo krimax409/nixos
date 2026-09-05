@@ -1,0 +1,502 @@
+[marketplace]
+default_skills_installs_purged = true
+
+[skills]
+paths = ["/home/k/.codex/skills/karpathy-guidelines"]
+ignore = []
+disabled = []
+server_skill_dirs = []
+bundled_skill_dirs = []
+
+[models]
+default = "a6api-gpt-5.6-sol"
+default_reasoning_effort = "max"
+
+[auth_provider.codexru]
+command = "/home/k/.local/bin/grok-codexru-token"
+token_ttl_secs = 3600
+
+[auth_provider.a6api]
+command = "/home/k/.local/bin/grok-a6api-token"
+token_ttl_secs = 3600
+
+[model_providers.codexru]
+base_url = "https://codexru.com/ai/v1"
+auth_provider = "codexru"
+api_backend = "chat_completions"
+context_window = 200000
+
+[model_providers.a6api]
+base_url = "https://api.a6api.com/v1"
+auth_provider = "a6api"
+api_backend = "chat_completions"
+context_window = 200000
+
+[model."codexru-gpt-5.5"]
+model = "gpt-5.5"
+model_provider = "codexru"
+name = "GPT-5.5 (CodexRU)"
+
+[model."codexru-gpt-5.6-luna"]
+model = "gpt-5.6-luna"
+model_provider = "codexru"
+name = "GPT-5.6 Luna (CodexRU)"
+context_window = 353000
+
+[model."codexru-gpt-5.6-sol"]
+model = "gpt-5.6-sol"
+model_provider = "codexru"
+name = "GPT-5.6 Sol (CodexRU)"
+context_window = 353000
+
+[[model."codexru-gpt-5.6-sol".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."codexru-gpt-5.6-sol".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+default = true
+
+[[model."codexru-gpt-5.6-sol".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."codexru-gpt-5.6-sol".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."codexru-gpt-5.6-sol".reasoning_efforts]]
+value = "max"
+label = "Max"
+
+[model."codexru-gpt-5.6-terra"]
+model = "gpt-5.6-terra"
+model_provider = "codexru"
+name = "GPT-5.6 Terra (CodexRU)"
+context_window = 353000
+
+[model.a6api-claude-opus-5]
+model = "claude-opus-5"
+model_provider = "a6api"
+name = "Claude Opus 5 (A6API)"
+context_window = 1000000
+
+[[model.a6api-claude-opus-5.reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model.a6api-claude-opus-5.reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model.a6api-claude-opus-5.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.a6api-claude-opus-5.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.a6api-claude-opus-5.reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model.a6api-claude-opus-5.reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model.a6api-claude-opus-5.reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model.a6api-claude-fable-5]
+model = "claude-fable-5"
+model_provider = "a6api"
+name = "Claude Fable 5 (A6API)"
+context_window = 1000000
+
+[[model.a6api-claude-fable-5.reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model.a6api-claude-fable-5.reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model.a6api-claude-fable-5.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.a6api-claude-fable-5.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.a6api-claude-fable-5.reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model.a6api-claude-fable-5.reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model.a6api-claude-fable-5.reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model.a6api-claude-sonnet-5]
+model = "claude-sonnet-5"
+model_provider = "a6api"
+name = "Claude Sonnet 5 (A6API)"
+context_window = 1000000
+
+[[model.a6api-claude-sonnet-5.reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model.a6api-claude-sonnet-5.reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model.a6api-claude-sonnet-5.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.a6api-claude-sonnet-5.reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model.a6api-claude-sonnet-5.reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model.a6api-claude-sonnet-5.reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model.a6api-claude-sonnet-5.reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model."a6api-claude-opus-4.8"]
+model = "claude-opus-4-8"
+model_provider = "a6api"
+name = "Claude Opus 4.8 (A6API)"
+context_window = 1000000
+
+[[model."a6api-claude-opus-4.8".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."a6api-claude-opus-4.8".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."a6api-claude-opus-4.8".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."a6api-claude-opus-4.8".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."a6api-claude-opus-4.8".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."a6api-claude-opus-4.8".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."a6api-claude-opus-4.8".reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model."a6api-claude-opus-4.7"]
+model = "claude-opus-4-7"
+model_provider = "a6api"
+name = "Claude Opus 4.7 (A6API)"
+context_window = 1000000
+
+[[model."a6api-claude-opus-4.7".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."a6api-claude-opus-4.7".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."a6api-claude-opus-4.7".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."a6api-claude-opus-4.7".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."a6api-claude-opus-4.7".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."a6api-claude-opus-4.7".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."a6api-claude-opus-4.7".reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model."a6api-claude-opus-4.6"]
+model = "claude-opus-4-6"
+model_provider = "a6api"
+name = "Claude Opus 4.6 (A6API)"
+context_window = 1000000
+
+[[model."a6api-claude-opus-4.6".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."a6api-claude-opus-4.6".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."a6api-claude-opus-4.6".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."a6api-claude-opus-4.6".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."a6api-claude-opus-4.6".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."a6api-claude-opus-4.6".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."a6api-claude-opus-4.6".reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model."a6api-claude-sonnet-4.6"]
+model = "claude-sonnet-4-6"
+model_provider = "a6api"
+name = "Claude Sonnet 4.6 (A6API)"
+context_window = 1000000
+
+[[model."a6api-claude-sonnet-4.6".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."a6api-claude-sonnet-4.6".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."a6api-claude-sonnet-4.6".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."a6api-claude-sonnet-4.6".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."a6api-claude-sonnet-4.6".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."a6api-claude-sonnet-4.6".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."a6api-claude-sonnet-4.6".reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model."a6api-claude-haiku-4.5"]
+model = "claude-haiku-4-5"
+model_provider = "a6api"
+name = "Claude Haiku 4.5 (A6API)"
+context_window = 200000
+
+[[model."a6api-claude-haiku-4.5".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."a6api-claude-haiku-4.5".reasoning_efforts]]
+value = "minimal"
+label = "Minimal"
+
+[[model."a6api-claude-haiku-4.5".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."a6api-claude-haiku-4.5".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."a6api-claude-haiku-4.5".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."a6api-claude-haiku-4.5".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."a6api-claude-haiku-4.5".reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model."a6api-gpt-5.6-sol"]
+model = "gpt-5.6-sol"
+model_provider = "a6api"
+auth_provider = "a6api"
+name = "GPT-5.6 Sol (A6API)"
+context_window = 353000
+
+[model."a6api-gpt-5.6-sol".env_http_headers]
+Authorization = "A6API_GROK_AUTHORIZATION"
+
+[[model."a6api-gpt-5.6-sol".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."a6api-gpt-5.6-sol".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."a6api-gpt-5.6-sol".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+
+[[model."a6api-gpt-5.6-sol".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."a6api-gpt-5.6-sol".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."a6api-gpt-5.6-sol".reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[model_providers.openrouter]
+base_url = "https://openrouter.ai/api/v1"
+api_backend = "chat_completions"
+context_window = 1048576
+
+[model."openrouter-stealth-ox-alpha"]
+model = "stealth/ox-alpha"
+model_provider = "openrouter"
+name = "Ox Alpha (OpenRouter)"
+context_window = 1048576
+api_backend = "chat_completions"
+env_http_headers = { Authorization = "OPENROUTER_GROK_AUTHORIZATION" }
+
+[[model."openrouter-stealth-ox-alpha".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."openrouter-stealth-ox-alpha".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."openrouter-stealth-ox-alpha".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+default = true
+
+[[model."openrouter-stealth-ox-alpha".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."openrouter-stealth-ox-alpha".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."openrouter-stealth-ox-alpha".reasoning_efforts]]
+value = "max"
+label = "Max"
+
+[model_providers.modelhub]
+base_url = "https://modelhub.my/v1"
+api_backend = "chat_completions"
+context_window = 353000
+
+[model."modelhub-gpt-5.6-sol"]
+model = "gpt-5.6-sol"
+model_provider = "modelhub"
+name = "GPT-5.6 Sol (ModelHub)"
+context_window = 353000
+api_backend = "chat_completions"
+env_http_headers = { Authorization = "MODELHUB_GROK_AUTHORIZATION" }
+
+[[model."modelhub-gpt-5.6-sol".reasoning_efforts]]
+value = "none"
+label = "None"
+
+[[model."modelhub-gpt-5.6-sol".reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model."modelhub-gpt-5.6-sol".reasoning_efforts]]
+value = "medium"
+label = "Medium"
+default = true
+
+[[model."modelhub-gpt-5.6-sol".reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model."modelhub-gpt-5.6-sol".reasoning_efforts]]
+value = "xhigh"
+label = "XHigh"
+
+[[model."modelhub-gpt-5.6-sol".reasoning_efforts]]
+value = "max"
+label = "Max"
+
+[model_providers.nvidia]
+base_url = "https://integrate.api.nvidia.com/v1"
+api_backend = "chat_completions"
+
+[model.nvidia-kimi-k3]
+model = "moonshotai/kimi-k3"
+model_provider = "nvidia"
+name = "Kimi K3 (NVIDIA NIM)"
+env_http_headers = { Authorization = "NVIDIA_GROK_AUTHORIZATION" }
+
+[[model.nvidia-kimi-k3.reasoning_efforts]]
+value = "low"
+label = "Low"
+
+[[model.nvidia-kimi-k3.reasoning_efforts]]
+value = "high"
+label = "High"
+
+[[model.nvidia-kimi-k3.reasoning_efforts]]
+value = "max"
+label = "Max"
+default = true
+
+[ui]
+max_thoughts_width = 120
+fork_secondary_model = "codexru-gpt-5.6-sol"
+compact_mode = false
+permission_mode = "always-approve"
+yolo = false
+
+[cli]
+installer = "internal"
+auto_update = true

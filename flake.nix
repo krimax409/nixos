@@ -4,7 +4,12 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    codex-nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    codex-nixpkgs.url = "github:NixOS/nixpkgs/master";
+
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -12,17 +17,17 @@
     };
 
     herdr = {
-      url = "github:herdrdev/herdr/v0.8.0";
+      url = "github:herdrdev/herdr/v0.8.2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia/v5.0.0-beta.7";
+      url = "github:noctalia-dev/noctalia/v5.0.0-beta.9";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nub = {
-      url = "github:nubjs/nub/v0.7.1";
+      url = "github:nubjs/nub/v0.7.5";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -31,6 +36,7 @@
       url = "github:TomaSajt/nixpkgs/0cbdc25b4df6051689052125cb550485f09dfb59";
       flake = false;
     };
+
   };
 
   outputs =

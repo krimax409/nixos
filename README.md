@@ -44,7 +44,8 @@ nixos-rebuild build --flake .#laptop
 # Подготовить desktop-конфигурацию к следующей загрузке
 sudo nixos-rebuild boot --flake path:/etc/nixos/nixos-config#desktop
 
-# Применить конфигурацию (без пароля, см. «sudo и применение конфигурации»)
+# Применить конфигурацию (пароль не требуется, см. «sudo и применение конфигурации»)
+# nft и nfs вызывают nixos-rebuild напрямую из sudo NOPASSWD allowlist.
 nft                # sudo nixos-rebuild test   --flake /etc/nixos/nixos-config
 nfs                # sudo nixos-rebuild switch --flake /etc/nixos/nixos-config
 

@@ -1,6 +1,9 @@
 { pkgs, ... }:
 {
   home.packages = with pkgs; [
+    ## AI coding
+    opencode-desktop
+
     ## Multimedia
     audacity
     gimp

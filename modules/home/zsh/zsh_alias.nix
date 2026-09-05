@@ -20,8 +20,13 @@ in
       nano = "micro";
       claude = "${proxyEnv} command claude";
       codex = "${proxyEnv} command codex";
-      grok = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" ${proxyEnv} command grok";
-      grok-stable = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" ${proxyEnv} command grok-stable";
+      # Patched 1.0.3 remains the A6API default; official 1.0.8 is explicit.
+      # Provider config lives in tracked TOML linked by modules/home/grok.nix.
+      grok = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" MODELHUB_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/modelhub-token)\" OPENROUTER_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/openrouter-token)\" ${proxyEnv} command grok-main-previous";
+      agent = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" MODELHUB_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/modelhub-token)\" OPENROUTER_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/openrouter-token)\" ${proxyEnv} command agent-main-previous";
+      grok-stable = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" MODELHUB_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/modelhub-token)\" OPENROUTER_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/openrouter-token)\" ${proxyEnv} command grok-stable";
+      grok-stable-previous-1-0-5 = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" ${proxyEnv} command grok-stable-previous-1-0-5";
+      grok-stable-previous = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" ${proxyEnv} command grok-stable-previous";
       diff = "delta --diff-so-fancy --side-by-side";
       pipes = "pipes.sh";
       less = "bat";

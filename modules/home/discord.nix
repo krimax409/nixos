@@ -2,7 +2,7 @@
 # the nix build will fail on hash mismatch — update version + all hashes below.
 { pkgs, lib, ... }:
 let
-  version = "1.0.151";
+  version = "1.0.154";
   baseUrl = "https://stable.dl2.discordapp.net/distro/app/stable/linux/x64/${version}";
   mkModule = name: hash: {
     inherit hash;
@@ -15,22 +15,22 @@ let
       kind = "distro";
       distro = {
         url = "${baseUrl}/full.distro";
-        hash = "sha256-JAqXFhuMe4zEtAENxxgff4r8Y6KrgHqdeeEKnNMtD6I=";
+        hash = "sha256-Jbe1c2lQC2ZboXx0lTR5MIuE70YXNstEDRSOa1AaGJo=";
       };
       modules = {
-        discord_arborium = mkModule "discord_arborium" "sha256-fkAcnTwlU99bRfBi/nH1/I7OT6AJ5RtgkHiuQNx08u0=";
-        discord_cloudsync = mkModule "discord_cloudsync" "sha256-IkB01+9n6ym1xURoSsmPirK11kyS0GUOujQU24LV3a0=";
-        discord_desktop_core = mkModule "discord_desktop_core" "sha256-eot+04aYoRb0w6um1YsGwzXaTBM1IaQwJmzAehkITVE=";
-        discord_dispatch = mkModule "discord_dispatch" "sha256-/NYRuR7E9wqHmNxxa97Jj2XY23C7LjzC6SPTgk//7LM=";
-        discord_erlpack = mkModule "discord_erlpack" "sha256-84yH4UZkWRoAXM2nL7tamftM71O/wPJznA3tUoRRf+I=";
-        discord_game_utils = mkModule "discord_game_utils" "sha256-2oKQlKOUD3Pi00wuE+JKbePmZw5d0Oc6F76GU4/rL0E=";
-        discord_krisp = mkModule "discord_krisp" "sha256-4wkbqX5t9/CGiqOi1QPiMDd5NHz7yRcyeKBvhNgHK9Q=";
-        discord_modules = mkModule "discord_modules" "sha256-BGBUMO4zMrKaGnxllgjpPyekxeS5xsnICmsSnyJRgUY=";
-        discord_rpc = mkModule "discord_rpc" "sha256-yaDuE0OEyNEiHswS9NFvyZE8QsUE4yISJGd6h1bqyZc=";
-        discord_spellcheck = mkModule "discord_spellcheck" "sha256-hTcbxupL3UGDeqI35JuBnWSbpwz3taHl3j1rge2Hxgk=";
-        discord_utils = mkModule "discord_utils" "sha256-iU2frGSdEctwGB18B0TguO3qgJYyNrQjN0gka683da0=";
-        discord_voice = mkModule "discord_voice" "sha256-epFro33WzLfkei7dsN/RMM8hVX8Swv07i2RleGJ/15o=";
-        discord_zstd = mkModule "discord_zstd" "sha256-a4aMsI+EN3MRu5jNJgLqkkhtkfV8N8WWaUM48g7W5is=";
+        discord_arborium = mkModule "discord_arborium" "sha256-s4CrlXD5GOzFa5QuvIVbpIVXzTnQo7tToA84Jn2ROdY=";
+        discord_cloudsync = mkModule "discord_cloudsync" "sha256-2lfPTEVyLYo5HgC+sSJoXU43KaLUjMy4YvQI6TfURRw=";
+        discord_desktop_core = mkModule "discord_desktop_core" "sha256-HFAorKlSZ/Dru4CslYdy0pf/sFYwG4Ir8y4gtozmKW0=";
+        discord_dispatch = mkModule "discord_dispatch" "sha256-ZZTfsK9fSK1DGuKVTSt09G9JacaJjJ/VY8kUCP9Iq/8=";
+        discord_erlpack = mkModule "discord_erlpack" "sha256-VZcVF6+4Rz3f4kf/fO+UddoHyF5pUisBc19sj55Zz6g=";
+        discord_game_utils = mkModule "discord_game_utils" "sha256-kZa3R0JcdhjKTRSOAUwutLRgxf1paeB7wAaZ9Qr7hwk=";
+        discord_krisp = mkModule "discord_krisp" "sha256-kpceuaumwlLM4ge3X/cFgpad2Jz780Z0zaLeZxAikX4=";
+        discord_modules = mkModule "discord_modules" "sha256-uAU0xzJcXNHbOmb7MRP6Y0uxbpY+o9feJqeIMd6+Xy8=";
+        discord_rpc = mkModule "discord_rpc" "sha256-y9qMa45isIIuMamURN8GnJR9IwJcQBVdjZ9y/APyVjw=";
+        discord_spellcheck = mkModule "discord_spellcheck" "sha256-rEDql1sShCczi93qFJQRC2SM67JUysjZ99WT3GSGOW8=";
+        discord_utils = mkModule "discord_utils" "sha256-8XatkwwkD3Sv49D8jWbBfzXB+ZTdFl/pxis0g34IeqQ=";
+        discord_voice = mkModule "discord_voice" "sha256-ahEm4vS8E2iviZg2OkC8wddnPtNdKWLLURHxVnvjA8Y=";
+        discord_zstd = mkModule "discord_zstd" "sha256-twZ9vlBJMrqxGI6+jJ9LSrDyVA8R4d4jHMaSVBq+Dnw=";
       };
     };
   };

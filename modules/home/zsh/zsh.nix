@@ -99,6 +99,12 @@
     '';
 
     initContent = ''
+      if [[ -r /run/secrets/infisical.env ]]; then
+        export INFISICAL_CLIENT_ID="$(< /run/secrets/infisical.env)"
+      fi
+      if [[ -r /run/secrets/infisical.secret ]]; then
+        export INFISICAL_CLIENT_SECRET="$(< /run/secrets/infisical.secret)"
+      fi
       # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
       # Initialization code that may require console input (password prompts, [y/n]
       # confirmations, etc.) must go above this block; everything else may go below.
