@@ -1,9 +1,9 @@
-{ pkgs, inputs, ... }:
+{ inputs, username, ... }:
 {
   sops.defaultSopsFile = ../../secrets/infisical.yaml;
-  sops.age.keyFile = "/home/k/.config/sops/age/keys.txt";
+  sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
   sops.secrets.infisical-env = {
-    owner = "k";
+    owner = username;
     group = "users";
     mode = "0400";
     path = "/run/secrets/infisical.env";
@@ -11,7 +11,7 @@
     key = "INFISICAL_CLIENT_ID";
   };
   sops.secrets.infisical-secret = {
-    owner = "k";
+    owner = username;
     group = "users";
     mode = "0400";
     path = "/run/secrets/infisical.secret";

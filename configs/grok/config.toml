@@ -2,7 +2,8 @@
 default_skills_installs_purged = true
 
 [skills]
-paths = ["/home/k/.codex/skills/karpathy-guidelines"]
+# Grok expands ~ in skill paths and runs auth commands through POSIX sh.
+paths = ["~/.codex/skills/karpathy-guidelines"]
 ignore = []
 disabled = []
 server_skill_dirs = []
@@ -13,11 +14,11 @@ default = "a6api-gpt-5.6-sol"
 default_reasoning_effort = "max"
 
 [auth_provider.codexru]
-command = "/home/k/.local/bin/grok-codexru-token"
+command = "$HOME/.local/bin/grok-codexru-token"
 token_ttl_secs = 3600
 
 [auth_provider.a6api]
-command = "/home/k/.local/bin/grok-a6api-token"
+command = "$HOME/.local/bin/grok-a6api-token"
 token_ttl_secs = 3600
 
 [model_providers.codexru]
