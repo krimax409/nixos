@@ -77,6 +77,8 @@ binds {
 
     Mod+Space repeat=false { toggle-overview; }
     Mod+D repeat=false { spawn "noctalia" "msg" "panel-toggle" "launcher"; }
+    Mod+Shift+D repeat=false { spawn "qs" "ipc" "-n" "-c" "win11-start-menu" "call" "start-menu" "toggle"; }
+    Mod+Shift+W repeat=false { spawn "wallpaper-toggle"; }
     Mod+S repeat=false { spawn "noctalia" "msg" "settings-toggle"; }
     Mod+V repeat=false { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
     Ctrl+Alt+Delete repeat=false { spawn "noctalia" "msg" "panel-toggle" "session"; }

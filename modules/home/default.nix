@@ -16,6 +16,7 @@
     ./gaming.nix
     ./git.nix
     ./gnome.nix
+    ./grok.nix
     ./gtk.nix
     ./hermes-support.nix
     ./kitty.nix
@@ -28,6 +29,7 @@
     ./obsidian.nix
     ./p10k
     ./packages
+    ./quickshell-start-menu.nix
 
     ./scripts
     ./spotify.nix

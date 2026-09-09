@@ -3,7 +3,7 @@
     gvfs.enable = true;
     gnome = {
       gcr-ssh-agent.enable = false;
-      gnome-keyring.enable = false;
+      gnome-keyring.enable = true;
     };
     dbus.enable = true;
     fstrim.enable = true;

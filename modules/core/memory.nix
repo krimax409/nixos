@@ -1,15 +1,15 @@
 { pkgs, ... }:
 {
-  # === 1. ZRAM — сжатый своп в RAM вместо Kingston SA400 ===
+  # === 1. ZRAM — основной своп, диск только как fallback ===
   zramSwap = {
     enable = true;
-    algorithm = "zstd";        # лучше сжимает Chromium/Electron (~3:1), чем lzo
-    memoryPercent = 25;        # ~8 GiB из 31 → сжимается до ~24 GiB эффективно
-    priority = 100;            # выше дискового свопа (sdc3 имеет priority=-1)
+    algorithm = "zstd";        # хорошее сжатие при приемлемой нагрузке на CPU
+    memoryPercent = 50;        # логический лимит zram: ~16 GiB при 32 GiB RAM
+    priority = 100;            # выше дискового swap с отрицательным приоритетом
   };
 
   boot.kernel.sysctl = {
-    # С zram можно свопить агрессивно — он дешёвый (RAM → zram), не SSD
+    # Заполнять zram раньше дискового fallback: сжатие в RAM дешевле записи на SSD.
     "vm.swappiness" = 180;
 
     # Раньше начинать прямой реклейм, не ждать нехватки памяти
@@ -21,7 +21,7 @@
   };
 
   # === 2. COREDUMP — не дампить гигантские Electron-процессы ===
-  # 15 GiB Discord → 74 MiB/s запись на sdc → заморозка на 4+ минуты
+  # Большой Electron-coredump может надолго занять диск и заморозить систему.
   systemd.coredump.settings = {
     Coredump = {
       ProcessSizeMax = "1G";

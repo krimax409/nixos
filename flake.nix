@@ -17,17 +17,22 @@
     };
 
     herdr = {
-      url = "github:herdrdev/herdr/v0.8.2";
+      url = "github:herdrdev/herdr/v0.9.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     noctalia = {
-      url = "github:noctalia-dev/noctalia/v5.0.0-beta.9";
+      url = "github:noctalia-dev/noctalia/v5.0.1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nub = {
-      url = "github:nubjs/nub/v0.7.5";
+      url = "github:nubjs/nub/v0.9.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    purple = {
+      url = "github:erickochen/purple";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

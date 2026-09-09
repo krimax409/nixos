@@ -1,5 +1,112 @@
 { pkgs, ... }:
 let
+  zcode = pkgs.stdenv.mkDerivation rec {
+    pname = "zcode";
+    version = "3.11.2";
+
+    src = pkgs.fetchurl {
+      url = "https://cdn-zcode.z.ai/zcode/electron/releases/${version}/linux-x64/ZCode-${version}-linux-x64.deb";
+      hash = "sha256-fRO4OGMTAs9h4bgEDLZ/NJ7CNWZ5WJfxdGQyxcXXfVs=";
+    };
+
+    nativeBuildInputs = with pkgs; [
+      autoPatchelfHook
+      dpkg
+      makeWrapper
+      wrapGAppsHook3
+    ];
+
+    buildInputs = with pkgs; [
+      alsa-lib
+      at-spi2-atk
+      at-spi2-core
+      cairo
+      cups
+      dbus
+      expat
+      gdk-pixbuf
+      glib
+      gtk3
+      libappindicator-gtk3
+      libdrm
+      libgbm
+      libnotify
+      libsecret
+      libuuid
+      libX11
+      libXcomposite
+      libXdamage
+      libXext
+      libXfixes
+      libXrandr
+      libxcb
+      libxkbcommon
+      libxscrnsaver
+      libxtst
+      nspr
+      nss
+      pango
+      stdenv.cc.cc
+      wayland
+      xdg-utils
+    ];
+
+    strictDeps = true;
+    dontConfigure = true;
+    dontBuild = true;
+
+    unpackPhase = ''
+      runHook preUnpack
+      dpkg-deb --extract "$src" .
+      runHook postUnpack
+    '';
+
+    installPhase = ''
+      runHook preInstall
+
+      mkdir -p "$out/opt/ZCode" "$out/bin" "$out/share/applications"
+      cp -a opt/ZCode/. "$out/opt/ZCode/"
+
+      makeWrapper "$out/opt/ZCode/zcode" "$out/bin/zcode" \
+        --prefix PATH : "${
+          pkgs.lib.makeBinPath [
+            pkgs.bash
+            pkgs.coreutils
+            pkgs.findutils
+            pkgs.git
+            pkgs.gnugrep
+            pkgs.openssh
+            pkgs.xdg-utils
+          ]
+        }"
+
+      sed "s#^Exec=/opt/ZCode/zcode %U\$#Exec=$out/bin/zcode %U#" \
+        usr/share/applications/zcode.desktop > "$out/share/applications/zcode.desktop"
+      cp -a usr/share/icons "$out/share/"
+
+      runHook postInstall
+    '';
+
+    meta = {
+      description = "ZCode desktop AI coding assistant";
+      homepage = "https://zcode.z.ai";
+      license = pkgs.lib.licenses.unfree;
+      mainProgram = "zcode";
+      platforms = [ "x86_64-linux" ];
+      sourceProvenance = [ pkgs.lib.sourceTypes.binaryNativeCode ];
+    };
+  };
+
+  bitwardenDesktopLauncher = pkgs.writeShellScriptBin "bitwarden-desktop-launcher" ''
+    if [ -t 1 ] && [ -t 2 ]; then
+      exec ${pkgs.lib.getExe pkgs.bitwarden-desktop} "$@"
+    fi
+
+    # Graphical launchers may close inherited pipes after spawning Electron.
+    # Keep the app logger active while preventing an uncaught stdout EPIPE.
+    exec ${pkgs.lib.getExe pkgs.bitwarden-desktop} "$@" >/dev/null 2>&1
+  '';
+
   codexDesktop = pkgs.stdenv.mkDerivation rec {
     pname = "codex-desktop";
     version = "26.901.51231";
@@ -139,6 +246,7 @@ in
     ## AI coding
     codexDesktop
     opencode-desktop
+    zcode
 
     ## Multimedia
     audacity
@@ -165,4 +273,14 @@ in
     ldtk
     tiled
   ];
+
+  xdg.desktopEntries.bitwarden = {
+    name = "Bitwarden";
+    genericName = "Password Manager";
+    exec = "${bitwardenDesktopLauncher}/bin/bitwarden-desktop-launcher %U";
+    icon = "bitwarden";
+    terminal = false;
+    categories = [ "Utility" ];
+    mimeType = [ "x-scheme-handler/bitwarden" ];
+  };
 }

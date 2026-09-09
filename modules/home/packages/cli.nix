@@ -64,6 +64,7 @@ in
     yt-dlp-light
 
     ## TUI
+    inputs.purple.packages.${pkgs.stdenv.hostPlatform.system}.default
     toipe # typing test in the terminal
     tomato-c # TUI pomodoro timer
     ttyper # cli typing test
@@ -88,6 +89,7 @@ in
     imv
     lowfi
     mpv
+    mpvpaper
 
     ## Utilities
     entr # perform action when file change

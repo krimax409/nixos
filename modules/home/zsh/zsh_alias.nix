@@ -6,8 +6,10 @@ let
   # запущенный из терминала `hermes desktop` не получал WebSocket-тикет
   # у gateway на hermes-vm и висел на экране загрузки.
   noProxy = "localhost,127.0.0.1,::1,100.64.0.0/10,.ts.net";
+  grokNoProxy = "${noProxy},modelhub.my";
   proxyUrl = "http://127.0.0.1:2080";
   proxyEnv = "NO_PROXY=${noProxy} no_proxy=${noProxy} HTTPS_PROXY=${proxyUrl} HTTP_PROXY=${proxyUrl} ALL_PROXY=${proxyUrl}";
+  grokProxyEnv = "NO_PROXY=${grokNoProxy} no_proxy=${grokNoProxy} HTTPS_PROXY=${proxyUrl} HTTP_PROXY=${proxyUrl} ALL_PROXY=${proxyUrl}";
 in
 {
   programs.zsh = {
@@ -20,6 +22,8 @@ in
       nano = "micro";
       claude = "${proxyEnv} command claude";
       codex = "${proxyEnv} command codex";
+      grok = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" MODELHUB_GROK_AUTHORIZATION=\"$($HOME/.config/grok-secrets/modelhub-token)\" OPENROUTER_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/openrouter-token)\" ${grokProxyEnv} command grok";
+      agent = "A6API_GROK_AUTHORIZATION=\"Bearer $($HOME/.local/bin/grok-a6api-token)\" MODELHUB_GROK_AUTHORIZATION=\"$($HOME/.config/grok-secrets/modelhub-token)\" OPENROUTER_GROK_AUTHORIZATION=\"Bearer $($HOME/.config/grok-secrets/openrouter-token)\" ${grokProxyEnv} command agent";
       diff = "delta --diff-so-fancy --side-by-side";
       pipes = "pipes.sh";
       less = "bat";
