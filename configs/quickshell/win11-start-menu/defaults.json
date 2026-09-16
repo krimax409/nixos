@@ -1,4 +1,9 @@
 {
+  "version": 2,
+  "profile": {
+    "name": "Krimax",
+    "glyph": "K"
+  },
   "pinned": [
     "firefox",
     "google-chrome",
@@ -6,11 +11,54 @@
     "code",
     "dev.zed.Zed",
     "nemo",
-    "org.gnome.DiskUtility",
-    "org.pulseaudio.pavucontrol",
     "org.telegram.desktop",
     "spotify",
     "steam",
     "chatgpt"
+  ],
+  "quickActions": [
+    {
+      "id": "files",
+      "label": "Files",
+      "glyph": "▣",
+      "command": ["nemo"]
+    },
+    {
+      "id": "settings",
+      "label": "Settings",
+      "glyph": "⚙",
+      "command": ["noctalia", "msg", "settings-toggle"]
+    },
+    {
+      "id": "power",
+      "label": "Power",
+      "glyph": "⏻"
+    }
+  ],
+  "powerActions": [
+    {
+      "id": "lock",
+      "label": "Lock",
+      "glyph": "◉",
+      "command": ["loginctl", "lock-session"]
+    },
+    {
+      "id": "logout",
+      "label": "Sign out",
+      "glyph": "↪",
+      "command": ["loginctl", "terminate-user", "__USER__"]
+    },
+    {
+      "id": "restart",
+      "label": "Restart",
+      "glyph": "↻",
+      "command": ["loginctl", "reboot"]
+    },
+    {
+      "id": "shutdown",
+      "label": "Shut down",
+      "glyph": "⏻",
+      "command": ["loginctl", "poweroff"]
+    }
   ]
 }

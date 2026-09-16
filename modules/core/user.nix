@@ -25,6 +25,7 @@
       imports = [
         ./../home
         inputs.noctalia.homeModules.default
+        inputs.nixcord.homeModules.nixcord
       ];
       home.username = "${username}";
       home.homeDirectory = "/home/${username}";
@@ -49,13 +50,11 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "i2c"
     ];
     shell = pkgs.zsh;
     openssh.authorizedKeys.keyFiles =
-      if host == "desktop" then
-        [ ./../../keys/k.pub ]
-      else
-        [ ./../../keys/desktop.pub ];
+      if host == "desktop" then [ ./../../keys/k.pub ] else [ ./../../keys/desktop.pub ];
   };
   systemd.services."home-manager-${username}" = {
     requires = [ "user@1000.service" ];

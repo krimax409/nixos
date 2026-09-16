@@ -11,7 +11,7 @@ let
     office = [ "libreoffice.desktop" ];
     pdf = [ "org.gnome.Evince.desktop" ];
     terminal = [ "kitty.desktop" ];
-    discord = [ "webcord.desktop" ];
+    discord = [ "discord-canary.desktop" ];
   };
 
   mimeMap = {

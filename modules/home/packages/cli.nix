@@ -1,10 +1,11 @@
 { inputs, pkgs, ... }:
 let
   # Official xAI binary from the pinned nixpkgs master input; no source build.
-  grokBuild = (import inputs.codex-nixpkgs {
-    system = pkgs.stdenv.hostPlatform.system;
-    config.allowUnfree = true;
-  }).grok-build;
+  grokBuild =
+    (import inputs.codex-nixpkgs {
+      system = pkgs.stdenv.hostPlatform.system;
+      config.allowUnfree = true;
+    }).grok-build;
 
   secretspecMain = pkgs.rustPlatform.buildRustPackage {
     pname = "secretspec-main";
@@ -16,8 +17,14 @@ let
       hash = "sha256-mD6sLKXLqJazvIj9zhhfKYhzb6zHL5wtL+5s7TgcHj4=";
     };
     cargoHash = "sha256-BP9u86MyhIUxyYlOjzJHRNNRabAwbCT0RoPTYrmVVQU=";
-    cargoBuildFlags = [ "-p" "secretspec" ];
-    buildFeatures = [ "cli" "infisical" ];
+    cargoBuildFlags = [
+      "-p"
+      "secretspec"
+    ];
+    buildFeatures = [
+      "cli"
+      "infisical"
+    ];
     doCheck = false;
     meta = {
       description = "SecretSpec built from upstream main";
@@ -26,6 +33,30 @@ let
       mainProgram = "secretspec";
     };
   };
+
+  bunLatest = pkgs.stdenvNoCC.mkDerivation {
+    pname = "bun";
+    version = "1.4.2";
+    src = pkgs.fetchurl {
+      url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.2/bun-linux-x64.zip";
+      hash = "sha256-NjaPrvdSeHXV/6UuU81IAhdB8qg+tiCKjdZAaNQiqRM=";
+    };
+    nativeBuildInputs = [ pkgs.unzip ];
+    installPhase = ''
+      install -Dm755 bun $out/bin/bun
+      ln -s bun $out/bin/bunx
+    '';
+  };
+
+  # Upstream CLIs are distributed through npm rather than nixpkgs. Keep the
+  # versions explicit while letting their own package managers resolve the
+  # JavaScript dependency trees on first use.
+  omp = pkgs.writeShellScriptBin "omp" ''
+    exec ${bunLatest}/bin/bunx --bun @oh-my-pi/pi-coding-agent@18.1.20 "$@"
+  '';
+  kimi = pkgs.writeShellScriptBin "kimi" ''
+    exec ${pkgs.nodejs}/bin/npx --yes @moonshot-ai/kimi-code@0.42.0 "$@"
+  '';
 in
 {
   home.packages = with pkgs; [
@@ -51,6 +82,8 @@ in
     broot # tree files view
     caligula # User-friendly, lightweight TUI for disk imaging
     grokBuild
+    omp # Oh My Pi coding agent
+    kimi # Kimi Code CLI
     opencode # OpenCode coding agent CLI
     hyperfine # benchmarking tool
     llmfit # match LLM models to available hardware

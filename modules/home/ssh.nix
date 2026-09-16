@@ -11,6 +11,7 @@ in
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false; # Отключаем дефолтные настройки как рекомендовано
+    includes = [ "~/.ssh/config.local" ];
 
     settings = {
       "*" = {
@@ -18,6 +19,16 @@ in
         ControlMaster = "auto";
         ControlPath = "~/.ssh/control-%r@%h:%p";
         ControlPersist = "10m";
+      };
+      "colombino" = {
+        HostName = "65.21.127.112";
+        User = "webdev";
+        IdentityFile = "~/.ssh/id_ed25519";
+        ControlMaster = "no";
+        ControlPath = "none";
+        ControlPersist = "no";
+        ServerAliveInterval = 15;
+        ServerAliveCountMax = 3;
       };
       "github.com" = {
         HostName = "ssh.github.com";
@@ -29,11 +40,6 @@ in
     };
 
     matchBlocks = {
-      "colombino" = {
-        hostname = "65.21.127.112";
-        user = "webdev";
-        identityFile = "~/.ssh/id_ed25519";
-      };
       "jump" = {
         hostname = "138.124.13.10";
         user = "root";
@@ -109,6 +115,22 @@ in
       };
     };
   };
+
+  home.file.".ssh/config".force = true;
+
+  home.activation.materializeSshConfig = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    if [ -L "$HOME/.ssh/config" ]; then
+      tmp="$HOME/.ssh/config.hermes-tmp"
+      install -m 600 "$(readlink -f "$HOME/.ssh/config")" "$tmp"
+      mv -f "$tmp" "$HOME/.ssh/config"
+    fi
+
+    if [ ! -e "$HOME/.ssh/config.local" ]; then
+      install -m 600 /dev/null "$HOME/.ssh/config.local"
+    else
+      chmod 600 "$HOME/.ssh/config.local"
+    fi
+  '';
 
   # Keep the regular agent as a fallback until Bitwarden's SSH Agent is enabled.
   services.ssh-agent.enable = true;

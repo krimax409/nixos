@@ -1,4 +1,8 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  username,
+  ...
+}:
 {
   hardware = {
     graphics = {
@@ -9,5 +13,10 @@
       ];
     };
     enableRedistributableFirmware = true;
+
+    # DDC/CI monitor control (brightness sliders in win11-start-menu)
+    i2c.enable = true;
   };
+
+  environment.systemPackages = with pkgs; [ ddcutil ];
 }

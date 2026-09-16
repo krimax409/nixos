@@ -36,6 +36,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    fastpotify = {
+      url = "github:crmne/fastpotify/v0.7.1";
+    };
+
+    nixcord = {
+      url = "github:4evy/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
+
     # Remove this source input once Throne 1.2.2 reaches nixos-unstable.
     throne-nixpkgs = {
       url = "github:TomaSajt/nixpkgs/0cbdc25b4df6051689052125cb550485f09dfb59";
@@ -75,7 +85,13 @@
           modules = [ (./hosts + "/${host}") ];
           specialArgs = {
             inherit configRoot host inputs;
-            inherit (settings) hostname username systemStateVersion homeStateVersion sshLanInterface;
+            inherit (settings)
+              hostname
+              username
+              systemStateVersion
+              homeStateVersion
+              sshLanInterface
+              ;
           };
         };
     in

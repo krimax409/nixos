@@ -25,6 +25,12 @@ let
   hermesDesktop = pkgs.writeShellScript "hermes-desktop-launch" ''
     export NO_PROXY='${noProxy}'
     export no_proxy='${noProxy}'
+    # Keep Hermes network traffic inside Throne; its routing rules decide
+    # which domains use the remote outbound and which stay direct.
+    export HTTP_PROXY='http://127.0.0.1:2080'
+    export HTTPS_PROXY='http://127.0.0.1:2080'
+    export http_proxy='http://127.0.0.1:2080'
+    export https_proxy='http://127.0.0.1:2080'
     export CHROME_DEVEL_SANDBOX=/run/wrappers/bin/__chromium-suid-sandbox
 
     # Пересборка не должна мешать запуску: если она упала, всё равно пробуем
