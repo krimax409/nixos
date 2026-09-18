@@ -1,5 +1,6 @@
 { inputs, pkgs, ... }:
 let
+  cliproxyapi = pkgs.callPackage ../../../pkgs/cliproxyapi.nix { };
   # Official xAI binary from the pinned nixpkgs master input; no source build.
   grokBuild =
     (import inputs.codex-nixpkgs {
@@ -55,7 +56,7 @@ let
     exec ${bunLatest}/bin/bunx --bun @oh-my-pi/pi-coding-agent@18.1.20 "$@"
   '';
   kimi = pkgs.writeShellScriptBin "kimi" ''
-    exec ${pkgs.nodejs}/bin/npx --yes @moonshot-ai/kimi-code@0.42.0 "$@"
+    exec ${pkgs.nodejs}/bin/npx --yes @moonshot-ai/kimi-code@latest "$@"
   '';
 in
 {
@@ -81,6 +82,7 @@ in
     bitwise # cli tool for bit / hex manipulation
     broot # tree files view
     caligula # User-friendly, lightweight TUI for disk imaging
+    cliproxyapi
     grokBuild
     omp # Oh My Pi coding agent
     kimi # Kimi Code CLI

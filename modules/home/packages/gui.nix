@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 let
   zcode = pkgs.stdenv.mkDerivation rec {
     pname = "zcode";
@@ -106,6 +106,8 @@ let
     # Keep the app logger active while preventing an uncaught stdout EPIPE.
     exec ${pkgs.lib.getExe pkgs.bitwarden-desktop} "$@" >/dev/null 2>&1
   '';
+
+  easycliproxyapi = pkgs.callPackage ../../../pkgs/easycliproxyapi.nix { };
 
   orcaIde = pkgs.appimageTools.wrapType2 rec {
     pname = "orca-ide";
@@ -274,9 +276,13 @@ in
   home.packages = with pkgs; [
     ## AI coding
     codexDesktop
+    easycliproxyapi
     orcaIde
     opencode-desktop
     zcode
+
+    ## Database
+    inputs.dbx.packages.${pkgs.stdenv.hostPlatform.system}.dbx-desktop
 
     ## Multimedia
     audacity
@@ -303,6 +309,23 @@ in
     ldtk
     tiled
   ];
+
+  systemd.user.services.easycliproxyapi = {
+    Unit = {
+      Description = "EasyCLIProxyAPI desktop console";
+      # WebKitGTK mis-reads monitor scale when started before niri finishes
+      # configuring outputs, leaving the webview rendered at ~20% zoom.
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
+      ExecStart = "${easycliproxyapi}/bin/easycliproxyapi";
+      Restart = "on-failure";
+      RestartSec = 3;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
 
   xdg.desktopEntries.bitwarden = {
     name = "Bitwarden";

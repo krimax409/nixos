@@ -46,6 +46,13 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    flake-utils.url = "github:numtide/flake-utils/v1.0.0";
+
+    dbx = {
+      url = "github:t8y2/dbx";
+      inputs.flake-utils.follows = "flake-utils";
+    };
+
     # Remove this source input once Throne 1.2.2 reaches nixos-unstable.
     throne-nixpkgs = {
       url = "github:TomaSajt/nixpkgs/0cbdc25b4df6051689052125cb550485f09dfb59";
@@ -57,7 +64,7 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      configRoot = "/etc/nixos/nixos-config";
+      configRoot = "/home/k/src/nixos-config";
       system = "x86_64-linux";
       hostSettings = {
         desktop = {
