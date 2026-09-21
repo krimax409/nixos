@@ -109,6 +109,8 @@ let
 
   easycliproxyapi = pkgs.callPackage ../../../pkgs/easycliproxyapi.nix { };
 
+  raspberryDesktop = pkgs.callPackage ../../../pkgs/raspberry-desktop.nix { inherit inputs; };
+
   orcaIde = pkgs.appimageTools.wrapType2 rec {
     pname = "orca-ide";
     version = "1.4.200";
@@ -289,6 +291,7 @@ in
     gimp
     obs-studio
     pavucontrol
+    raspberryDesktop
     soundwireserver
     video-trimmer
 

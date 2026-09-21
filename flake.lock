@@ -323,6 +323,23 @@
         "type": "github"
       }
     },
+    "raspberryDesktop": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787806253,
+        "narHash": "sha256-VOZwEqKkCHUGy3RMpZGJvxCDr9Nm3uNDOeDCfWf0dFw=",
+        "owner": "mazda1337",
+        "repo": "raspberry-desktop",
+        "rev": "533c6eedebd32de6f76d10425c7f586dd56d2676",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mazda1337",
+        "ref": "raspberry",
+        "repo": "raspberry-desktop",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "codex-nixpkgs": "codex-nixpkgs",
@@ -336,6 +353,7 @@
         "noctalia": "noctalia",
         "nub": "nub",
         "purple": "purple",
+        "raspberryDesktop": "raspberryDesktop",
         "sops-nix": "sops-nix",
         "throne-nixpkgs": "throne-nixpkgs"
       }

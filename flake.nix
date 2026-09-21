@@ -40,6 +40,11 @@
       url = "github:crmne/fastpotify/v0.7.1";
     };
 
+    raspberryDesktop = {
+      url = "github:mazda1337/raspberry-desktop/raspberry";
+      flake = false;
+    };
+
     nixcord = {
       url = "github:4evy/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
