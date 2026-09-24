@@ -7,3 +7,7 @@ input {
         accel-speed 0.15
     }
 }
+
+output "eDP-1" {
+    scale 1
+}
