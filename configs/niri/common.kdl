@@ -63,6 +63,7 @@ screenshot-path "~/Pictures/Screenshots/%Y-%m-%d %H-%M-%S.png"
 window-rule {
     geometry-corner-radius 2
     clip-to-geometry true
+    open-maximized-to-edges true
 }
 
 window-rule {
