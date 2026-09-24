@@ -69,7 +69,6 @@
   outputs =
     { nixpkgs, ... }@inputs:
     let
-      configRoot = "/home/k/src/nixos-config";
       system = "x86_64-linux";
       hostSettings = {
         desktop = {
@@ -78,6 +77,7 @@
           systemStateVersion = "24.05";
           homeStateVersion = "24.05";
           sshLanInterface = "enp8s0";
+          configRoot = "/home/k/src/nixos-config";
         };
         laptop = {
           hostname = "nixos";
@@ -85,6 +85,7 @@
           systemStateVersion = "25.11";
           homeStateVersion = "25.11";
           sshLanInterface = "wlp3s0";
+          configRoot = "/etc/nixos";
         };
       };
       mkHost =
@@ -96,7 +97,8 @@
           inherit system;
           modules = [ (./hosts + "/${host}") ];
           specialArgs = {
-            inherit configRoot host inputs;
+            inherit host inputs;
+            configRoot = settings.configRoot;
             inherit (settings)
               hostname
               username

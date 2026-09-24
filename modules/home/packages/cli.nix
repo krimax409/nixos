@@ -1,12 +1,6 @@
 { inputs, pkgs, ... }:
 let
   cliproxyapi = pkgs.callPackage ../../../pkgs/cliproxyapi.nix { };
-  # Official xAI binary from the pinned nixpkgs master input; no source build.
-  grokBuild =
-    (import inputs.codex-nixpkgs {
-      system = pkgs.stdenv.hostPlatform.system;
-      config.allowUnfree = true;
-    }).grok-build;
 
   secretspecMain = pkgs.rustPlatform.buildRustPackage {
     pname = "secretspec-main";
@@ -83,7 +77,6 @@ in
     broot # tree files view
     caligula # User-friendly, lightweight TUI for disk imaging
     cliproxyapi
-    grokBuild
     omp # Oh My Pi coding agent
     kimi # Kimi Code CLI
     opencode # OpenCode coding agent CLI

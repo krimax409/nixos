@@ -4,4 +4,6 @@ result-*
 .envrc
 # Шаблоны — часть репозитория, их .envrc должен быть в git
 !templates/*/.envrc
-.claude/
+.claude/*
+!.claude/skills/
+!.claude/skills/**

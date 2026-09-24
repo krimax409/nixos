@@ -35,6 +35,6 @@ in
   programs.throne = {
     enable = true;
     package = throne;
-    tunMode.enable = false;
+    tunMode.enable = true;
   };
 }

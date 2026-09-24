@@ -5,7 +5,9 @@ let
   regularFiles = builtins.filter (name: scriptEntries.${name} == "regular") (
     builtins.attrNames scriptEntries
   );
-  shellScripts = builtins.filter (name: builtins.match ".*\\.sh$" name != null) regularFiles;
+  shellScripts = builtins.filter (
+    name: name != "codex-update.sh" && builtins.match ".*\\.sh$" name != null
+  ) regularFiles;
   mkScript = name: {
     name = name;
     value = pkgs.writeScriptBin (builtins.replaceStrings [ ".sh" ] [ "" ] name) (

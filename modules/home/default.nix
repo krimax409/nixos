@@ -16,7 +16,6 @@
     ./gaming.nix
     ./git.nix
     ./gnome.nix
-    ./grok.nix
     ./gtk.nix
     ./hermes-support.nix
     ./kitty.nix

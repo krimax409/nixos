@@ -1,3 +1,9 @@
 include "common.kdl"
 
 include optional=true "/home/krim/.config/niri/noctalia.kdl"
+
+input {
+    touchpad {
+        accel-speed 0.15
+    }
+}
