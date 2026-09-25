@@ -27,6 +27,10 @@
 
   users.users.k.hashedPassword = "$6$acIc8nnVIA178tex$DSrac/IWT4MaHfr5cXifjT4Q1CnmPxBiHlBRumJDkAGeufVtYth1zxjZPTtabcMzkzl7pvKPjFsoiyx.YJ3Rj0";
 
+  # Пароли применяются из конфига при каждой активации, иначе hashedPassword
+  # срабатывает только на создании юзера (mutableUsers по умолчанию true).
+  users.mutableUsers = false;
+
   # Чекаут репозитория живёт в домашнем каталоге (как на desktop),
   # /etc/nixos — симлинк для совместимости. Идемпотентно.
   system.activationScripts.nixos-config-home = ''
