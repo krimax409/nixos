@@ -25,6 +25,18 @@
   services.resolved.enable = true;
   services.tailscale.useRoutingFeatures = "client";
 
+  users.users.k.hashedPassword = "$6$acIc8nnVIA178tex$DSrac/IWT4MaHfr5cXifjT4Q1CnmPxBiHlBRumJDkAGeufVtYth1zxjZPTtabcMzkzl7pvKPjFsoiyx.YJ3Rj0";
+
+  # Аварийный вход на случай проблем с основным пользователем k.
+  users.users.krim = {
+    uid = 1001;
+    isNormalUser = true;
+    hashedPassword = "$6$dHdBN4Ewo3VWzI1D$Gsw4F0gd85JliEoY2vM11yF9se5AQxNW5oz8YkvMfd.OOj3T2w/KapcoK9O0.r2zae5U43TeBf5alfvnkdEiq1";
+    extraGroups = [ "wheel" ];
+    shell = pkgs.zsh;
+    openssh.authorizedKeys.keyFiles = [ ./../../keys/desktop.pub ];
+  };
+
   users.users.k.extraGroups = [
     "input"
     "gamemode"
