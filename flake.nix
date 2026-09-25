@@ -85,7 +85,7 @@
           systemStateVersion = "25.11";
           homeStateVersion = "25.11";
           sshLanInterface = "wlp3s0";
-          configRoot = "/home/k/src/nixos-config";
+          configRoot = "/home/k/nixos";
         };
       };
       mkHost =
