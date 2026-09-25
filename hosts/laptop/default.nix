@@ -27,6 +27,17 @@
 
   users.users.k.hashedPassword = "$6$acIc8nnVIA178tex$DSrac/IWT4MaHfr5cXifjT4Q1CnmPxBiHlBRumJDkAGeufVtYth1zxjZPTtabcMzkzl7pvKPjFsoiyx.YJ3Rj0";
 
+  # Чекаут репозитория живёт в домашнем каталоге (как на desktop),
+  # /etc/nixos — симлинк для совместимости. Идемпотентно.
+  system.activationScripts.nixos-config-home = ''
+    if [ -d /etc/nixos ] && [ ! -L /etc/nixos ]; then
+      mkdir -p /home/k/src
+      mv /etc/nixos /home/k/src/nixos-config
+      chown -R 1000:100 /home/k/src/nixos-config
+      ln -s /home/k/src/nixos-config /etc/nixos
+    fi
+  '';
+
   # Аварийный вход на случай проблем с основным пользователем k.
   users.users.krim = {
     uid = 1001;
