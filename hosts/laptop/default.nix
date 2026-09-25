@@ -25,7 +25,7 @@
   services.resolved.enable = true;
   services.tailscale.useRoutingFeatures = "client";
 
-  users.users.krim.extraGroups = [
+  users.users.k.extraGroups = [
     "input"
     "gamemode"
   ];

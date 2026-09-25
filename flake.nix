@@ -81,7 +81,7 @@
         };
         laptop = {
           hostname = "nixos";
-          username = "krim";
+          username = "k";
           systemStateVersion = "25.11";
           homeStateVersion = "25.11";
           sshLanInterface = "wlp3s0";
