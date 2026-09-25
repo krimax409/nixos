@@ -31,14 +31,16 @@
   # срабатывает только на создании юзера (mutableUsers по умолчанию true).
   users.mutableUsers = false;
 
-  # Чекаут репозитория живёт в домашнем каталоге (как на desktop),
-  # /etc/nixos — симлинк для совместимости. Идемпотентно.
+  # Одноразовая миграция: старый чекаут репозитория переезжает в домашний
+  # каталог (как на desktop). Срабатывает только если /etc/nixos — сам чекаут:
+  # после настройки симлинка /etc/nixos/nixos-config этот каталог уже не
+  # является репозиторием, поэтому проверяем ещё и отсутствие симлинка.
+  # Сам симлинк создаёт modules/core/nixos-config-link.nix.
   system.activationScripts.nixos-config-home = ''
-    if [ -d /etc/nixos ] && [ ! -L /etc/nixos ]; then
+    if [ -d /etc/nixos ] && [ ! -L /etc/nixos ] && [ -d /etc/nixos/.git ] && [ ! -e /etc/nixos/nixos-config ]; then
       mkdir -p /home/k/src
       mv /etc/nixos /home/k/src/nixos-config
       chown -R 1000:100 /home/k/src/nixos-config
-      ln -s /home/k/src/nixos-config /etc/nixos
     fi
   '';
 

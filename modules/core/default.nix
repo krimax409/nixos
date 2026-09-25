@@ -28,6 +28,7 @@
     ./network.nix
     ./nh.nix
     ./niri.nix
+    ./nixos-config-link.nix
     ./pipewire.nix
     ./program.nix
     ./security.nix
