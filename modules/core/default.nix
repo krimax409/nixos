@@ -1,4 +1,4 @@
-{ inputs, username, ... }:
+{ inputs, config, username, ... }:
 {
   sops.defaultSopsFile = ../../secrets/infisical.yaml;
   sops.age.keyFile = "/home/${username}/.config/sops/age/keys.txt";
@@ -17,6 +17,54 @@
     path = "/run/secrets/infisical.secret";
     format = "yaml";
     key = "INFISICAL_CLIENT_SECRET";
+  };
+
+  # Universal Auth creds for the "nixos-hosts" machine identity (Infisical
+  # project nixos-configs). Used by systemd user service kimi-secrets to pull
+  # API keys from Infisical without a rebuild.
+  sops.secrets.infisical-ua-client-id = {
+    owner = username;
+    group = "users";
+    mode = "0400";
+    format = "yaml";
+    key = "INFISICAL_UA_CLIENT_ID";
+  };
+  sops.secrets.infisical-ua-client-secret = {
+    owner = username;
+    group = "users";
+    mode = "0400";
+    format = "yaml";
+    key = "INFISICAL_UA_CLIENT_SECRET";
+  };
+
+  sops.templates."infisical-ua.env" = {
+    owner = username;
+    group = "users";
+    mode = "0400";
+    path = "/run/secrets/infisical-ua.env";
+    # secretspec's infisical provider reads exactly INFISICAL_CLIENT_ID/SECRET.
+    content = ''
+      INFISICAL_CLIENT_ID=${config.sops.placeholder.infisical-ua-client-id}
+      INFISICAL_CLIENT_SECRET=${config.sops.placeholder.infisical-ua-client-secret}
+    '';
+  };
+
+  sops.secrets.twentyfirst-api-key = {
+    owner = username;
+    group = "users";
+    mode = "0400";
+    format = "yaml";
+    key = "TWENTYFIRST_API_KEY";
+  };
+
+  sops.templates."kimi-mcp.env" = {
+    owner = username;
+    group = "users";
+    mode = "0400";
+    path = "/run/secrets/kimi-mcp.env";
+    content = ''
+      KIMI_21ST_API_KEY=${config.sops.placeholder.twentyfirst-api-key}
+    '';
   };
   imports = [
     inputs.sops-nix.nixosModules.sops

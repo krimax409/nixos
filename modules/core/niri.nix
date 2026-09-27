@@ -16,7 +16,9 @@
       useTextGreeter = true;
       settings = {
         initial_session = {
-          command = "${pkgs.niri}/bin/niri-session";
+          # Must stay a single line: greetd's TOML parser rejects multiline
+          # """ strings ("expected equals sign on line, but found none").
+          command = "set -a; [ -f /run/secrets/kimi-mcp.env ] && . /run/secrets/kimi-mcp.env; [ -f \"$HOME/.cache/kimi-code/env\" ] && . \"$HOME/.cache/kimi-code/env\"; set +a; exec ${pkgs.niri}/bin/niri-session";
           user = username;
         };
         default_session.command = lib.concatStringsSep " " [
@@ -26,7 +28,7 @@
           "--remember-session"
           "--asterisks"
           "--cmd"
-          "${pkgs.niri}/bin/niri-session"
+          ''"set -a; [ -f /run/secrets/kimi-mcp.env ] && . /run/secrets/kimi-mcp.env; [ -f \"$HOME/.cache/kimi-code/env\" ] && . \"$HOME/.cache/kimi-code/env\"; set +a; exec ${pkgs.niri}/bin/niri-session"''
         ];
       };
     };

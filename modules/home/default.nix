@@ -18,6 +18,9 @@
     ./gnome.nix
     ./gtk.nix
     ./hermes-support.nix
+    ./kimi-secrets.nix
+    ./sops-bootstrap.nix
+    ./keepassxc.nix
     ./kitty.nix
     ./lazygit.nix
     ./micro.nix
