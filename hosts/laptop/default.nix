@@ -25,7 +25,23 @@
   services.resolved.enable = true;
   services.tailscale.useRoutingFeatures = "client";
 
-  users.users.k.hashedPassword = "$6$acIc8nnVIA178tex$DSrac/IWT4MaHfr5cXifjT4Q1CnmPxBiHlBRumJDkAGeufVtYth1zxjZPTtabcMzkzl7pvKPjFsoiyx.YJ3Rj0";
+  # Password hashes live in secrets/passwords.yaml (sops+age, encrypted in the
+  # public repo). PIN-style password is only safe as long as the hash never
+  # leaks into git — do NOT put hashedPassword inline again.
+  sops.secrets.passwords-k = {
+    sopsFile = ../../secrets/passwords.yaml;
+    key = "k";
+    neededForUsers = true;
+  };
+  sops.secrets.passwords-root = {
+    sopsFile = ../../secrets/passwords.yaml;
+    key = "root";
+    neededForUsers = true;
+  };
+  users.users.k.hashedPasswordFile = config.sops.secrets.passwords-k.path;
+
+  # Emergency login path: root with the same password as k, for TTY/rescue.
+  users.users.root.hashedPasswordFile = config.sops.secrets.passwords-root.path;
 
   # Пароли применяются из конфига при каждой активации, иначе hashedPassword
   # срабатывает только на создании юзера (mutableUsers по умолчанию true).
@@ -46,16 +62,6 @@
       rmdir /home/k/src 2>/dev/null || true
     fi
   '';
-
-  # Аварийный вход на случай проблем с основным пользователем k.
-  users.users.krim = {
-    uid = 1001;
-    isNormalUser = true;
-    hashedPassword = "$6$dHdBN4Ewo3VWzI1D$Gsw4F0gd85JliEoY2vM11yF9se5AQxNW5oz8YkvMfd.OOj3T2w/KapcoK9O0.r2zae5U43TeBf5alfvnkdEiq1";
-    extraGroups = [ "wheel" ];
-    shell = pkgs.zsh;
-    openssh.authorizedKeys.keyFiles = [ ./../../keys/desktop.pub ];
-  };
 
   users.users.k.extraGroups = [
     "input"

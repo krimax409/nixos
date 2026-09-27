@@ -27,7 +27,7 @@ let
         pkgs.writeShellApplication {
           name = "${desktopId}-${suffix}";
           text = ''
-            exec ${binary} ${lib.escapeShellArgs proxyArgs} "$@"
+            exec ${binary} ${lib.escapeShellArgs (proxyArgs ++ passwordStoreArgs)} "$@"
           '';
         };
       wrappers = {
@@ -35,6 +35,12 @@ let
         proxy = mkWrapper "proxy" [ "--proxy-server=http://${proxyAddress}" ];
         direct = mkWrapper "direct" [ "--no-proxy-server" ];
       };
+      # The GNOME keyring is locked on this host (greetd autologin has no PAM
+      # unlock and there is no UI prompter under niri). os_crypt blocks forever
+      # waiting for the Secret Service unlock prompt, which stalls every
+      # cookie-aware request (i.e. page navigations). Force the basic store so
+      # Chromium never talks to the keyring.
+      passwordStoreArgs = [ "--password-store=basic" ];
       mkEntry =
         {
           comment,

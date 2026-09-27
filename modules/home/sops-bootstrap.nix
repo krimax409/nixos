@@ -39,8 +39,12 @@
   # wrapper in modules/core/niri.nix never runs. kimi-mcp.env is the sops
   # fallback rendered at activation; ~/.cache/kimi-code/env is the live cache
   # refreshed from Infisical by kimi-secrets.timer — sourced last so it wins.
+  # set -a is required: dotenv files carry bare KEY=value that would otherwise
+  # stay unexported shell params invisible to child processes.
   programs.zsh.envExtra = ''
+    set -a
     [ -f /run/secrets/kimi-mcp.env ] && . /run/secrets/kimi-mcp.env
     [ -f "$HOME/.cache/kimi-code/env" ] && . "$HOME/.cache/kimi-code/env"
+    set +a
   '';
 }

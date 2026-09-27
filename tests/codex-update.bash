@@ -140,7 +140,7 @@ test -x "$tmp/codex/versions/26.922.1/usr/lib/chatgpt/ChatGPT"
 # Home Manager must expose exactly one codex-update package.
 count=$(nix eval --raw --no-write-lock-file \
   --apply 'ps: toString (builtins.length (builtins.filter (p: p.name == "codex-update") ps))' \
-  'path:.#nixosConfigurations.laptop.config.home-manager.users.krim.home.packages')
+  'path:.#nixosConfigurations.laptop.config.home-manager.users.k.home.packages')
 test "$count" = 1 || { printf 'expected one codex-update package, found %s\n' "$count" >&2; exit 1; }
 
 printf '%s\n' 'codex-update: pass'

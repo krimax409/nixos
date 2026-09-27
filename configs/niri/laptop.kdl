@@ -3,7 +3,14 @@ include "common.kdl"
 include optional=true "/home/k/.config/niri/noctalia.kdl"
 
 input {
+    // NOTE: pointing-device blocks do NOT merge across includes — this block
+    // replaces the one in common.kdl entirely, so keep ALL touchpad options here.
+    // (common.kdl's touchpad block has been dead on this laptop since
+    // accel-speed appeared here; natural-scroll defaults to false for
+    // touchpads, so the effective scroll was traditional.)
     touchpad {
+        tap
+        natural-scroll
         accel-speed 0.15
     }
 }

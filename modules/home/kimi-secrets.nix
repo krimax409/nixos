@@ -6,31 +6,36 @@
 # Bootstrap creds come from sops: /run/secrets/infisical-ua.env
 # (modules/core/default.nix). On fetch failure the previous cache stays in
 # place, so offline boots keep working.
+#
+# NOTE: the cache is written in `secretspec export --format shell` form
+# (`export KEY='value'`), i.e. real shell syntax — values with spaces or
+# metacharacters stay safe when sourced. The manifest path is a store path
+# (immutable per generation): editing configs/kimi-secrets/secretspec.toml
+# requires a rebuild, which is the point of a declarative backend list.
 {
   pkgs,
-  configRoot,
   ...
 }:
 let
   secretspec = pkgs.callPackage ../../pkgs/secretspec.nix { };
+  coreutils = pkgs.coreutils;
+  manifest = ../../configs/kimi-secrets/secretspec.toml;
   fetchScript = pkgs.writeShellScript "kimi-secrets-fetch" ''
     set -euo pipefail
-    mkdir -p "$HOME/.cache/kimi-code"
+    ${coreutils}/bin/mkdir -p "$HOME/.cache/kimi-code"
     dest="$HOME/.cache/kimi-code/env"
-    tmp="$(mktemp "$dest.tmp.XXXXXX")"
-    trap 'rm -f "$tmp"' EXIT
-    if ${secretspec}/bin/secretspec \
-        -f "${configRoot}/configs/kimi-secrets/secretspec.toml" \
-        export --format dotenv > "$tmp"; then
+    tmp="$(${coreutils}/bin/mktemp "$dest.tmp.XXXXXX")"
+    trap '${coreutils}/bin/rm -f "$tmp"' EXIT
+    if ${secretspec}/bin/secretspec -f "${manifest}" export --format shell > "$tmp"; then
       # mcp.json reads KIMI_21ST_API_KEY (bearerTokenEnvVar); Infisical stores
       # the value under TWENTYFIRST_API_KEY.
-      ${pkgs.gnugrep}/bin/grep '^TWENTYFIRST_API_KEY=' "$tmp" \
-        | ${pkgs.gnused}/bin/sed 's/^TWENTYFIRST_API_KEY=/KIMI_21ST_API_KEY=/' >> "$tmp"
-      chmod 600 "$tmp"
-      mv -f "$tmp" "$dest"
+      ${pkgs.gnugrep}/bin/grep '^export TWENTYFIRST_API_KEY=' "$tmp" \
+        | ${pkgs.gnused}/bin/sed 's/^export TWENTYFIRST_API_KEY=/export KIMI_21ST_API_KEY=/' >> "$tmp"
+      ${coreutils}/bin/chmod 600 "$tmp"
+      ${coreutils}/bin/mv -f "$tmp" "$dest"
     else
       echo "kimi-secrets: export failed, keeping previous cache" >&2
-      rm -f "$tmp"
+      ${coreutils}/bin/rm -f "$tmp"
       exit 1
     fi
   '';

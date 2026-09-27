@@ -80,6 +80,14 @@ treefmt
 
 - `configs/niri/common.kdl` содержит общие binds, layout и window rules.
 - `configs/niri/desktop.kdl` и `configs/niri/laptop.kdl` — точки входа хостов.
+
+**Ловушка include'ов niri:** секции устройств в `input {}` (`touchpad`,
+`mouse`, `trackpoint`, …) **не мержатся** между include'ами — более поздний
+блок полностью заменяет предыдущий (например `touchpad` в `laptop.kdl`
+затирает весь `touchpad` из `common.kdl`, включая `tap` и `natural-scroll`).
+Поэтому все опции конкретного устройства держите в одном месте — в
+host-конфиге. То же касается `output`, `layout`, `animations` и других
+non-merging секций (см. niri wiki «Configuration: Include»).
 - `configs/noctalia/config.toml` содержит общую базу Noctalia.
 - `configs/noctalia/palettes/` содержит общие пользовательские палитры.
 - `configs/noctalia/<host>/settings.toml` содержит изменения из GUI для хоста.
