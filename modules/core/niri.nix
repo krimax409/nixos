@@ -4,6 +4,20 @@
   username,
   ...
 }:
+let
+  # greetd prepends `exec` to session commands (`sh -c "exec <command>"`), so the
+  # value must be a single executable path — inline shell like `set -a; ...`
+  # makes greetd run `exec set` and the session dies instantly. A store script
+  # is also safe from sops secrets being unreadable: bash-as-sh aborts the whole
+  # script if `.` fails, so each source line ends with `|| true`.
+  niriSession = pkgs.writeShellScript "niri-session-env" ''
+    set -a
+    [ -f /run/secrets/kimi-mcp.env ] && . /run/secrets/kimi-mcp.env || true
+    [ -f "$HOME/.cache/kimi-code/env" ] && . "$HOME/.cache/kimi-code/env" || true
+    set +a
+    exec ${pkgs.niri}/bin/niri-session
+  '';
+in
 {
   programs.niri = {
     enable = true;
@@ -16,9 +30,7 @@
       useTextGreeter = true;
       settings = {
         initial_session = {
-          # Must stay a single line: greetd's TOML parser rejects multiline
-          # """ strings ("expected equals sign on line, but found none").
-          command = "set -a; [ -f /run/secrets/kimi-mcp.env ] && . /run/secrets/kimi-mcp.env; [ -f \"$HOME/.cache/kimi-code/env\" ] && . \"$HOME/.cache/kimi-code/env\"; set +a; exec ${pkgs.niri}/bin/niri-session";
+          command = "${niriSession}";
           user = username;
         };
         default_session.command = lib.concatStringsSep " " [
@@ -28,7 +40,7 @@
           "--remember-session"
           "--asterisks"
           "--cmd"
-          ''"set -a; [ -f /run/secrets/kimi-mcp.env ] && . /run/secrets/kimi-mcp.env; [ -f \"$HOME/.cache/kimi-code/env\" ] && . \"$HOME/.cache/kimi-code/env\"; set +a; exec ${pkgs.niri}/bin/niri-session"''
+          "${niriSession}"
         ];
       };
     };
