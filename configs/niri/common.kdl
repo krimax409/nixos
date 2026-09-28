@@ -48,6 +48,9 @@ layout {
 
 spawn-at-startup "env" "http_proxy=http://127.0.0.1:2080" "https_proxy=http://127.0.0.1:2080" "no_proxy=localhost,127.0.0.1,::1" "noctalia" "--daemon"
 spawn-at-startup "sh" "-c" "sleep 3 && exec keepassxc-unlocked"
+// Floats XWayland windows (Steam) whose app_id arrives too late for
+// open-floating window-rules. See modules/home/niri.nix for the full note.
+spawn-at-startup "niri-float-apps"
 
 environment {
     XCURSOR_THEME "Posy_Cursor"
@@ -67,9 +70,69 @@ window-rule {
     open-maximized-to-edges true
 }
 
+// NOTE on floating rules: the blanket `open-maximized-to-edges true` above
+// wins over `open-floating`, so EVERY floating rule below must also set
+// `open-maximized-to-edges false` or the window will tile (maximized)
+// instead of floating. This bug used to silently break the PiP rule too.
 window-rule {
     match app-id=r#"firefox$"# title="^Picture-in-Picture$"
     open-floating true
+    open-maximized-to-edges false
+}
+
+// Bitwarden is a single-window app; floating covers its unlock prompt too.
+// NOTE: the browser-extension popup cannot float (it renders inside the
+// browser); only its "pop out" window — titled exactly "Bitwarden" — can.
+window-rule {
+    match app-id="bitwarden"
+    open-floating true
+    open-maximized-to-edges false
+}
+
+// The Bitwarden browser extension's "pop out" window keeps title "Bitwarden"
+// but gets an app-id of the form chrome-<extension-id>-<profile>.
+window-rule {
+    match app-id=r#"firefox$"# title="^Bitwarden$"
+    match app-id="google-chrome" title="^Bitwarden$"
+    match app-id=r#"^chrome-nngceckbapebfimnlniiiahkandclblb"#
+    open-floating true
+    open-maximized-to-edges false
+}
+
+// Steam runs through XWayland, whose app_id/title are set asynchronously —
+// too late for niri's open-rules (verified live: title-only rules don't
+// fire either). So float ALL Steam windows, main library included; it
+// resizes poorly under tiling anyway.
+window-rule {
+    match app-id="steam"
+    open-floating true
+    open-maximized-to-edges false
+}
+
+// Steam notification toasts (friend online, download finished, etc.).
+// Bottom-right corner like Steam's native toast placement.
+window-rule {
+    match app-id=r#"notificationtoasts.*"#
+    open-floating true
+    open-maximized-to-edges false
+    default-floating-position x=16 y=16 relative-to="bottom-right"
+}
+
+// Discord's updater normally runs inside the main window, but float a
+// separate update window if one ever appears. Titles are "^..."-anchored
+// so a channel named e.g. "#updates" doesn't float the main window.
+window-rule {
+    match app-id="discord" title=r#"(?i)^(discord )?updat"#
+    open-floating true
+    open-maximized-to-edges false
+}
+
+// Volume mixer is a utility panel, not a workspace window.
+window-rule {
+    match app-id="org.pulseaudio.pavucontrol"
+    match app-id="pavucontrol"
+    open-floating true
+    open-maximized-to-edges false
 }
 
 binds {

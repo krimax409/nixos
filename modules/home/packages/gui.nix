@@ -128,6 +128,23 @@ let
         -t $out/share/icons/hicolor/512x512/apps/
       substituteInPlace $out/share/applications/orca-ide.desktop \
         --replace-fail 'Exec=AppRun' "Exec=$out/bin/orca-ide"
+
+      # On niri Chromium cannot detect a desktop environment, so OSCrypt picks
+      # the BASIC_TEXT backend and safeStorage.isEncryptionAvailable() is
+      # false. Orca then keeps the cloud account session memory-only and every
+      # restart logs the user out. Force libsecret (KeePassXC Secret Service).
+      # KeePassXC does not ship a D-Bus activation file, so briefly wait for
+      # it to claim org.freedesktop.secrets before launching.
+      mv $out/bin/orca-ide $out/bin/.orca-ide-wrapped
+      cat > $out/bin/orca-ide <<'EOF'
+#!${pkgs.runtimeShell}
+for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
+  ${pkgs.systemd}/bin/busctl --user call org.freedesktop.secrets /org/freedesktop/secrets org.freedesktop.DBus.Properties Get ss org.freedesktop.Secret.Service Collections >/dev/null 2>&1 && break
+  sleep 1
+done
+exec "$(dirname "$(readlink -f "$0")")/.orca-ide-wrapped" --password-store=gnome-libsecret "$@"
+EOF
+      chmod +x $out/bin/orca-ide
     '';
 
     meta = {

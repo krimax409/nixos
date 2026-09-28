@@ -122,6 +122,24 @@ in
         org.keepassxc.KeePassXC.MainWindow /keepassxc \
         org.keepassxc.KeePassXC.MainWindow openDatabase sss \
         ${lib.escapeShellArg dbPath} "" ${lib.escapeShellArg keyfilePath}
+      # openDatabase is async and can silently no-op (locked DB -> GUI prompt).
+      # Poll org.freedesktop.secrets for an unlocked collection and retry, so
+      # the Secret Service is actually up before dependents like Orca read it.
+      for _ in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do
+        collections=$(${pkgs.systemd}/bin/busctl --user call \
+          org.freedesktop.secrets /org/freedesktop/secrets \
+          org.freedesktop.DBus.Properties Get ss \
+          org.freedesktop.Secret.Service Collections 2>/dev/null) || collections=""
+        case "$collections" in
+          *collection/*) break ;;
+        esac
+        ${pkgs.systemd}/bin/busctl --user call \
+          org.keepassxc.KeePassXC.MainWindow /keepassxc \
+          org.keepassxc.KeePassXC.MainWindow openDatabase sss \
+          ${lib.escapeShellArg dbPath} "" ${lib.escapeShellArg keyfilePath} \
+          >/dev/null 2>&1 || true
+        sleep 2
+      done
     '';
   };
 
