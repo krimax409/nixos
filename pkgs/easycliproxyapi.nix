@@ -14,6 +14,7 @@
   gdk-pixbuf,
   glib,
   gtk3,
+  libappindicator-gtk3,
   libX11,
   libXcomposite,
   libXcursor,
@@ -56,6 +57,7 @@ stdenv.mkDerivation rec {
     gdk-pixbuf
     glib
     gtk3
+    libappindicator-gtk3
     libX11
     libXcomposite
     libXcursor
