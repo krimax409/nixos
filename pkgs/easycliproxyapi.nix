@@ -102,6 +102,8 @@ stdenv.mkDerivation rec {
       ${coreutils}/bin/mkdir -p "''${payload_dir}.new/cpa-core"
       if [ -d "''${payload_dir}" ]; then
         ${coreutils}/bin/cp -a "''${payload_dir}/." "''${payload_dir}.new/"
+      elif [ -d "''${payload_dir}.old" ]; then
+        ${coreutils}/bin/cp -a "''${payload_dir}.old/." "''${payload_dir}.new/"
       fi
       ${coreutils}/bin/install -m755 "${placeholder "out"}/lib/easycliproxyapi/EasyCLIProxyAPI" "''${payload_dir}.new/EasyCLIProxyAPI"
       ${coreutils}/bin/cp "${placeholder "out"}/lib/easycliproxyapi/core-version.txt" "''${payload_dir}.new/core-version.txt"
@@ -109,8 +111,8 @@ stdenv.mkDerivation rec {
       ${coreutils}/bin/cp -a "${placeholder "out"}/lib/easycliproxyapi/cpa-core/." "''${payload_dir}.new/cpa-core/"
       ${coreutils}/bin/chmod -R u+rwX "''${payload_dir}.new"
       ${coreutils}/bin/mkdir -p "''${data_dir}"
-      ${coreutils}/bin/rm -rf "''${payload_dir}.old"
       if [ -d "''${payload_dir}" ]; then
+        ${coreutils}/bin/rm -rf "''${payload_dir}.old"
         ${coreutils}/bin/mv "''${payload_dir}" "''${payload_dir}.old"
       fi
       ${coreutils}/bin/mv "''${payload_dir}.new" "''${payload_dir}"
