@@ -94,17 +94,27 @@ stdenv.mkDerivation rec {
     data_dir="''${XDG_DATA_HOME:-''${HOME}/.local/share}/easycliproxyapi"
     payload_dir="''${data_dir}/payload"
 
+    app_libs="${lib.makeLibraryPath (buildInputs ++ [ stdenv.cc.cc.lib ])}"
+    export LD_LIBRARY_PATH="''${app_libs}''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
     if [ ! -x "''${payload_dir}/EasyCLIProxyAPI" ]; then
       ${coreutils}/bin/rm -rf "''${payload_dir}.new"
       ${coreutils}/bin/mkdir -p "''${payload_dir}.new/cpa-core"
-      ${coreutils}/bin/cp "${placeholder "out"}/lib/easycliproxyapi/EasyCLIProxyAPI" "''${payload_dir}.new/EasyCLIProxyAPI"
+      if [ -d "''${payload_dir}" ]; then
+        ${coreutils}/bin/cp -a "''${payload_dir}/." "''${payload_dir}.new/"
+      fi
+      ${coreutils}/bin/install -m755 "${placeholder "out"}/lib/easycliproxyapi/EasyCLIProxyAPI" "''${payload_dir}.new/EasyCLIProxyAPI"
       ${coreutils}/bin/cp "${placeholder "out"}/lib/easycliproxyapi/core-version.txt" "''${payload_dir}.new/core-version.txt"
       ${coreutils}/bin/cp "${placeholder "out"}/lib/easycliproxyapi/portable-app.json" "''${payload_dir}.new/portable-app.json"
       ${coreutils}/bin/cp -a "${placeholder "out"}/lib/easycliproxyapi/cpa-core/." "''${payload_dir}.new/cpa-core/"
       ${coreutils}/bin/chmod -R u+rwX "''${payload_dir}.new"
       ${coreutils}/bin/mkdir -p "''${data_dir}"
-      ${coreutils}/bin/rm -rf "''${payload_dir}"
+      ${coreutils}/bin/rm -rf "''${payload_dir}.old"
+      if [ -d "''${payload_dir}" ]; then
+        ${coreutils}/bin/mv "''${payload_dir}" "''${payload_dir}.old"
+      fi
       ${coreutils}/bin/mv "''${payload_dir}.new" "''${payload_dir}"
+      ${coreutils}/bin/rm -rf "''${payload_dir}.old"
     fi
 
     export GTK_CSD=0
