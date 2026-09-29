@@ -17,7 +17,7 @@
 - Do not use runtime `patchelf` on staged/updater binaries; inherited `LD_LIBRARY_PATH` must cover the staging validation and relaunch path.
 - Do not add `webkitgtk_4_1` or other GUI libraries globally to `programs.nix-ld` unless the launcher approach fails in a controlled test.
 - Do not use `rm -rf payload`; use a separate staging directory and atomic replacement only for the seeded application payload, preserving existing user data.
-- Preserve `GTK_CSD=0`, the existing systemd `GSETTINGS_SCHEMA_DIR`, and the current service configuration.
+- Preserve `GTK_CSD=0`, the existing systemd `GSETTINGS_SCHEMA_DIR`, and the current service configuration, except for the intentional `ExitType=cgroup` addition covered by Task 3a.
 - Validate with Nix evaluation/build and a live service/API smoke test before asking the user to update.
 
 ---
@@ -163,6 +163,30 @@ LD_LIBRARY_PATH="$(tr '\0' '\n' <"/proc/$pid/environ" | sed -n 's/^LD_LIBRARY_PA
 
 The staged binary must no longer fail immediately with `libwebkit2gtk-4.1.so.0 not found`; if it reports a different runtime/UI issue, capture it and stop before updating.
 
+### Task 3a: Let the self-update helper survive normal GUI exit (systemd)
+
+**Files:**
+- Modify: `/home/k/nixos/modules/home/packages/gui.nix` (`systemd.user.services.easycliproxyapi.Service`)
+
+**Interfaces:**
+- Consumes: the confirmed root cause — the updater is a plain child in the service cgroup; the GUI writes `update-helper-started.ack` and exits 0, and with `ExitType=main` + `KillMode=control-group` systemd kills the helper before it writes `update-started.ack`.
+- Produces: a generated unit with `ExitType=cgroup`, unchanged `ExecStart`/`GSETTINGS_SCHEMA_DIR`/`Restart=on-failure`, and `KillMode` left at the `control-group` default. Do not use `KillMode=process` or `Restart=always`.
+
+- [ ] **Step 1: Add `ExitType = "cgroup";` to the Service block**
+
+- [ ] **Step 2: Build and inspect the generated unit**
+
+```bash
+cd /home/k/nixos
+nixos-rebuild build --flake .#laptop
+```
+
+The generated `easycliproxyapi.service` must contain `ExitType=cgroup` and keep `Restart=on-failure`, `ExecStart`, `ExecStartPre`, and `GSETTINGS_SCHEMA_DIR`.
+
+- [ ] **Step 3: Synthetic verification (optional, non-invasive)**
+
+A `systemd-run --user` transient unit with `Type=simple`, `KillMode=control-group`, `ExitType=cgroup`, whose main process spawns a `setsid` child and exits 0, must stay active until the child exits and must not restart. The same unit under default `ExitType=main` must go inactive immediately and the child must be killed before finishing. Do not restart the real service or run the GUI update.
+
 ### Task 3: User-controlled update and end-to-end validation
 
 **Files:**
@@ -212,5 +236,5 @@ If the updated GUI or core fails, stop the service and restore the latest mode-0
 
 - Coverage: inherited runtime libraries, GCC runtime, safe payload reseeding, Nix build/evaluation, active service checks, user-controlled GUI update, version checks, API smoke tests, and rollback are all covered.
 - Placeholder scan: no TODO/TBD or unspecified validation steps remain.
-- Scope: only one repository package file is modified; global nix-ld, systemd service, credentials, and unrelated dirty files are intentionally untouched.
+- Scope: only one repository package file plus the `ExitType=cgroup` service directive are modified; global nix-ld, other systemd settings, credentials, and unrelated dirty files are intentionally untouched.
 - Safety: no update click, commit, push, deletion of user data, or secret output is performed by the plan.

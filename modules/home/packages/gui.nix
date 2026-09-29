@@ -290,6 +290,11 @@ in
       ];
       ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
       ExecStart = "${easycliproxyapi}/bin/easycliproxyapi";
+      # Self-update helper is a plain child in the same cgroup. With the
+      # default ExitType=main the unit deactivates as soon as the GUI exits 0
+      # (after writing update-helper-started.ack), and KillMode=control-group
+      # then kills the helper before it can write update-started.ack.
+      ExitType = "cgroup";
       Restart = "on-failure";
       RestartSec = 3;
     };
