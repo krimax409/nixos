@@ -13,7 +13,7 @@ let
   niriSession = pkgs.writeShellScript "niri-session-env" ''
     set -a
     [ -f /run/secrets/kimi-mcp.env ] && . /run/secrets/kimi-mcp.env || true
-    [ -f "$HOME/.cache/kimi-code/env" ] && . "$HOME/.cache/kimi-code/env" || true
+    [ -f "$HOME/.config/kimi-code/secrets.env" ] && . "$HOME/.config/kimi-code/secrets.env" || true
     set +a
     exec ${pkgs.niri}/bin/niri-session
   '';

@@ -6,8 +6,8 @@
     # Используем новый формат settings вместо deprecated опций
     settings = {
       user = {
-        name = "Krimax0";
-        email = "krimax298@gmail.com";
+        name = "krimax409";
+        email = "krimax409@gmail.com";
       };
       init.defaultBranch = "main";
       merge.conflictstyle = "diff3";

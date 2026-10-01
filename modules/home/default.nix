@@ -3,6 +3,7 @@
     ./audacious.nix
     ./bat.nix
     ./browser.nix
+    ./brew.nix
     ./btop.nix
     ./cava.nix
     ./claude.nix
@@ -18,7 +19,6 @@
     ./gnome.nix
     ./gtk.nix
     ./hermes-support.nix
-    ./kimi-secrets.nix
     ./sops-bootstrap.nix
     ./keepassxc.nix
     ./kitty.nix
@@ -29,6 +29,7 @@
     ./niri.nix
     ./nvim.nix
     ./obsidian.nix
+    ./penpot-mcp.nix
     ./p10k
     ./packages
     ./quickshell-start-menu.nix

@@ -68,6 +68,40 @@
     "gamemode"
   ];
 
+  # Локальный метапоиск для Kimi Code (mcp-searxng → SEARXNG_URL).
+  # Loopback-only: ключа нет в сторе — уходит в settings.yml через env-файл.
+  sops.secrets.searxng-secret-key = {
+    key = "SEARXNG_SECRET_KEY";
+    owner = "searx";
+    group = "searx";
+    mode = "0400";
+  };
+  sops.templates."searxng.env" = {
+    owner = "searx";
+    group = "searx";
+    mode = "0400";
+    content = ''
+      SEARXNG_SECRET_KEY=${config.sops.placeholder.searxng-secret-key}
+    '';
+  };
+
+  services.searx = {
+    enable = true;
+    environmentFile = config.sops.templates."searxng.env".path;
+    settings = {
+      server = {
+        bind_address = "127.0.0.1";
+        port = 8888;
+        secret_key = "$SEARXNG_SECRET_KEY";
+        limiter = false;
+        image_proxy = true;
+      };
+      # json обязателен: без него mcp-searxng получает 403.
+      search.formats = [ "html" "json" ];
+      ui.infinite_scroll = false;
+    };
+  };
+
   services = {
     printing.enable = true;
     upower = {
