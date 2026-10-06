@@ -8,9 +8,11 @@
     ./cava.nix
     ./claude.nix
     ./direnv.nix
+    ./dsh.nix
     ./discord.nix
     ./electron-limits.nix
     ./fastfetch.nix
+    ./figma.nix
     ./flow.nix
     ./fractal.nix
     ./fzf.nix

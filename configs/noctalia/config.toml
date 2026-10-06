@@ -1,4 +1,5 @@
 [shell]
+avatar_path = "/home/k/Pictures/noctalia-avatar.png"
 lang = "ru"
 telemetry_enabled = false
 polkit_agent = true

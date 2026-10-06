@@ -12,6 +12,7 @@ let
     pdf = [ "org.gnome.Evince.desktop" ];
     terminal = [ "kitty.desktop" ];
     discord = [ "discord-canary.desktop" ];
+    figma = [ "figma-linux.desktop" ];
   };
 
   mimeMap = {
@@ -69,6 +70,7 @@ let
     pdf = [ "application/pdf" ];
     terminal = [ "terminal" ];
     discord = [ "x-scheme-handler/discord" ];
+    figma = [ "x-scheme-handler/figma" ];
   };
 
   associations =
