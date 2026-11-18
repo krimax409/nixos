@@ -73,6 +73,19 @@ treefmt
 
 Затем явно добавьте файл в `imports` внутри `modules/home/default.nix`.
 
+## Hyprland на ноутбуке
+
+Конфигурация `laptop` выбирает Hyprland с прокручиваемыми колонками и Noctalia.
+Раскладка, правила окон и сочетания — в `configs/hyprland/hyprland.lua`, профиль
+панели — в `configs/hyprland/noctalia/config.toml`. Настройки и состояние Noctalia
+в Hyprland отделены от Niri. `desktop` по-прежнему использует Niri.
+
+На новой генерации в `tuigreet` (`F3`) есть **Hyprland** и **Niri (fallback)**.
+Для пробного входа на старой генерации из `tuigreet` можно выбрать команду
+через `F2` и указать `/home/k/.local/bin/hyprland-laptop`, если локальный
+лаунчер установлен. Вернуться в Niri можно из меню сеансов или через выбор
+предыдущей генерации NixOS при загрузке.
+
 ## Niri и Noctalia
 
 Конфиги не копируются в Nix store: Home Manager создаёт out-of-store симлинки

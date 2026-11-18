@@ -5,7 +5,11 @@ set -euo pipefail
 video_2k_path="${WALLPAPER_VIDEO_2K:-$HOME/Videos/Wallpapers/nangong-yu-2k60.mp4}"
 video_fullhd_path="${WALLPAPER_VIDEO_FULLHD:-$HOME/Videos/Wallpapers/nangong-yu-fullhd60.mp4}"
 video_override="${WALLPAPER_VIDEO:-}"
-state_dir="${WALLPAPER_STATE_DIR:-${XDG_RUNTIME_DIR:-/tmp}/wallpaper-toggle}"
+state_name=wallpaper-toggle
+if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+    state_name+="-$HYPRLAND_INSTANCE_SIGNATURE"
+fi
+state_dir="${WALLPAPER_STATE_DIR:-${XDG_RUNTIME_DIR:-/tmp}/$state_name}"
 pid_file="$state_dir/mpvpaper.pids"
 log_file="$state_dir/mpvpaper.log"
 
@@ -59,14 +63,22 @@ start_wallpaper() {
         notify "Видеообои" "mpvpaper не установлен"
         return 1
     fi
-    if ! command -v niri >/dev/null 2>&1 || ! command -v jq >/dev/null 2>&1; then
-        notify "Видеообои" "Не найдены niri или jq"
+    if ! command -v jq >/dev/null 2>&1; then
+        notify "Видеообои" "Не найден jq"
         return 1
     fi
 
-    mapfile -t output_info < <(niri msg -j outputs | jq -r 'to_entries[] | [.key, (.value.logical.width // 0), (.value.logical.height // 0)] | @tsv')
+    if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+        mapfile -t output_info < <(hyprctl -j monitors | jq -r '
+            .[] | select(.disabled != true and .scale > 0)
+            | (if (.transform % 2) == 1 then [.height, .width] else [.width, .height] end) as [$width, $height]
+            | [.name, ($width / .scale | floor), ($height / .scale | floor)] | @tsv
+        ')
+    else
+        mapfile -t output_info < <(niri msg -j outputs | jq -r 'to_entries[] | [.key, (.value.logical.width // 0), (.value.logical.height // 0)] | @tsv')
+    fi
     if ((${#output_info[@]} == 0)); then
-        notify "Видеообои" "Niri не вернул список мониторов"
+        notify "Видеообои" "Не удалось получить список мониторов"
         return 1
     fi
 

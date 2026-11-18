@@ -1,0 +1,96 @@
+[shell]
+avatar_path = "~/Pictures/noctalia-avatar.png"
+lang = "ru"
+telemetry_enabled = false
+polkit_agent = true
+show_location = false
+font_family = "Noto Sans"
+corner_radius_scale = 0.8
+input_borders = true
+panel_anchor_bar = "main"
+popup_borders = true
+popup_shadows = true
+
+[shell.panel]
+transparency_mode = "solid"
+borders = true
+shadow = true
+
+[wallpaper]
+enabled = true
+fill_color = "#17191d"
+
+[wallpaper.default]
+path = "color:#17191d"
+
+[theme]
+mode = "dark"
+source = "custom"
+custom_palette = "windows-dark"
+
+[lockscreen]
+enabled = true
+
+[weather]
+enabled = false
+
+[location]
+auto_locate = false
+
+[bar.main]
+position = "bottom"
+thickness = 40
+scale = 1.0
+auto_hide = false
+reserve_space = true
+layer = "top"
+background_opacity = 0.98
+margin_ends = 8
+margin_edge = 6
+radius = 10
+padding = 12
+widget_spacing = 8
+shadow = true
+start = [ "workspaces" ]
+center = [ "launcher", "taskbar" ]
+end = [ "tray", "network", "volume", "brightness", "battery", "notifications", "clock", "control-center" ]
+
+[dock]
+enabled = false
+
+[widget.launcher]
+type = "launcher"
+glyph = "brand-windows-filled"
+
+[widget.workspaces]
+type = "workspaces"
+capsule = true
+show_labels = true
+label_source = "id"
+style = "minimal"
+
+[widget.taskbar]
+type = "taskbar"
+pinned = []
+show_active_indicator = true
+show_window_title = false
+
+[widget.network]
+type = "network"
+show_label = false
+
+[widget.volume]
+type = "volume"
+show_label = false
+
+[widget.brightness]
+type = "brightness"
+show_label = false
+
+[widget.battery]
+type = "battery"
+show_label = true
+
+[widget.clock]
+type = "clock"
+format = "{:%H:%M}"
