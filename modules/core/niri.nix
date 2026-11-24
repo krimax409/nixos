@@ -35,7 +35,7 @@ let
     jq
   ];
   sessionEnv = ''
-    export PATH="${lib.makeBinPath hyprlandRuntime}:$HOME/.local/bin:/etc/profiles/per-user/${username}/bin:/run/current-system/sw/bin:$PATH"
+    export PATH="${lib.makeBinPath hyprlandRuntime}:$HOME/.local/bin:/etc/profiles/per-user/${username}/bin:$PATH"
     export HYPRLAND_LAPTOP_CONFIG=${lib.escapeShellArg hyprlandConfig}
   '';
   hyprlandCompositor = pkgs.writeShellScript "hyprland-laptop-compositor" ''
