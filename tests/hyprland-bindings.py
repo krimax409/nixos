@@ -19,14 +19,17 @@ expected = {
     for line in niri.splitlines()
     if re.match(r"\s*\w+(?:\+\w+)*\s+[^/]*\{", line)
 }
+bindings = [bind for bind in json.load(sys.stdin) if bind.get("submap") in (None, "", "default")]
 actual = Counter(
     chord([name for mask, name in modifiers.items() if bind["modmask"] & mask] + [bind["key"]])
-    for bind in json.load(sys.stdin)
-    if not bind.get("submap") or bind["submap"] == "default"
+    for bind in bindings
 )
 missing = sorted(expected - actual.keys())
 extra = sorted(actual.keys() - expected)
 duplicates = sorted(key for key, count in actual.items() if count > 1)
 if not expected or missing or extra or duplicates:
     sys.exit(f"Missing: {missing}; extra: {extra}; duplicates: {duplicates}")
-print(f"PASS: all {len(expected)} Niri chords registered in Hyprland exactly once")
+unlabelled = [bind["key"] for bind in bindings if not (bind.get("description") or "").strip()]
+if unlabelled:
+    sys.exit(f"Missing help descriptions for: {unlabelled}")
+print(f"PASS: {len(expected)} Niri chords registered exactly once, with help descriptions")

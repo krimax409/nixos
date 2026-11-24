@@ -12,7 +12,7 @@ case "${1:-}" in
     exit 0
     ;;
   capture-region)
-    geometry=$(slurp -b '#12141999' -c '#60cdff' -w 2) || exit 0
+    geometry=$(slurp -b '#18181899' -c '#d6d6d6' -w 2) || exit 0
     [[ -n "$geometry" ]] || exit 0
     options=(-g "$geometry")
     ;;

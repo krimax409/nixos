@@ -11,21 +11,23 @@ Scope {
     readonly property string systemUserName: String(Quickshell.env("USER") || "user")
     readonly property string stateHome: String(Quickshell.env("XDG_STATE_HOME") || (Quickshell.env("HOME") + "/.local/state"))
     readonly property string statePath: root.stateHome + "/win11-start-menu/state.json"
-    readonly property color cardColor: "#f21b1e21"
-    readonly property color cardBorderColor: "#5a6b747d"
-    readonly property color primaryTextColor: "#f4f6f7"
-    readonly property color secondaryTextColor: "#c8d0d4"
-    readonly property color mutedTextColor: "#8b969d"
-    readonly property color surfaceColor: "#ee282e34"
-    readonly property color surfaceHoverColor: "#f03a424b"
-    readonly property color inputColor: "#f012161a"
-    readonly property color inputBorderColor: "#5f6e78"
-    readonly property color inputFocusColor: "#b6c5ff"
-    readonly property color itemHoverColor: "#a14b5660"
-    readonly property color dividerColor: "#5c676f"
-    readonly property color avatarColor: "#d2dcff"
-    readonly property color avatarTextColor: "#1b2435"
-    readonly property color accentColor: "#b6c5ff"
+    readonly property string hyprlandConfig: String(Quickshell.env("HYPRLAND_LAPTOP_CONFIG") || "")
+    readonly property bool hyprlandLaptop: hyprlandConfig.length > 0 && String(Quickshell.env("XDG_CURRENT_DESKTOP") || "").toLowerCase().split(":").includes("hyprland")
+    readonly property color cardColor: root.hyprlandLaptop ? "#fc202020" : "#f21b1e21"
+    readonly property color cardBorderColor: root.hyprlandLaptop ? "#454545" : "#5a6b747d"
+    readonly property color primaryTextColor: root.hyprlandLaptop ? "#f3f3f3" : "#f4f6f7"
+    readonly property color secondaryTextColor: root.hyprlandLaptop ? "#d6d6d6" : "#c8d0d4"
+    readonly property color mutedTextColor: root.hyprlandLaptop ? "#adadad" : "#8b969d"
+    readonly property color surfaceColor: root.hyprlandLaptop ? "#2c2c2c" : "#ee282e34"
+    readonly property color surfaceHoverColor: root.hyprlandLaptop ? "#383838" : "#f03a424b"
+    readonly property color inputColor: root.hyprlandLaptop ? "#191919" : "#f012161a"
+    readonly property color inputBorderColor: root.hyprlandLaptop ? "#646464" : "#5f6e78"
+    readonly property color inputFocusColor: root.accentColor
+    readonly property color itemHoverColor: root.hyprlandLaptop ? "#383838" : "#a14b5660"
+    readonly property color dividerColor: root.hyprlandLaptop ? "#454545" : "#5c676f"
+    readonly property color avatarColor: root.hyprlandLaptop ? "#383838" : "#d2dcff"
+    readonly property color avatarTextColor: root.hyprlandLaptop ? "#f3f3f3" : "#1b2435"
+    readonly property color accentColor: root.hyprlandLaptop ? "#d6d6d6" : "#b6c5ff"
     readonly property color menuBgColor: "#f22b2b2b"
     readonly property color menuBorderColor: "#5f484848"
     readonly property color menuHoverColor: "#14ffffff"
@@ -34,6 +36,7 @@ Scope {
     property bool menuVisible: false
     property bool allAppsMode: false
     property bool searchMode: false
+    property bool shortcutsMode: false
     property bool powerMenuOpen: false
     property bool contextMenuOpen: false
     property bool stateDirectoryReady: false
@@ -64,6 +67,39 @@ Scope {
     property var powerActions: []
     property var brightnessMonitors: []
     property var pinnedApplications: []
+    property var shortcuts: []
+    readonly property var filteredShortcuts: {
+        var words = normalized(query).trim().split(/\s+/).filter(word => word.length > 0);
+        return shortcuts.filter(entry => words.every(word => entry.searchable.includes(word)));
+    }
+    readonly property var shortcutKeyNames: ({
+        Return: "Enter", Escape: "Esc", Left: "←", Right: "→", Up: "↑", Down: "↓",
+        Page_Up: "Page Up", Page_Down: "Page Down", mouse_up: "Колесо ↑", mouse_down: "Колесо ↓",
+        XF86AudioRaiseVolume: "Громкость +", XF86AudioLowerVolume: "Громкость −",
+        XF86AudioMute: "Mute", XF86AudioMicMute: "Mic Mute", XF86AudioPlay: "Play/Pause",
+        XF86AudioStop: "Stop", XF86AudioPrev: "Prev", XF86AudioNext: "Next",
+        XF86MonBrightnessUp: "Яркость +", XF86MonBrightnessDown: "Яркость −"
+    })
+
+    function shortcutEntry(binding) {
+        var keys = [];
+        if (binding.modmask & 64) keys.push("Super");
+        if (binding.modmask & 4) keys.push("Ctrl");
+        if (binding.modmask & 8) keys.push("Alt");
+        if (binding.modmask & 1) keys.push("Shift");
+        var key = String(binding.key || "");
+        keys.push(shortcutKeyNames[key] || (key.length === 1 ? key.toUpperCase() : key));
+        var chord = keys.join("+");
+        return {label: binding.description, chord: chord, searchable: normalized(binding.description + " " + chord)};
+    }
+
+    function toggleShortcuts() {
+        shortcutsMode = !shortcutsMode;
+        clearSearch();
+        powerMenuOpen = false;
+        closeContextMenu();
+        if (shortcutsMode && !shortcutsProcess.running) shortcutsProcess.running = true;
+    }
 
     function normalized(value) {
         return String(value || "").toLowerCase();
@@ -407,7 +443,7 @@ Scope {
 
     function requestFocusedOutput() {
         outputProcess.running = false;
-        outputProcess.command = ["niri", "msg", "-j", "focused-output"];
+        outputProcess.command = root.hyprlandLaptop ? ["hyprctl", "-j", "monitors"] : ["niri", "msg", "-j", "focused-output"];
         outputProcess.running = true;
     }
 
@@ -424,6 +460,7 @@ Scope {
         }
         allAppsMode = false;
         searchMode = false;
+        shortcutsMode = false;
         query = "";
         menuOpen = true;
         requestFocusedOutput();
@@ -437,6 +474,7 @@ Scope {
         powerMenuOpen = false;
         closeContextMenu();
         searchMode = false;
+        shortcutsMode = false;
         query = "";
         closeAnimationTimer.restart();
     }
@@ -497,7 +535,10 @@ Scope {
             var outputName = "";
             try {
                 var output = JSON.parse(outputCollector.text);
-                outputName = String(output.name || "");
+                if (Array.isArray(output)) {
+                    output = output.find(monitor => monitor.focused);
+                }
+                outputName = String(output?.name || "");
             } catch (error) {
                 outputName = "";
             }
@@ -507,6 +548,22 @@ Scope {
             }
             if (outputName) {
                 root.activeOutput = outputName;
+            }
+        }
+    }
+
+    Process {
+        id: shortcutsProcess
+        command: ["hyprctl", "-j", "binds"]
+
+        stdout: StdioCollector { id: shortcutsCollector }
+
+        onExited: function (exitCode) {
+            try {
+                var bindings = exitCode === 0 ? JSON.parse(shortcutsCollector.text) : [];
+                root.shortcuts = bindings.filter(binding => binding.description && (!binding.submap || binding.submap === "default")).map(binding => root.shortcutEntry(binding));
+            } catch (error) {
+                root.shortcuts = [];
             }
         }
     }
@@ -714,6 +771,9 @@ Scope {
                         } else if (root.query.length > 0) {
                             root.clearSearch();
                             searchField.forceActiveFocus();
+                        } else if (root.shortcutsMode) {
+                            root.toggleShortcuts();
+                            searchField.forceActiveFocus();
                         } else {
                             root.hideMenu();
                         }
@@ -739,10 +799,10 @@ Scope {
                     visible: root.menuVisible && (root.activeOutput === "" || modelData.name === root.activeOutput)
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.bottom: parent.bottom
-                    anchors.bottomMargin: 18
+                    anchors.bottomMargin: root.hyprlandLaptop ? 10 : 18
                     width: Math.min(920, parent.width - 64)
                     height: Math.min(720, parent.height - 64)
-                    radius: 18
+                    radius: root.hyprlandLaptop ? 12 : 18
                     color: root.cardColor
                     border.width: 1
                     border.color: root.cardBorderColor
@@ -751,10 +811,12 @@ Scope {
                     transformOrigin: Item.Bottom
 
                     Behavior on opacity {
+                        enabled: !root.hyprlandLaptop
                         NumberAnimation { duration: 150; easing.type: Easing.OutCubic }
                     }
 
                     Behavior on scale {
+                        enabled: !root.hyprlandLaptop
                         NumberAnimation { duration: 180; easing.type: Easing.OutBack }
                     }
 
@@ -786,7 +848,7 @@ Scope {
                                 id: searchField
                                 Layout.fillWidth: true
                                 Layout.preferredHeight: 46
-                                placeholderText: "Поиск приложений, параметров и документов"
+                                placeholderText: root.shortcutsMode ? "Действие или сочетание" : root.hyprlandLaptop ? "Поиск приложений" : "Поиск приложений, параметров и документов"
                                 text: root.query
                                 color: root.primaryTextColor
                                 placeholderTextColor: root.mutedTextColor
@@ -796,7 +858,7 @@ Scope {
                                 rightPadding: root.query.length > 0 ? 52 : 18
 
                                 background: Rectangle {
-                                    radius: 0
+                                    radius: root.hyprlandLaptop ? 7 : 0
                                     color: root.inputColor
                                     border.width: searchField.activeFocus ? 2 : 1
                                     border.color: searchField.activeFocus ? root.inputFocusColor : root.inputBorderColor
@@ -837,6 +899,7 @@ Scope {
                                 onTextChanged: {
                                     var wasSearchMode = root.searchMode;
                                     root.query = text;
+                                    if (root.shortcutsMode) return;
                                     root.searchMode = text.trim().length > 0;
                                     root.applyFilter();
                                     if (root.searchMode) {
@@ -847,7 +910,7 @@ Scope {
                                 }
 
                                 Keys.onReturnPressed: {
-                                    if (root.query.trim().length > 0 && root.filteredApplications.length > 0) {
+                                    if (!root.shortcutsMode && root.query.trim().length > 0 && root.filteredApplications.length > 0) {
                                         root.runApplication(root.filteredApplications[0]);
                                     }
                                 }
@@ -856,6 +919,9 @@ Scope {
                                     if (root.query.length > 0) {
                                         root.clearSearch();
                                         searchField.forceActiveFocus();
+                                    } else if (root.shortcutsMode) {
+                                        root.toggleShortcuts();
+                                        searchField.forceActiveFocus();
                                     } else {
                                         root.hideMenu();
                                     }
@@ -863,6 +929,11 @@ Scope {
                                 }
 
                                 Keys.onDownPressed: {
+                                    if (root.shortcutsMode) {
+                                        shortcutList.scrollRow(1);
+                                        event.accepted = true;
+                                        return;
+                                    }
                                     if (root.filteredApplications.length > 0) {
                                         allAppsList.currentIndex = 0;
                                         allAppsList.forceActiveFocus();
@@ -871,6 +942,11 @@ Scope {
                                 }
 
                                 Keys.onUpPressed: {
+                                    if (root.shortcutsMode) {
+                                        shortcutList.scrollRow(-1);
+                                        event.accepted = true;
+                                        return;
+                                    }
                                     if (root.filteredApplications.length > 0) {
                                         allAppsList.currentIndex = Math.max(0, allAppsList.count - 1);
                                         allAppsList.forceActiveFocus();
@@ -879,13 +955,36 @@ Scope {
                                     }
                                 }
                             }
+                            Button {
+                                id: shortcutHelp
+                                visible: root.hyprlandLaptop
+                                Layout.preferredHeight: 46
+                                leftPadding: 14
+                                rightPadding: 14
+                                text: root.shortcutsMode ? "К приложениям" : "Горячие клавиши"
+                                font.pixelSize: 14
+                                focusPolicy: Qt.StrongFocus
+                                palette.buttonText: root.primaryTextColor
+
+                                background: Rectangle {
+                                    radius: 7
+                                    color: shortcutHelp.down ? root.itemHoverColor : shortcutHelp.hovered ? root.surfaceHoverColor : root.surfaceColor
+                                    border.width: shortcutHelp.activeFocus ? 2 : 1
+                                    border.color: shortcutHelp.activeFocus ? root.inputFocusColor : root.inputBorderColor
+                                }
+
+                                onClicked: {
+                                    root.toggleShortcuts();
+                                    searchField.forceActiveFocus();
+                                }
+                            }
                         }
 
                         StackLayout {
                             id: appStack
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            currentIndex: root.allAppsMode ? 1 : 0
+                            currentIndex: root.shortcutsMode ? 2 : root.allAppsMode ? 1 : 0
 
                             Item {
                                 ColumnLayout {
@@ -1340,6 +1439,75 @@ Scope {
                                         color: root.mutedTextColor
                                         font.pixelSize: 13
                                     }
+                                }
+                            }
+
+                            ColumnLayout {
+                                spacing: 10
+
+                                Label {
+                                    text: "Горячие клавиши · " + root.filteredShortcuts.length
+                                    color: root.primaryTextColor
+                                    font.pixelSize: 17
+                                    font.weight: Font.DemiBold
+                                }
+
+                                ListView {
+                                    id: shortcutList
+                                    Layout.fillWidth: true
+                                    Layout.fillHeight: true
+                                    clip: true
+                                    model: root.filteredShortcuts
+                                    currentIndex: 0
+                                    spacing: 4
+                                    onModelChanged: positionViewAtBeginning()
+
+                                    function scrollRow(delta) {
+                                        if (count === 0) return;
+                                        currentIndex = Math.max(0, Math.min(count - 1, currentIndex + delta));
+                                        positionViewAtIndex(currentIndex, ListView.Contain);
+                                    }
+
+                                    delegate: Rectangle {
+                                        required property var modelData
+                                        width: shortcutList.width - 12
+                                        height: 43
+                                        radius: 7
+                                        color: root.surfaceColor
+
+                                        RowLayout {
+                                            anchors.fill: parent
+                                            anchors.leftMargin: 12
+                                            anchors.rightMargin: 12
+                                            spacing: 10
+
+                                            Label {
+                                                Layout.fillWidth: true
+                                                text: modelData.label
+                                                textFormat: Text.PlainText
+                                                elide: Text.ElideRight
+                                                color: root.primaryTextColor
+                                                font.pixelSize: 14
+                                            }
+
+                                            Label {
+                                                text: modelData.chord
+                                                textFormat: Text.PlainText
+                                                color: root.inputFocusColor
+                                                font.pixelSize: 13
+                                                font.weight: Font.DemiBold
+                                            }
+                                        }
+                                    }
+
+                                    ScrollBar.vertical: ScrollBar { }
+                                }
+
+                                Label {
+                                    visible: root.filteredShortcuts.length === 0
+                                    text: shortcutsProcess.running ? "Загружаю сочетания…" : root.shortcuts.length === 0 ? "Сочетания недоступны" : "Ничего не найдено"
+                                    color: root.secondaryTextColor
+                                    font.pixelSize: 14
                                 }
                             }
                         }

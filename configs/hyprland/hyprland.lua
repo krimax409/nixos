@@ -28,9 +28,9 @@ hl.config({
         layout = "scrolling",
         gaps_in = 4,
         gaps_out = 8,
-        border_size = 2,
+        border_size = 1,
         resize_on_border = true,
-        col = { active_border = "rgb(60cdff)", inactive_border = "rgb(383d44)" },
+        col = { active_border = "rgb(a6a6a6)", inactive_border = "rgb(454545)" },
     },
     scrolling = {
         column_width = 0.75,
@@ -46,7 +46,7 @@ hl.config({
         blur = { enabled = false },
     },
     animations = { enabled = true },
-    misc = { disable_hyprland_logo = true, disable_splash_rendering = true, background_color = "rgb(17191d)" },
+    misc = { disable_hyprland_logo = true, disable_splash_rendering = true, background_color = "rgb(181818)" },
     cursor = { enable_hyprcursor = false, no_warps = true },
     binds = { scroll_event_delay = 150, movefocus_cycles_fullscreen = true },
     input = {
@@ -213,13 +213,18 @@ end
 local super = "SUPER + "
 local repeatable, locked = { repeating = true }, { locked = true }
 local locked_repeat = { locked = true, repeating = true }
-local bind, exec = hl.bind, dsp.exec_cmd
-local function key(chord, handler, opts) bind(super .. chord, handler, opts) end
+local exec = dsp.exec_cmd
+local function bind(chord, description, handler, opts)
+    local options = { description = description }
+    for key, value in pairs(opts or {}) do options[key] = value end
+    hl.bind(chord, handler, options)
+end
+local function key(chord, description, handler, opts) bind(super .. chord, description, handler, opts) end
 
-key("Return", exec("kitty"))
-key("Q", dsp.window.close())
-bind("ALT + F4", dsp.window.close())
-key("Space", function()
+key("Return", "Открыть терминал", exec("kitty"))
+key("Q", "Закрыть окно", dsp.window.close())
+bind("ALT + F4", "Закрыть окно", dsp.window.close())
+key("Space", "Обзор окон", function()
     for _, layer in ipairs(hl.get_layers({ namespace = "noctalia-window-switcher" })) do
         if layer.mapped then
             hl.exec_cmd("noctalia msg window-switcher close")
@@ -228,64 +233,73 @@ key("Space", function()
     end
     hl.exec_cmd("noctalia msg window-switcher")
 end)
-key("D", exec("qs ipc -n -c win11-start-menu call start-menu toggle"))
-key("SHIFT + D", exec("noctalia msg panel-toggle launcher"))
-key("SHIFT + W", action("wallpaper"))
-key("S", exec("noctalia msg settings-toggle"))
-key("V", exec("noctalia msg panel-toggle clipboard"))
-bind("CTRL + ALT + Delete", exec("noctalia msg panel-toggle session"))
-key("Escape", exec("noctalia msg session lock"), locked)
+key("D", "Открыть меню приложений", exec("qs ipc -n -c win11-start-menu call start-menu toggle"))
+key("SHIFT + D", "Открыть лаунчер Noctalia", exec("noctalia msg panel-toggle launcher"))
+key("SHIFT + W", "Включить или выключить видеообои", action("wallpaper"))
+key("S", "Настройки рабочего стола", exec("noctalia msg settings-toggle"))
+key("V", "История буфера обмена", exec("noctalia msg panel-toggle clipboard"))
+bind("CTRL + ALT + Delete", "Меню сеанса", exec("noctalia msg panel-toggle session"))
+key("Escape", "Блокировка экрана", exec("noctalia msg session lock"), locked)
 
-key("F", dsp.window.fullscreen({ mode = "maximized" }))
-key("G", dsp.window.fullscreen({ mode = "fullscreen" }))
-key("SHIFT + F", dsp.window.float({ action = "toggle" }))
-key("SHIFT + V", float_focus)
-key("C", dsp.layout("center"))
-key("Left", dsp.layout("focus l"), repeatable)
-key("Right", dsp.layout("focus r"), repeatable)
-key("Up", function() focus_adjacent(-1) end, repeatable)
-key("Down", function() focus_adjacent(1) end, repeatable)
-key("SHIFT + Left", dsp.layout("swapcol l"), repeatable)
-key("SHIFT + Right", dsp.layout("swapcol r"), repeatable)
-key("SHIFT + Up", dsp.window.swap({ direction = "up" }), repeatable)
-key("SHIFT + Down", dsp.window.swap({ direction = "down" }), repeatable)
-key("Home", function() edge_of_strip(false, false) end)
-key("End", function() edge_of_strip(true, false) end)
-key("CTRL + Home", function() edge_of_strip(false, true) end)
-key("CTRL + End", function() edge_of_strip(true, true) end)
-key("Page_Down", function() move_column(adjacent_workspace(1)) end, repeatable)
-key("Page_Up", function() move_column(adjacent_workspace(-1)) end, repeatable)
-key("SHIFT + Page_Down", function() reorder_workspace(1) end, repeatable)
-key("SHIFT + Page_Up", function() reorder_workspace(-1) end, repeatable)
+key("F", "Развернуть окно до краёв", dsp.window.fullscreen({ mode = "maximized" }))
+key("G", "Полноэкранный режим", dsp.window.fullscreen({ mode = "fullscreen" }))
+key("SHIFT + F", "Переключить плавающий режим окна", dsp.window.float({ action = "toggle" }))
+key("SHIFT + V", "Переключить фокус между плавающими и плиточными окнами", float_focus)
+key("C", "Центрировать колонку", dsp.layout("center"))
+key("Left", "Фокус на колонку слева", dsp.layout("focus l"), repeatable)
+key("Right", "Фокус на колонку справа", dsp.layout("focus r"), repeatable)
+for direction, layout_direction in pairs({ left = "l", right = "r" }) do
+    hl.gesture({ fingers = 3, direction = direction, action = {
+        finish = function(event)
+            if not event.cancelled then run(dsp.layout("focus " .. layout_direction)) end
+        end,
+    } })
+end
+key("Up", "Перейти на рабочий стол выше", function() focus_adjacent(-1) end, repeatable)
+key("Down", "Перейти на рабочий стол ниже", function() focus_adjacent(1) end, repeatable)
+key("SHIFT + Left", "Переместить колонку влево", dsp.layout("swapcol l"), repeatable)
+key("SHIFT + Right", "Переместить колонку вправо", dsp.layout("swapcol r"), repeatable)
+key("SHIFT + Up", "Переместить окно вверх внутри колонки", dsp.window.swap({ direction = "up" }), repeatable)
+key("SHIFT + Down", "Переместить окно вниз внутри колонки", dsp.window.swap({ direction = "down" }), repeatable)
+key("Home", "Фокус на первую колонку", function() edge_of_strip(false, false) end)
+key("End", "Фокус на последнюю колонку", function() edge_of_strip(true, false) end)
+key("CTRL + Home", "Переместить колонку в начало", function() edge_of_strip(false, true) end)
+key("CTRL + End", "Переместить колонку в конец", function() edge_of_strip(true, true) end)
+key("Page_Down", "Переместить колонку на рабочий стол ниже", function() move_column(adjacent_workspace(1)) end, repeatable)
+key("Page_Up", "Переместить колонку на рабочий стол выше", function() move_column(adjacent_workspace(-1)) end, repeatable)
+key("SHIFT + Page_Down", "Переставить рабочий стол ниже", function() reorder_workspace(1) end, repeatable)
+key("SHIFT + Page_Up", "Переставить рабочий стол выше", function() reorder_workspace(-1) end, repeatable)
 
+local monitor_directions = { Left = "влево", Right = "вправо", Up = "вверх", Down = "вниз" }
 for _, direction in ipairs({"Left", "Right", "Up", "Down"}) do
-    key("CTRL + SHIFT + " .. direction, function() move_to_monitor(direction:lower()) end, repeatable)
+    key("CTRL + SHIFT + " .. direction, "Переместить колонку на монитор " .. monitor_directions[direction],
+        function() move_to_monitor(direction:lower()) end, repeatable)
 end
 for i = 1, 9 do
-    key(tostring(i), dsp.focus({ workspace = i }))
-    key("SHIFT + " .. i, function() move_column(i) end)
+    key(tostring(i), "Перейти на рабочий стол " .. i, dsp.focus({ workspace = i }))
+    key("SHIFT + " .. i, "Переместить колонку на рабочий стол " .. i, function() move_column(i) end)
 end
-key("CTRL + Left", dsp.layout("colresize -0.05"), repeatable)
-key("CTRL + Right", dsp.layout("colresize +0.05"), repeatable)
-key("CTRL + Up", function() adjust_height(-0.05) end, repeatable)
-key("CTRL + Down", function() adjust_height(0.05) end, repeatable)
-key("mouse_down", dsp.layout("focus r"))
-key("mouse_up", dsp.layout("focus l"))
-key("CTRL + mouse_down", function() focus_adjacent(1) end)
-key("CTRL + mouse_up", function() focus_adjacent(-1) end)
+key("CTRL + Left", "Уменьшить ширину колонки", dsp.layout("colresize -0.05"), repeatable)
+key("CTRL + Right", "Увеличить ширину колонки", dsp.layout("colresize +0.05"), repeatable)
+key("CTRL + Up", "Уменьшить высоту окна", function() adjust_height(-0.05) end, repeatable)
+key("CTRL + Down", "Увеличить высоту окна", function() adjust_height(0.05) end, repeatable)
+key("mouse_down", "Фокус на колонку справа", dsp.layout("focus r"))
+key("mouse_up", "Фокус на колонку слева", dsp.layout("focus l"))
+key("CTRL + mouse_down", "Перейти на рабочий стол ниже", function() focus_adjacent(1) end)
+key("CTRL + mouse_up", "Перейти на рабочий стол выше", function() focus_adjacent(-1) end)
 
-bind("Print", action("capture-region"))
-key("SHIFT + S", action("capture-region"))
-bind("CTRL + Print", action("capture-output"))
-bind("ALT + Print", action("capture-window"))
-bind("XF86AudioRaiseVolume", exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1.0"), locked_repeat)
-bind("XF86AudioLowerVolume", exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), locked_repeat)
-bind("XF86AudioMute", exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), locked)
-bind("XF86AudioMicMute", exec("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), locked)
-bind("XF86AudioPlay", exec("playerctl play-pause"), locked)
-bind("XF86AudioStop", exec("playerctl stop"), locked)
-bind("XF86AudioPrev", exec("playerctl previous"), locked)
-bind("XF86AudioNext", exec("playerctl next"), locked)
-bind("XF86MonBrightnessUp", exec("brightnessctl --class=backlight set +5%"), locked_repeat)
-bind("XF86MonBrightnessDown", exec("brightnessctl --class=backlight set 5%-"), locked_repeat)
-key("SHIFT + Escape", action("logout"))
+bind("Print", "Скриншот области", action("capture-region"))
+key("SHIFT + S", "Скриншот области", action("capture-region"))
+bind("CTRL + Print", "Скриншот экрана", action("capture-output"))
+bind("ALT + Print", "Скриншот окна", action("capture-window"))
+bind("XF86AudioRaiseVolume", "Увеличить громкость", exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+ -l 1.0"), locked_repeat)
+bind("XF86AudioLowerVolume", "Уменьшить громкость", exec("wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"), locked_repeat)
+bind("XF86AudioMute", "Выключить или включить звук", exec("wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"), locked)
+bind("XF86AudioMicMute", "Выключить или включить микрофон", exec("wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"), locked)
+bind("XF86AudioPlay", "Воспроизведение или пауза", exec("playerctl play-pause"), locked)
+bind("XF86AudioStop", "Остановить воспроизведение", exec("playerctl stop"), locked)
+bind("XF86AudioPrev", "Предыдущий трек", exec("playerctl previous"), locked)
+bind("XF86AudioNext", "Следующий трек", exec("playerctl next"), locked)
+bind("XF86MonBrightnessUp", "Увеличить яркость", exec("brightnessctl --class=backlight set +5%"), locked_repeat)
+bind("XF86MonBrightnessDown", "Уменьшить яркость", exec("brightnessctl --class=backlight set 5%-"), locked_repeat)
+key("SHIFT + Escape", "Выход из Hyprland", action("logout"))

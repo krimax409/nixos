@@ -48,8 +48,8 @@ grep -q 'acceptedButtons: Qt.LeftButton | Qt.RightButton' "$qml"
 
 # Keep the menu surface opaque and chromatically neutral so wallpaper colors do
 # not bleed through the shell and the power popover follows the same palette.
-grep -q 'readonly property color cardColor: "#f21b1e21"' "$qml"
-grep -q 'readonly property color accentColor: "#b6c5ff"' "$qml"
+grep -qE 'readonly property color cardColor: (.* : )?"#f21b1e21"' "$qml"
+grep -qE 'readonly property color accentColor: (.* : )?"#b6c5ff"' "$qml"
 grep -q 'color: root.menuBgColor' "$qml"
 ! grep -q '#f01f211f\|#322f2caa\|#f82a2c2a' "$qml"
 

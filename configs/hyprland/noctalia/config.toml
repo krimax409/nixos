@@ -16,17 +16,21 @@ transparency_mode = "solid"
 borders = true
 shadow = true
 
+[shell.keyboard_layout.custom_labels]
+"English (US)" = "EN"
+"Russian" = "RU"
+
 [wallpaper]
 enabled = true
-fill_color = "#17191d"
+fill_color = "#181818"
 
 [wallpaper.default]
-path = "color:#17191d"
+path = "color:#181818"
 
 [theme]
 mode = "dark"
 source = "custom"
-custom_palette = "windows-dark"
+custom_palette = "windows-neutral"
 
 [lockscreen]
 enabled = true
@@ -45,15 +49,15 @@ auto_hide = false
 reserve_space = true
 layer = "top"
 background_opacity = 0.98
-margin_ends = 8
-margin_edge = 6
-radius = 10
+margin_ends = 0
+margin_edge = 0
+radius = 0
 padding = 12
 widget_spacing = 8
-shadow = true
+shadow = false
 start = [ "workspaces" ]
 center = [ "launcher", "taskbar" ]
-end = [ "tray", "network", "volume", "brightness", "battery", "notifications", "clock", "control-center" ]
+end = [ "tray", "notifications", "keyboard_layout", "battery", "clock", "control-center" ]
 
 [dock]
 enabled = false
@@ -62,12 +66,21 @@ enabled = false
 type = "launcher"
 glyph = "brand-windows-filled"
 
+[widget.launcher.actions]
+left = "exec qs ipc -n -c win11-start-menu call start-menu toggle"
+
 [widget.workspaces]
 type = "workspaces"
-capsule = true
+capsule = false
 show_labels = true
 label_source = "id"
-style = "minimal"
+style = "regular"
+pill_scale = 0.84
+active_pill_size = 1.6
+focused_color = "primary"
+occupied_color = "surface_variant"
+empty_color = "#292929"
+change_color_on_hover = false
 
 [widget.taskbar]
 type = "taskbar"
@@ -75,17 +88,18 @@ pinned = []
 show_active_indicator = true
 show_window_title = false
 
-[widget.network]
-type = "network"
-show_label = false
+[widget.tray]
+type = "tray"
+drawer = true
 
-[widget.volume]
-type = "volume"
-show_label = false
+[widget.keyboard_layout]
+type = "keyboard_layout"
+show_glyph = false
+show_label = true
 
-[widget.brightness]
-type = "brightness"
-show_label = false
+[widget.control-center]
+type = "control-center"
+glyph = "adjustments-horizontal"
 
 [widget.battery]
 type = "battery"
