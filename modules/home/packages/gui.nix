@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ inputs, osConfig ? { }, pkgs, ... }:
 let
   zcode = pkgs.stdenv.mkDerivation rec {
     pname = "zcode";
@@ -111,16 +111,24 @@ let
 
   raspberryDesktop = pkgs.callPackage ../../../pkgs/raspberry-desktop.nix { inherit inputs; };
 
-  orcaIde = pkgs.appimageTools.wrapType2 rec {
+  orcaIde = pkgs.appimageTools.wrapAppImage rec {
     pname = "orca-ide";
-    version = "1.4.261";
+    version = "1.4.274";
+    src = appimageContents;
+    passthru = { inherit appimageContents; };
 
-    src = pkgs.fetchurl {
-      url = "https://github.com/stablyai/orca/releases/download/v${version}/orca-linux.AppImage";
-      hash = "sha256-/33kkAhWr4B4Xlqx/jAaPQ3wmi0CMA/QThIJTocarEc=";
+    appimageContents = pkgs.appimageTools.extract {
+      inherit pname version;
+      src = pkgs.fetchurl {
+        url = "https://github.com/stablyai/orca/releases/download/v${version}/orca-linux.AppImage";
+        hash = "sha256-THnB/cXz3UV5taQak1pZQD11HGAfKVzah4vAbma30mA=";
+      };
+      postExtract = pkgs.lib.optionalString ((osConfig.networking.hostName or null) == "pc") ''
+        install -m444 ${./orca-relay-proxy.cjs} "$out/resources/orca-relay-proxy.cjs"
+        printf '%s\n' 'require("./orca-relay-proxy.cjs")({ nativeWebSocket: true })' > "$out/resources/orca-relay-worker-proxy.cjs"
+        ${pkgs.python3}/bin/python3 ${./orca-relay-proxy.py} "$out/resources/app.asar"
+      '';
     };
-
-    appimageContents = pkgs.appimageTools.extract { inherit pname version src; };
 
     extraInstallCommands = ''
       install -Dm444 ${appimageContents}/orca-ide.desktop -t $out/share/applications/
@@ -275,6 +283,14 @@ in
     ldtk
     tiled
   ];
+
+  home.file.".local/bin/orca-ide" = {
+    # Pin the stale app-installed CLI symlink to the packaged script; it execs
+    # the extracted Electron with ELECTRON_RUN_AS_NODE (nix-ld covers the ELF).
+    # force replaces the foreign symlink; a regular file still goes to .backup.
+    source = "${orcaIde.appimageContents}/resources/bin/orca-ide";
+    force = true;
+  };
 
   systemd.user.services.easycliproxyapi = {
     Unit = {
